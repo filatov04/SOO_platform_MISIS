@@ -1,8 +1,9 @@
-import React from "react";
-import "./App.scss";
+import './App.scss';
+import { useAppRoutes } from '../pages/routing/useAppRoutes';
 
 function App() {
-  return <></>;
+  const appRoutes = useAppRoutes();
+  return appRoutes;
 }
 
 export default App;

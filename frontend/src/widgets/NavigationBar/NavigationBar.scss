@@ -1,0 +1,44 @@
+.navbar{
+    width: 100vw;
+    height: 150px;
+    background: rgb(5,65,240);
+    background: linear-gradient(9deg, rgba(5,65,240,1) 6%, rgba(55,235,255,1) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+
+    &__content{
+        display: grid;
+        grid-template-columns: 0.3fr 1fr;
+        max-width: 1440px;
+        height: 100%;
+        width: 100%;
+        border: 2px solid red;
+    }
+
+    &__logo{
+        height: 100%;
+    }
+
+    &__list-panel{
+        margin-right: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        column-gap: 4%;
+    }
+
+    &__item-panel{
+        cursor: pointer;
+    }
+}
+
+.logo{
+    width: 100%;
+    max-height: 150px;
+    height: 100%;
+    object-fit: cover;
+}
