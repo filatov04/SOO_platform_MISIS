@@ -3,53 +3,81 @@
     justify-content: center;
     &__form{
         width: 30%;
-        height: 400px;
+        height: 390px;
         padding: 20px 9px;
-        padding-top: 30px;
+        padding-top: 40px;
         background-color: #187FF6;
+        position: relative;
         border-radius: 29px;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     }
-}
 
-.form{
-    display: flex;
-    flex-direction: column;
+    &__blur1, &__blur2, &__blur3{
+        position: absolute;
+    }
 
-    &__input{
-        display: flex;
-        margin-bottom: 30px;
-        justify-content: center;
-
-        &-inp{
-            width: calc(87% - 20px);
-            height: 80px;
-            border-radius: 20px;
-            border: none;
-            font-size: 32px;
-            padding-left: 20px;
+    &__blur1{
+        right: 0;
+        top: -20px;
+        img{
+            width: 100%;
+        }
+    }
+    
+    &__blur2{
+        bottom: 0;
+        left: 10%;
+        img{
+            width: 100%;
         }
     }
 
-    &__submit{
-        margin-top: 60px;
-        display: flex;
-        justify-content: center;
+    &__blur3{
+        top: 0;
+        left: 5%;
+        img{
+            width: 100%;
+        }
+    }
+}
 
-        &-sub{
-            font-size: 32px;
-            width: 58%;
-            height: 60px;
-            border-radius: 100px;
-            border: 2px solid white;
-            color: white;
-            background-color: transparent;
-            transition: 0.3s;
-            cursor: pointer;
 
-            &:hover{
-                color: #187FF6;
-                background-color: white;
-            }
+
+@media (max-width: 1280px){
+    .login{
+        &__form{
+            width: 30%;
+            height: 350px;
+            padding: 15px 9px;
+            padding-top: 30px;
+            border-radius: 24px;
+        }
+    }
+}
+
+@media (max-width: 1000px){
+    .login{
+        &__form{
+            width: 35%;
+            height: 300px;
+            padding: 10px 5px;
+            padding-top: 25px;
+            border-radius: 15px;
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .login{
+        height: 100dvh;
+        align-items: center;
+        &__form{
+            width: 45%;
+            min-width: 275px;
+            height: 300px;
+            padding: 10px 5px;
+            padding-top: 25px;
+            border-radius: 15px;
         }
     }
 }

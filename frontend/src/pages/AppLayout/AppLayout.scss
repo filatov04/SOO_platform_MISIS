@@ -25,3 +25,22 @@
 .app-footer{
     
 }
+
+
+@media (max-width: 1280px){
+    .main-content{
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 1000px){
+    .main-content{
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 768px){
+    .main-content{
+        margin-top: 0px;
+    }
+}
