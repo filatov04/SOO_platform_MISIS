@@ -1,6 +1,7 @@
 .login{
     display: flex;
     justify-content: center;
+    margin-top: 60px;
     &__form{
         width: 30%;
         height: 390px;
@@ -45,6 +46,7 @@
 
 @media (max-width: 1280px){
     .login{
+        margin-top: 40px;
         &__form{
             width: 30%;
             height: 350px;
@@ -57,6 +59,7 @@
 
 @media (max-width: 1000px){
     .login{
+        margin-top: 10px;
         &__form{
             width: 35%;
             height: 300px;
@@ -69,6 +72,7 @@
 
 @media (max-width: 768px){
     .login{
+        margin-top: 0px;
         height: 100dvh;
         align-items: center;
         &__form{

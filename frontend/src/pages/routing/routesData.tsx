@@ -15,7 +15,7 @@ export const routesData = () => {
       element: <LoginPage />
     },
     {
-      path: '/MainPage',
+      path: '/mainPage',
       element: <MainPage />
     },
     {
