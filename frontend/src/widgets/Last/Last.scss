@@ -1,0 +1,55 @@
+.last{
+    display: flex;
+    width: 100%;
+    background-color: white;
+
+    &__act, &__room, &__people{
+        font-weight: 600;
+        margin: 0;
+    }
+
+    &__fullname{
+
+    }
+
+    &__act{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 15%;
+        color:#505569;
+        border: none;
+        &--red{
+            background-color: #BC3737;
+            opacity: 0.82;
+        }
+        &--yellow{
+            background-color: #FFEA00;
+            opacity: 59%;
+        }
+        &--yellow, &--red{
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+    }
+
+    &__room{
+        color:#505569;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 15%;
+        font-size: 32px;
+        border-left: 1px solid #505569;
+        border-right: 1px solid #505569;
+    }
+
+    &__people{
+        color:#505569;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+}
