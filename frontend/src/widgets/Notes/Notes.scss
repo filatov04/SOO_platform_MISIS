@@ -55,4 +55,29 @@
         justify-content: end;
         flex-grow: 1;
     }
+
+    &__block-list{
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
+        overflow: auto;
+        scrollbar-width: none;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+    
+    &__list{
+        
+        width: 100%;
+        display: flex;
+        height: auto;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 20px;
+    }
+
 }
+
+

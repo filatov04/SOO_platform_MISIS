@@ -1,0 +1,47 @@
+.notes{
+    &__item{
+        border-radius: 20px;
+        background-color: transparent;
+        border: 2px solid white;
+        width: calc(100% - 4px);
+        height: 171px;
+    }
+
+    &__item-header{
+        width: 40%;
+        height: 36px;
+        border-bottom-right-radius: 20px;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    &__item-text{
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-top: 20px;
+        height: calc(100% - 20px);
+        width: calc(100% - 30px);
+        font-size: 15px;
+    }
+}
+
+.item{
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+
+    &__header{
+        border-bottom: 2px solid white;
+        border-right: 2px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    &__text{
+        color: white;
+        display: flex;
+        cursor: default;
+    }
+}

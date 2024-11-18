@@ -3,6 +3,7 @@ import './Notes.scss';
 import AddIcon from '@mui/icons-material/Add';
 import vector1 from '../../shared/assets/Notes/Vector1.png';
 import vector2 from '../../shared/assets/Notes/Vector2.png';
+import { NotesItem } from '../../entities';
 
 export const Notes = () => {
   return (
@@ -23,7 +24,12 @@ export const Notes = () => {
       </div>
       <div className='notes__block-list'>
         <div className='notes__list'>
-          <div className='notes__item'></div>
+          <NotesItem />
+          <NotesItem />
+          <NotesItem />
+          <NotesItem />
+          <NotesItem />
+          <NotesItem />
         </div>
       </div>
     </div>
