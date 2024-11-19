@@ -19,7 +19,7 @@ export const routesData = () => {
       element: <MainPage />
     },
     {
-      path: '/FloorPage',
+      path: '/floorPage',
       element: <FloorPage />
     }
   ];
