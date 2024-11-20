@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import vector7 from '../../shared/assets/FloorList/Vector2.png';
 import './Floor.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface floor {
   floor: number;
 }
 
 export const Floor = () => {
+  const router = useNavigate();
   const [floorArray, setFloorArray] = useState<floor[]>([
     { floor: 2 },
     { floor: 3 },
@@ -30,7 +32,7 @@ export const Floor = () => {
         <ul className='content__floor-list floor__list'>
           {floorArray.map((o) => {
             return (
-              <li key={o.floor} className='content__floor-item floor__item'>
+              <li key={o.floor} className='content__floor-item floor__item' onClick={() => router('/floorPage')}>
                 <div className='floor__blur'>
                   <img src={vector7} />
                 </div>

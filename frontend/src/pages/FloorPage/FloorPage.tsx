@@ -6,12 +6,14 @@ import phone from '../../shared/assets/FloorPage/ContactInfo/phone.png';
 import AddIcon from '@mui/icons-material/Add';
 import vector1 from '../../shared/assets/FloorPage/Room/Vector1.png';
 import vector2 from '../../shared/assets/FloorPage/Room/Vector2.png';
+import { useNavigate } from 'react-router-dom';
 
 export const FloorPage = () => {
+  const router = useNavigate();
   return (
     <div className='floor-page'>
       <div className='floor-page__info'>
-        <div className='floor-page__arrow-back'>
+        <div className='floor-page__arrow-back' onClick={() => router('/mainPage')}>
           <ArrowBackIosNewIcon sx={{ color: '#187FF6', width: '68px', height: '68px' }} />
         </div>
         <div className='floor-page__number'>2 этаж</div>
@@ -36,7 +38,7 @@ export const FloorPage = () => {
             <img src={vector1} />
           </div>
           <div className='room__blur'>
-            <img src={vector1} />
+            <img src={vector2} />
           </div>
           <div className='floor-page__room-header room__header'>
             <div className='floor-page__room-number room__number'>209</div>
@@ -44,116 +46,9 @@ export const FloorPage = () => {
               <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
             </div>
           </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        </div>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
+          <div className='room__notes floor-page__room-notes'>
+            <div className='room__note floor-page__room-note'>
+              АКТ|202-3|Антисанитария в блоке|Иванов Илья|06.11.2024
             </div>
           </div>
         </div>
