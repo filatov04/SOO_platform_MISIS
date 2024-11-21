@@ -32,7 +32,6 @@ class DBManager:
         self.pg_db = "Misis_Kitties"
         
         self.log = log
-        # self.itools = itools
         connected = False
         while not connected:
             try:
@@ -74,9 +73,9 @@ class DBManager:
 
     # endregion ------------
     
-    def user_exists(self, email: int) -> bool: #TODO: или номер телефона
+    def user_exists(self, login: str) -> bool: #TODO: или номер телефона
         """Get user by email from the database"""
-        return self.session.query(User).filter_by(email=email).first() is not None
+        return self.session.query(User).filter_by(login=login).first() is not None
     
     def add_user(self, user: UserSchema) -> None:
         self.session.add(user)

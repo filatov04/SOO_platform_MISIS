@@ -18,7 +18,6 @@ class AppSettings(BaseSettings):
     jwt_secret: str = "secret"
     jwt_algorithm: str = "HS256"
 
-    jwt_refresh_expire_time: int = 3600 * 48  # in seconds
     jwt_access_expire_time: int = 7200  # in seconds
 
     class Config:

@@ -39,7 +39,9 @@ class User(Base):
     third_name = Column(String(255), nullable=True)
     number = Column(String(255), nullable=False, unique=True) # TODO: почта или номер тф
     tg = Column(String(255), nullable=True)
+    login = Column(String(255), nullable=False, unique=True)
     hashed_password = Column(String(255), nullable=False)
+    deleted_at = Column(DateTime(), nullable=True, default=None)
     
     violation_user_rel = relationship("Violation")
     note_user_rel = relationship("Note")
