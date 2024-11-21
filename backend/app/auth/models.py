@@ -5,14 +5,14 @@ from enum import Enum
 from datetime import datetime
         
 class UserLoginSchema(BaseModel):
-    login: str = Field(..., min_length=2, max_length=50)
+    phone: str = Field(..., min_length=2, max_length=50)
     password: str = Field(..., min_length=8, max_length=64)
 
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                "login": "example",
+                "login": "78005553535",
                 "password": "example"
             }
         }

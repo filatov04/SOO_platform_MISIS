@@ -135,7 +135,6 @@ def update_nft_status(data: tuple):
 
     db.update_mint(internal_id, response["onChain"]["mintHash"])
     log.error("It is WORKING!!!")
-    # TODO: update
 
 
 # endregion
