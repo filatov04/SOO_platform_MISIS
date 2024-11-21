@@ -41,7 +41,7 @@ class Role(enum.Enum):
     spectator: str = "spectator"
     
 class Dorm(Base):
-    __tablename__ = "dorm"
+    __tablename__ = "Dorm"
     
     dorm_id = Column(BigInteger, primary_key=True)
     name = Column(String(255), nullable=False)
@@ -53,10 +53,10 @@ class Dorm(Base):
     
 
 class Room(Base):
-    __tablename__ = "room"
+    __tablename__ = "Room"
     
     room_id = Column(BigInteger, primary_key=True)
-    dorm_id = Column(BigInteger, ForeignKey("dorm.dorm_id"), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorm.dorm_id"), nullable=False)
     block_number = Column(BigInteger, nullable=False)
     room_number = Column(BigInteger, nullable=True, default=None)
     
@@ -64,7 +64,7 @@ class Room(Base):
 
     
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "User"
 
     user_id = Column(BigInteger, primary_key=True)
     first_name = Column(String(255), nullable=False)
@@ -73,7 +73,7 @@ class User(Base):
     number = Column(String(25), nullable=False, unique=True)
     tg = Column(String(50), nullable=True)
     role = Column(Enum(Role), nullable=False)
-    dorm_id = Column(BigInteger, ForeignKey("dorm.dorm_id"), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorm.dorm_id"), nullable=False)
     hashed_password = Column(String(255), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None)
     
@@ -82,26 +82,26 @@ class User(Base):
     
 
 class Violation(Base):
-    __tablename__ = "violation"
+    __tablename__ = "Violation"
     
     violation_id = Column(BigInteger, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey("user.user_id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("User.user_id"), nullable=False)
     document_type = Column(Enum(DocumentType), nullable=False)
     violator_name = Column(String(255), nullable=False)
     violation_type = Column(Enum(ViolationType), nullable=False)
     description = Column(Text, nullable=False)
-    room_id = Column(BigInteger, ForeignKey("room.room_id"), nullable=False)
+    room_id = Column(BigInteger, ForeignKey("Room.room_id"), nullable=False)
     witness = Column(String(255), nullable=False) # TODO: свидетель блять
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None)
     
     
 class Note(Base):
-    __tablename__ = "note"
+    __tablename__ = "Note"
     
     note_id = Column(BigInteger, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey("user.user_id"), nullable=False)
-    dorm_id = Column(BigInteger, ForeignKey("dorm.dorm_id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("User.user_id"), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorm.dorm_id"), nullable=False)
     room = Column(String(255), nullable=False)
     description = Column(Text, nullable=False)
     created_at = Column(DateTime(), nullable=False)

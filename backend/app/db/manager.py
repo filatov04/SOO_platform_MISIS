@@ -5,7 +5,7 @@ from datetime import datetime
 from os import getenv
 from time import sleep, mktime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, desc, and_, order_by
+from sqlalchemy import create_engine, desc, and_
 from typing import List, Union, Optional, Dict
 from sqlalchemy.exc import OperationalError as sqlalchemyOpError
 from psycopg2 import OperationalError as psycopg2OpError
