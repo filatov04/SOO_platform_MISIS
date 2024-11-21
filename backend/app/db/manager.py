@@ -5,7 +5,7 @@ from datetime import datetime
 from os import getenv
 from time import sleep, mktime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, and_, order_by
 from typing import List, Union, Optional, Dict
 from sqlalchemy.exc import OperationalError as sqlalchemyOpError
 from psycopg2 import OperationalError as psycopg2OpError
@@ -14,7 +14,9 @@ from shared.settings import app_settings
 
 from schemas.models import (
     UserSchema,
-    ViolationSchema
+    ViolationSchema,
+    NoteSchema,
+    UserRegisterSchema
 )
 
 from db.models import *
@@ -78,10 +80,19 @@ class DBManager:
         """Get user by email from the database"""
         return self.session.query(User).filter_by(number=number).first() is not None
     
-    def get_user(self, number: str) -> Optional[UserSchema]:
+    def add_user(self, data: UserRegisterSchema) -> bool:
+        if self.user_exists(data.number):
+            return False
+        
+        user = User(**data.dict(), created_at=datetime.now())
+        self.session.add(user)
+        self.session.commit()
+        return True
+    
+    def get_user(self, number: str) -> Optional[User]:
         return self.session.query(User).filter_by(number=number).first() 
     
-    def get_user_dorm(self, user_id: int) -> Optional[UserSchema]:
+    def get_user_dorm(self, user_id: int) -> Optional[int]:
         user = self.session.query(User).filter_by(user_id=user_id).first()
         if user: 
             return user.dorm_id
@@ -93,10 +104,34 @@ class DBManager:
             **data.dict(),
             created_at=datetime.now()
         )
-        
         self.session.add(violation)
         self.session.commit()
         
-    def get_violations(self, dorm_id: int, floor: int) -> List[ViolationSchema]:
-        data = self.session.query([Violation, Room]).join(Violation.room_id).filter_by(block_number // 100 == floor).all()
+    def get_violations(self, dorm_id: int, floor: int) -> Optional[List[ViolationSchema]]: # TODO: add active param
+        data = self.session.query(Violation, Room).join(Room, Violation.room_id == Room.room_id).filter(
+            and_(Room.dorm_id == dorm_id, Room.block_number // 100 == floor, Violation.deleted_at != None)).all()
         return data
+    
+    def add_note(self, user_id: int, data: NoteSchema):
+        note = Note(
+            user_id=user_id,
+            **data.dict(),
+            created_at=datetime.now()
+        )
+        self.session.add(note)
+        self.session.commit()
+        
+    def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
+        data = self.session.query(Note).filter(and_(dorm_id == Note.dorm_id, Note.deleted_at != None)).order_by(desc(Note.created_at)).all()
+        return [{
+            "room": note.room,
+            "description": note.description
+            }
+        for note in data
+        ]
+        
+    def get_room_number(self, room_id: int) -> Optional[int]:
+        room = self.session.query(Room).filter_by(room_id=room_id).first()
+        if room: 
+            return room.room_number
+        return None

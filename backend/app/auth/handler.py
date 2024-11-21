@@ -11,8 +11,6 @@ import time
 JWT_SECRET = settings.jwt_secret
 JWT_ALGORITHM = settings.jwt_algorithm
 JWT_ACCESS_EXPIRE_TIME = settings.jwt_access_expire_time  # in seconds
-JWT_REFRESH_EXPIRE_TIME = settings.jwt_refresh_expire_time  # in seconds
-
 
 def token_response(token: str):
     return {"access_token": token,

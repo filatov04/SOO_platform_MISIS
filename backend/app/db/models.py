@@ -18,7 +18,7 @@ import enum
 Base = declarative_base()
 # Base.metadata = MetaData(schema="Kokoc")
 
-class ViolationType(enum.Enum): # TODO: UPDATE
+class ViolationType(enum.Enum):
     unsanitation: str = "unsanitation"
     alcohol_mode: str = "alcohol_mode"
     fire_security: str = "fire_security"
@@ -39,7 +39,6 @@ class Role(enum.Enum):
     admin: str = "admin"
     soo_leader: str = "soo_leader"
     spectator: str = "spectator"
-    
     
 class Dorm(Base):
     __tablename__ = "dorm"
@@ -88,7 +87,7 @@ class Violation(Base):
     violation_id = Column(BigInteger, primary_key=True)
     user_id = Column(BigInteger, ForeignKey("user.user_id"), nullable=False)
     document_type = Column(Enum(DocumentType), nullable=False)
-    violators_name = Column(String(255), nullable=False)
+    violator_name = Column(String(255), nullable=False)
     violation_type = Column(Enum(ViolationType), nullable=False)
     description = Column(Text, nullable=False)
     room_id = Column(BigInteger, ForeignKey("room.room_id"), nullable=False)

@@ -6,13 +6,15 @@ from auth.state import AuthPair
 from auth.handler import signJWT, decodeJWT
 from auth.bearer import JWTBearer
 from auth.models import (
-    UserLoginSchema,
-    UserSessionUpdateSchema
+    UserLoginSchema
 )
 
 from schemas.models import (
     UserSchema,
-    ViolationSchema
+    UserRegisterSchema,
+    ViolationSchema,
+    ViolationWithRoomSchema
+    
 )
 
 from db.manager import DBManager
@@ -68,25 +70,38 @@ async def logout(user_id: int = Depends(check_auth)) -> Dict[str, str]:
 # end region auth
 
 #TODO: Fixx alllll
+#TODO: добавить получение этажей по общаге
+#TODO: проверку роли (второстепенное)
 
+# secure region
 @router.get("/user/info", dependencies=[Depends(check_auth)], tags=["user"])
 async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     user = db.get_user(user_id)
-    return UserSchema (
-        first_name=user.first_name,
-        second_name=user.second_name,
-        third_name=user.third_name,
-        number=user.number,
-        tg=user.tg,
-        role=user.role,
-        dorm_id=user.dorm_id
-    )
+    return UserSchema.from_orm(user).dict()
 
-@router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
+@router.post("user/register", tags=["user"])
+async def register_user(user: UserRegisterSchema = Body(...)): #TODO: check roles
+    user.password = bcrypt.hash(user.password)
+    if db.add_user(user):
+        return {"message": "User created"}
+    else:
+        return {"message": "User already exists"}
+
+@router.post("/violations/add", dependencies=[Depends(check_auth)], tags=["violations"])
 async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
     return db.add_violation(user_id, data)
 
-@router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
-async def get_notes(dorm_id: int, floor: int, user_id: int = Depends(check_auth)) -> Dict[int, dict]:
-    return db.get_violations(dorm_id, floor)
+@router.get("/violations/get", dependencies=[Depends(check_auth)], tags=["violations"])
+async def get_notes(dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]:
+    violations = db.get_violations(dorm_id, floor)
+    return [ViolationWithRoomSchema.from_orm(violation) for violation in violations]
 
+@router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
+async def get_notes(dorm_id: int, floor: int) -> Optional[List]:
+    return db.get_notes(dorm_id, floor)
+
+@router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
+async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
+    return db.add_note(user_id, data)
+
+# end secure region

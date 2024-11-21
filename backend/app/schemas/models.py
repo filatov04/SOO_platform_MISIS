@@ -6,13 +6,12 @@ from datetime import datetime
 import re
 
 class UserSchema(BaseModel):
-    first_name: str = Field(..., min_length=2, max_length=50)
+    first_name: str = Field(..., min_length=2, max_length=50) # TODO: подумать над паролем для создания
     second_name: str = Field(..., min_length=2, max_length=50)
     third_name: Optional[str] = Field(None, min_length=2, max_length=50)
     number: str = Field(..., min_length=4, max_length=25)
     tg: str = Field(None, min_length=4, max_length=50)
     role: str = Field(..., min_length=4, max_length=50)
-    password: str = Field(..., min_length=8, max_length=64)
     dorm_id: int = Field(...)
     
     class Config:
@@ -25,15 +24,32 @@ class UserSchema(BaseModel):
                 "number": "88005553535",
                 "tg": "@example",
                 "role": "spectator",
-                "password": "example",
                 "dorm_id": 1,
+            }
+        }
+        
+class UserRegisterSchema(UserSchema):
+    password: str = Field(..., min_length=8, max_length=64)
+    
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "first_name": "Ivan",
+                "second_name": "Ivanov",
+                "third_name": "Ivanovich",
+                "number": "88005553535",
+                "tg": "@example",
+                "role": "spectator",
+                "dorm_id": 1,
+                "password": "example"
             }
         }
 
 
 class ViolationSchema(BaseModel):
     document_type: str = Field(...)
-    violators_name: str = Field(...)
+    violator_name: str = Field(...)
     violation_type: str = Field(...)
     description: str = Field(...)
     room_id: int = Field(...)
@@ -44,7 +60,7 @@ class ViolationSchema(BaseModel):
         schema_extra = {
             "example": {
                 "document_type": "act",
-                "violators_name": "Иванов Иван Иванович",
+                "violator_name": "Иванов Иван Иванович",
                 "violation_type": "fire_security",
                 "description": "Smoke",
                 "room_id": 1,
@@ -52,9 +68,34 @@ class ViolationSchema(BaseModel):
             }
         }
         
+class ViolationWithRoomSchema(BaseModel):
+    room_id: int = Field(...)
+    block_number: str = Field(...)
+    room_number: str = Field(...)
+    document_type: str = Field(...)
+    violator_name: str = Field(...)
+    violation_type: str = Field(...)
+    description: str = Field(...)
+    witness: str = Field(...)
+    created_at: datetime = Field(...)
+    
+    orm_mode = True
+    schema_extra = {
+        "example": {
+            "room_id": 1,
+            "block_number": "101",
+            "room_number": "3",
+            "document_type": "act",
+            "violator_name": "Иванов Иван Иванович",
+            "violation_type": "fire_security",
+            "description": "Smoke",
+            "witness": "Иванов Сосед Соседович",
+            "created_at": "2022-01-01 00:00:00"
+        }
+    }
+        
 
 class NoteSchema(BaseModel):
-    user_id: int = Field(...)
     dorm_id: int = Field(...)
     room: str = Field(...)
     description: str = Field(...)
@@ -63,7 +104,6 @@ class NoteSchema(BaseModel):
         orm_mode = True
         schema_extra = {
             "example": {
-                "user_id": 1,
                 "dorm_id": 1,
                 "room": "101",
                 "description": "Заходите чаще туда"
