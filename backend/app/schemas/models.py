@@ -12,8 +12,8 @@ class UserSchema(BaseModel):
     number: str = Field(..., min_length=4, max_length=25)
     tg: str = Field(None, min_length=4, max_length=50)
     role: str = Field(..., min_length=4, max_length=50)
-    dorm_id: int = Field(...)
     password: str = Field(..., min_length=8, max_length=64)
+    dorm_id: int = Field(...)
     
     class Config:
         orm_mode = True
@@ -25,26 +25,24 @@ class UserSchema(BaseModel):
                 "number": "88005553535",
                 "tg": "@example",
                 "role": "spectator",
+                "password": "example",
                 "dorm_id": 1,
-                "password": "example"
             }
         }
 
 
-class ViolationSchema(BaseModel): # TODO: user_id???
-    user_id: int = Field(...)
+class ViolationSchema(BaseModel):
     document_type: str = Field(...)
     violators_name: str = Field(...)
     violation_type: str = Field(...)
     description: str = Field(...)
-    room_id: int = Field(...)    
+    room_id: int = Field(...)
     witness: str = Field(...) # Свидетель блять
     
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                "user_id": 1,
                 "document_type": "act",
                 "violators_name": "Иванов Иван Иванович",
                 "violation_type": "fire_security",

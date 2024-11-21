@@ -13,7 +13,8 @@ from passlib.hash import bcrypt
 from shared.settings import app_settings
 
 from schemas.models import (
-    UserSchema
+    UserSchema,
+    ViolationSchema
 )
 
 from db.models import *
@@ -73,10 +74,29 @@ class DBManager:
 
     # endregion ------------
     
-    def user_exists(self, numer: str) -> bool: #TODO: или номер телефона
+    def user_exists(self, number: str) -> bool:
         """Get user by email from the database"""
         return self.session.query(User).filter_by(number=number).first() is not None
     
-    def add_user(self, user: UserSchema) -> None:
-        self.session.add(user)
+    def get_user(self, number: str) -> Optional[UserSchema]:
+        return self.session.query(User).filter_by(number=number).first() 
+    
+    def get_user_dorm(self, user_id: int) -> Optional[UserSchema]:
+        user = self.session.query(User).filter_by(user_id=user_id).first()
+        if user: 
+            return user.dorm_id
+        return None
+    
+    def add_violation(self, user_id: int, data: ViolationSchema):
+        violation = Violation(
+            user_id=user_id,
+            **data.dict(),
+            created_at=datetime.now()
+        )
+        
+        self.session.add(violation)
         self.session.commit()
+        
+    def get_violations(self, dorm_id: int, floor: int) -> List[ViolationSchema]:
+        data = self.session.query([Violation, Room]).join(Violation.room_id).filter_by(block_number // 100 == floor).all()
+        return data
