@@ -69,15 +69,9 @@ class ViolationSchema(BaseModel):
             }
         }
         
-class ViolationWithRoomSchema(BaseModel):
-    room_id: int = Field(...)
+class ViolationWithRoomSchema(ViolationSchema):
     block_number: str = Field(...)
     room_number: str = Field(...)
-    document_type: DocumentType = Field(...)
-    violator_name: str = Field(...)
-    violation_type: ViolationType = Field(...)
-    description: str = Field(...)
-    witness: str = Field(...)
     created_at: datetime = Field(...)
     
     class Config:

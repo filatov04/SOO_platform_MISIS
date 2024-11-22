@@ -16,7 +16,8 @@ from schemas.models import (
     UserSchema,
     ViolationSchema,
     NoteSchema,
-    UserRegisterSchema
+    UserRegisterSchema,
+    ViolationWithRoomSchema
 )
 
 from db.models import *
@@ -127,13 +128,25 @@ class DBManager:
         self.session.add(violation)
         self.session.commit()
         
-    def get_violations(self, dorm_id: int, floor: int): # TODO: add active param
+    def get_violations(self, dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: add active param
         data = self.session.query(Violation, Room).join(Room, Violation.room_id == Room.room_id).filter(
             and_(Room.dorm_id == dorm_id, func.floor(Room.block_number / 100) == floor, Violation.deleted_at == None)).all()
         
-        for el in data:
-            print(el)
-        return data
+        violations = []
+        for violation, room in data:
+            violations.append(
+                ViolationWithRoomSchema(
+                    room_id=room.room_id,
+                    block_number=room.block_number,
+                    room_number=room.room_number,
+                    document_type=violation.document_type,
+                    violator_name=violation.violator_name,
+                    violation_type=violation.violation_type,
+                    description=violation.description,
+                    witness=violation.witness,
+                    created_at=violation.created_at)
+                )
+        return violations
     
     def add_note(self, user_id: int, data: NoteSchema):
         note = Note(

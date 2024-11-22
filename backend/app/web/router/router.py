@@ -15,7 +15,6 @@ from schemas.models import (
     ViolationSchema,
     ViolationWithRoomSchema,
     NoteSchema
-    
 )
 
 from db.manager import DBManager
@@ -88,8 +87,7 @@ async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(che
 @router.get("/violations/get", dependencies=[Depends(check_auth)], tags=["violations"])
 async def get_notes(dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]:
     violations = db.get_violations(dorm_id, floor)
-    print(violations)
-    return [ViolationWithRoomSchema.from_orm(violation) for violation in violations]
+    return violations
 
 @router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
