@@ -3,14 +3,15 @@ channels:
   - python
   - conda-forge
 dependencies:
-  - python=3.9
+  - python=3.10
   - SQLAlchemy=1.4.48
   - pydantic=1.10.2
-  - psycopg2
+  - psycopg2-binary
   - loguru=0.6.0
   - fastapi=0.92.0
   - uvicorn=0.20.0
   - pydantic=1.10.*
   - PyJWT=2.6.0
   - pip
+  - bcrypt==4.2.0
 

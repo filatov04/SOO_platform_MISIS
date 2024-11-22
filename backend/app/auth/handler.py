@@ -14,16 +14,13 @@ JWT_ACCESS_EXPIRE_TIME = settings.jwt_access_expire_time  # in seconds
 
 def token_response(token: str):
     return {"access_token": token,
-            "expires_at": time.time() + JWT_ACCESS_EXPIRE_TIME,
             "token_type": "Bearer"}
-
 
 def signJWT(id_user: int) -> Dict[str, str]:
     access_payload = {"expires": time.time() + JWT_ACCESS_EXPIRE_TIME}
     access_token = jwt.encode(access_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
     return token_response(access_token)
-
 
 def decodeJWT(token: str) -> Optional[Dict[str, str]]:
     try:
