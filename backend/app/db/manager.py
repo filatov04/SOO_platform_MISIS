@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, desc, and_, func
 from typing import List, Union, Optional, Dict
 from sqlalchemy.exc import OperationalError as sqlalchemyOpError
+from sqlalchemy.schema import CreateTable
 from psycopg2 import OperationalError as psycopg2OpError
 from passlib.hash import bcrypt
 from shared.settings import app_settings
@@ -45,6 +46,11 @@ class DBManager:
             else:
                 connected = True
         self._update_db()
+        
+        # for table in Base.metadata.sorted_tables:
+        #     print(f"--- SQL для таблицы {table.name} ---")
+        #     print(CreateTable(table).compile(self.engine))
+        #     print()
 
     def __del__(self):
         """Close the database connection when the object is destroyed"""
@@ -70,13 +76,11 @@ class DBManager:
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
-        self.session.add(Dorm(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва")) #TODO: вынести в init.sql
+        self.session.add(Dorms(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва")) #TODO: вынести в init.sql
         self.session.commit()
         
-        self.session.add_all([Room(dorm_id = 1, block_number = 808, room_number = 3), Room(dorm_id = 1, block_number = 810, room_number = 2)])
-        self.session.commit()
-        
-        self.session.add(User(
+        self.session.add(Users(
+                        user_id = 1,
                         first_name = "Ivan",
                         second_name = "Ivanov",
                         phone = "78005553535",
@@ -84,6 +88,12 @@ class DBManager:
                         role = "soo_leader",
                         hashed_password = bcrypt.hash("example")
                     ))
+        self.session.commit()
+        
+        self.session.add(Floors(floor_id = 1, dorm_id = 1, owner_id = 1, floor_number = 8))
+        self.session.commit()
+        
+        self.session.add_all([Rooms(floor_id = 1, block_number = 808, room_number = 3), Rooms(floor_id = 1, block_number = 810, room_number = 2)])
         self.session.commit()
         
 
@@ -96,31 +106,31 @@ class DBManager:
     
     def user_exists(self, phone: str) -> bool:
         """Get user by email from the database"""
-        return self.session.query(User).filter_by(phone=phone).first() is not None
+        return self.session.query(Users).filter_by(phone=phone).first() is not None
     
     def add_user(self, data: UserRegisterSchema) -> bool:
         if self.user_exists(data.number):
             return False
         
-        user = User(**data.dict(), created_at=datetime.now())
+        user = Users(**data.dict(), created_at=datetime.now())
         self.session.add(user)
         self.session.commit()
         return True
     
-    def get_user_by_phone(self, phone: str) -> Optional[User]:
-        return self.session.query(User).filter_by(phone=phone).first()
+    def get_user_by_phone(self, phone: str) -> Optional[Users]:
+        return self.session.query(Users).filter_by(phone=phone).first()
     
-    def get_user_by_id(self, user_id: int) -> Optional[User]:
-        return self.session.query(User).filter_by(user_id=user_id).first()
+    def get_user_by_id(self, user_id: int) -> Optional[Users]:
+        return self.session.query(Users).filter_by(user_id=user_id).first()
     
     def get_user_dorm(self, user_id: int) -> Optional[int]:
-        user = self.session.query(User).filter_by(user_id=user_id).first()
+        user = self.session.query(Users).filter_by(user_id=user_id).first()
         if user: 
             return user.dorm_id
         return None
     
     def add_violation(self, user_id: int, data: ViolationSchema):
-        violation = Violation(
+        violation = Violations(
             user_id=user_id,
             **data.dict(),
             created_at=datetime.now()
@@ -129,8 +139,9 @@ class DBManager:
         self.session.commit()
         
     def get_violations(self, dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: add active param
-        data = self.session.query(Violation, Room).join(Room, Violation.room_id == Room.room_id).filter(
-            and_(Room.dorm_id == dorm_id, func.floor(Room.block_number / 100) == floor, Violation.deleted_at == None)).all()
+        #TODO: FIXXXX
+        data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(
+            and_(Rooms.dorm_id == dorm_id, func.floor(Rooms.block_number / 100) == floor, Violations.deleted_at == None)).all()
         
         violations = []
         for violation, room in data:
@@ -149,7 +160,7 @@ class DBManager:
         return violations
     
     def add_note(self, user_id: int, data: NoteSchema):
-        note = Note(
+        note = Notes(
             user_id=user_id,
             **data.dict(),
             created_at=datetime.now()
@@ -158,7 +169,7 @@ class DBManager:
         self.session.commit()
         
     def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
-        data = self.session.query(Note).filter(and_(Note.dorm_id == dorm_id, Note.deleted_at == None)).order_by(Note.created_at.desc()).all()
+        data = self.session.query(Notes).filter(and_(Notes.dorm_id == dorm_id, Notes.deleted_at == None)).order_by(Notes.created_at.desc()).all()
         return [{
             "room": note.room,
             "description": note.description,
@@ -167,7 +178,7 @@ class DBManager:
         ]
         
     def get_room_number(self, room_id: int) -> Optional[int]: #TODO: ???
-        room = self.session.query(Room).filter_by(room_id=room_id).first()
+        room = self.session.query(Rooms).filter_by(room_id=room_id).first()
         if room: 
             return room.room_number
         return None

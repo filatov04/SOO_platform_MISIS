@@ -31,7 +31,7 @@ db = DBManager("logger")
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
     if user_id is None:
-        raise HTTPException(status_code=403, detail="Invalid token or expired token.")
+        raise HTTPException(status_code=401, detail="Invalid token or expired token.")
     
     return user_id
     
