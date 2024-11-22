@@ -69,6 +69,23 @@ class DBManager:
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
+        self.session.add(Dorm(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва")) #TODO: вынести в init.sql
+        self.session.commit()
+        
+        self.session.add_all([Room(dorm_id = 1, block_number = 808, room_number = 3), Room(dorm_id = 1, block_number = 810, room_number = 2)])
+        self.session.commit()
+        
+        self.session.add(User(
+                        first_name = "Ivan",
+                        second_name = "Ivanov",
+                        number = "78005553535",
+                        dorm_id = 1,
+                        role = "soo_leader",
+                        hashed_password = bcrypt.hash("00000000")
+                    ))
+        self.session.commit()
+        
+
     def _update_db(self) -> None:
         """Create the database structure if it doesn't exist (update)"""
         # Create the tables if they don't exist

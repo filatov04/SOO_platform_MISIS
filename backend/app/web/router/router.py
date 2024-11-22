@@ -38,12 +38,6 @@ async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer()))
     
 @router.get("/ping", tags=["tests"])
 async def get_server_status() -> str:
-    """
-    Simple health check route to verify that the application is running.
-    
-    Returns:
-        str: "pong"
-    """
     return "pong"
 
 # region auth    
@@ -79,7 +73,7 @@ async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     user = db.get_user(user_id)
     return UserSchema.from_orm(user).dict()
 
-@router.post("user/register", tags=["user"])
+@router.post("user/register", dependencies=[Depends(check_auth)], tags=["user"])
 async def register_user(user: UserRegisterSchema = Body(...)): #TODO: check roles
     user.password = bcrypt.hash(user.password)
     if db.add_user(user):
