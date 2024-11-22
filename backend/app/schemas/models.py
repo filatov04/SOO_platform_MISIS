@@ -80,20 +80,21 @@ class ViolationWithRoomSchema(BaseModel):
     witness: str = Field(...)
     created_at: datetime = Field(...)
     
-    orm_mode = True
-    schema_extra = {
-        "example": {
-            "room_id": 1,
-            "block_number": "101",
-            "room_number": "3",
-            "document_type": "act",
-            "violator_name": "Иванов Иван Иванович",
-            "violation_type": "fire_security",
-            "description": "Smoke",
-            "witness": "Иванов Сосед Соседович",
-            "created_at": "2022-01-01 00:00:00"
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "room_id": 1,
+                "block_number": "101",
+                "room_number": "3",
+                "document_type": "act",
+                "violator_name": "Иванов Иван Иванович",
+                "violation_type": "fire_security",
+                "description": "Smoke",
+                "witness": "Иванов Сосед Соседович",
+                "created_at": "2022-01-01 00:00:00"
+            }
         }
-    }
         
 
 class NoteSchema(BaseModel):

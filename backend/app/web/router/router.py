@@ -88,10 +88,11 @@ async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(che
 @router.get("/violations/get", dependencies=[Depends(check_auth)], tags=["violations"])
 async def get_notes(dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]:
     violations = db.get_violations(dorm_id, floor)
+    print(violations)
     return [ViolationWithRoomSchema.from_orm(violation) for violation in violations]
 
 @router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
-async def get_notes(dorm_id: int) -> Optional[List]:
+async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
 
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])

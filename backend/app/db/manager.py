@@ -5,7 +5,7 @@ from datetime import datetime
 from os import getenv
 from time import sleep, mktime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, desc, and_
+from sqlalchemy import create_engine, desc, and_, func
 from typing import List, Union, Optional, Dict
 from sqlalchemy.exc import OperationalError as sqlalchemyOpError
 from psycopg2 import OperationalError as psycopg2OpError
@@ -127,9 +127,12 @@ class DBManager:
         self.session.add(violation)
         self.session.commit()
         
-    def get_violations(self, dorm_id: int, floor: int) -> Optional[List[ViolationSchema]]: # TODO: add active param
+    def get_violations(self, dorm_id: int, floor: int): # TODO: add active param
         data = self.session.query(Violation, Room).join(Room, Violation.room_id == Room.room_id).filter(
-            and_(Room.dorm_id == dorm_id, Room.block_number // 100 == floor, Violation.deleted_at != None)).all()
+            and_(Room.dorm_id == dorm_id, func.floor(Room.block_number / 100) == floor, Violation.deleted_at == None)).all()
+        
+        for el in data:
+            print(el)
         return data
     
     def add_note(self, user_id: int, data: NoteSchema):
@@ -142,7 +145,7 @@ class DBManager:
         self.session.commit()
         
     def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
-        data = self.session.query(Note).filter(and_(Note.dorm_id == dorm_id, Note.deleted_at == None)).all()
+        data = self.session.query(Note).filter(and_(Note.dorm_id == dorm_id, Note.deleted_at == None)).order_by(Note.created_at.desc()).all()
         return [{
             "room": note.room,
             "description": note.description,
@@ -150,7 +153,7 @@ class DBManager:
         for note in data
         ]
         
-    def get_room_number(self, room_id: int) -> Optional[int]:
+    def get_room_number(self, room_id: int) -> Optional[int]: #TODO: ???
         room = self.session.query(Room).filter_by(room_id=room_id).first()
         if room: 
             return room.room_number
