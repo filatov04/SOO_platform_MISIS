@@ -5,7 +5,7 @@ from enum import Enum
 from datetime import datetime
 import re
 from db.models import Role, DocumentType, ViolationType
-# TODO: ENUMS
+
 class UserSchema(BaseModel):
     first_name: str = Field(..., min_length=2, max_length=50) # TODO: подумать над паролем для создания
     second_name: str = Field(..., min_length=2, max_length=50)
@@ -48,6 +48,22 @@ class UserRegisterSchema(UserSchema):
         }
 
 
+class FloorSchema(BaseModel):
+    floor_id: int = Field(...)
+    floor_number: int = Field(...)
+    dorm_id: int = Field(...)
+    
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "floor_id": 1,
+                "floor_number": 1,
+                "dorm_id": 1,
+            }
+        }
+        
+        
 class ViolationSchema(BaseModel):
     document_type: DocumentType = Field(...)
     violator_name: str = Field(...)

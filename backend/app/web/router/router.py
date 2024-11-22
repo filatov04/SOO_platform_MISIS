@@ -14,7 +14,8 @@ from schemas.models import (
     UserRegisterSchema,
     ViolationSchema,
     ViolationWithRoomSchema,
-    NoteSchema
+    NoteSchema,
+    FloorSchema
 )
 
 from db.manager import DBManager
@@ -80,13 +81,17 @@ async def register_user(user: UserRegisterSchema = Body(...)): #TODO: check role
     else:
         return {"message": "User already exists"}
 
+@router.get("floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
+async def get_floors(dorm_id: int = Path(..., example=1)) -> List[Optional[FloorSchema]]:
+    return db.get_floors(dorm_id)
+
 @router.post("/violations/add", dependencies=[Depends(check_auth)], tags=["violations"])
 async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
     return db.add_violation(user_id, data)
 
-@router.get("/violations/get", dependencies=[Depends(check_auth)], tags=["violations"])
-async def get_notes(dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]:
-    violations = db.get_violations(dorm_id, floor)
+@router.get("/violations/rooms/get/{floor_id}", dependencies=[Depends(check_auth)], tags=["violations"])
+async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[Optional[ViolationWithRoomSchema]]:
+    violations = db.get_rooms_with_violations(floor_id)
     return violations
 
 @router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])

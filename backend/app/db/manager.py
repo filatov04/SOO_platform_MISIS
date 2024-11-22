@@ -18,7 +18,8 @@ from schemas.models import (
     ViolationSchema,
     NoteSchema,
     UserRegisterSchema,
-    ViolationWithRoomSchema
+    ViolationWithRoomSchema,
+    FloorSchema
 )
 
 from db.models import *
@@ -30,9 +31,9 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "postgres"
-        self.pg_pass = "00000000"
-        self.pg_host = "localhost"
+        self.pg_user = "sso_user"
+        self.pg_pass = "password"
+        self.pg_host = "db"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
         
@@ -129,6 +130,30 @@ class DBManager:
             return user.dorm_id
         return None
     
+    def get_floors(self, dorm_id: int) -> List[Optional[FloorSchema]]:
+        data = self.session.query(Floors).filter_by(dorm_id=dorm_id).all()
+        return [FloorSchema(**floor.__dict__) for floor in data]
+
+    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: validation FIX FIX FIX
+        data = self.session.query(Rooms).join(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).filter(Violations.deleted_at == None).order_by(Rooms.block_number).all()
+
+        violations = []
+        print(data)
+        for room, violation in data:
+            violations.append(ViolationWithRoomSchema(
+                room_id = room.room_id,
+                room_number = room.room_number,
+                block_number = room.block_number,
+                document_type = violation.document_type,
+                violator_name = violation.violator_name,
+                violation_type = violation.violation_type,
+                description = violation.description,
+                witness = violation.witness,
+                created_at = violation.created_at
+            ))
+            
+        return violations
+    
     def add_violation(self, user_id: int, data: ViolationSchema):
         violation = Violations(
             user_id=user_id,
@@ -137,27 +162,6 @@ class DBManager:
         )
         self.session.add(violation)
         self.session.commit()
-        
-    def get_violations(self, dorm_id: int, floor: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: add active param
-        #TODO: FIXXXX
-        data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(
-            and_(Rooms.dorm_id == dorm_id, func.floor(Rooms.block_number / 100) == floor, Violations.deleted_at == None)).all()
-        
-        violations = []
-        for violation, room in data:
-            violations.append(
-                ViolationWithRoomSchema(
-                    room_id=room.room_id,
-                    block_number=room.block_number,
-                    room_number=room.room_number,
-                    document_type=violation.document_type,
-                    violator_name=violation.violator_name,
-                    violation_type=violation.violation_type,
-                    description=violation.description,
-                    witness=violation.witness,
-                    created_at=violation.created_at)
-                )
-        return violations
     
     def add_note(self, user_id: int, data: NoteSchema):
         note = Notes(
@@ -182,3 +186,25 @@ class DBManager:
         if room: 
             return room.room_number
         return None
+
+    # def get_violations(self, rooms: List[int]) -> List[Optional[ViolationWithRoomSchema]]:
+    #     data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(Rooms.room_id.in_(rooms)).all()
+    #     violations = []
+    #     data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(
+    #         and_(Rooms.dorm_id == dorm_id, func.floor(Rooms.block_number / 100) == floor, Violations.deleted_at == None)).all()
+        
+    #     violations = []
+    #     for violation, room in data:
+    #         violations.append(
+    #             ViolationWithRoomSchema(
+    #                 room_id=room.room_id,
+    #                 block_number=room.block_number,
+    #                 room_number=room.room_number,
+    #                 document_type=violation.document_type,
+    #                 violator_name=violation.violator_name,
+    #                 violation_type=violation.violation_type,
+    #                 description=violation.description,
+    #                 witness=violation.witness,
+    #                 created_at=violation.created_at)
+    #             )
+    #     return violations

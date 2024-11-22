@@ -10,7 +10,7 @@ class AppSettings(BaseSettings):
     pg_username: str = "db_misis"
     pg_password: str = "db_misis"
 
-    uvicorn_host: str = "localhost"
+    uvicorn_host: str = "0.0.0.0"
     uvicorn_port: int = 8000
     uvicorn_workers: int = 1 # mp.cpu_count() * 2
     uvicorn_log_level: str = "WARNING"
