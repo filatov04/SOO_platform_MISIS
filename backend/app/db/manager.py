@@ -142,11 +142,10 @@ class DBManager:
         self.session.commit()
         
     def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
-        data = self.session.query(Note).filter(and_(dorm_id == Note.dorm_id, Note.deleted_at.isnot(None))).order_by(desc(Note.created_at)).all()
-        print(data)
+        data = self.session.query(Note).filter(and_(Note.dorm_id == dorm_id, Note.deleted_at == None)).all()
         return [{
             "room": note.room,
-            "description": note.description
+            "description": note.description,
             }
         for note in data
         ]

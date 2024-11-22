@@ -105,5 +105,5 @@ class Note(Base):
     room = Column(String(255), nullable=False)
     description = Column(Text, nullable=False)
     created_at = Column(DateTime(), nullable=False)
-    deleted_at = Column(DateTime(), nullable=True) # TODO: подумать над автоматическим удалением
+    deleted_at = Column(DateTime(), nullable=True, default=None) # TODO: подумать над автоматическим удалением
     
