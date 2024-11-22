@@ -6,13 +6,13 @@ from datetime import datetime
         
 class UserLoginSchema(BaseModel):
     phone: str = Field(..., min_length=2, max_length=50)
-    password: str = Field(..., min_length=8, max_length=64)
+    password: str = Field(..., min_length=4, max_length=64)
 
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                "login": "78005553535",
+                "phone": "78005553535",
                 "password": "example"
             }
         }

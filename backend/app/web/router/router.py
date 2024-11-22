@@ -13,7 +13,8 @@ from schemas.models import (
     UserSchema,
     UserRegisterSchema,
     ViolationSchema,
-    ViolationWithRoomSchema
+    ViolationWithRoomSchema,
+    NoteSchema
     
 )
 
@@ -26,7 +27,7 @@ import time
 router = APIRouter(prefix="")
 authpair = AuthPair()
 db = DBManager("logger")
-# db._recreate_tables()
+db._recreate_tables()
 
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
@@ -43,7 +44,7 @@ async def get_server_status() -> str:
 # region auth    
 @router.post("/auth/login", tags=["auth"])
 async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
-    user = db.get_user(data.phone)
+    user = db.get_user_by_phone(data.phone)
     if user is None:
         return {"message": "User not found"}
     
@@ -56,9 +57,8 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     
 
 @router.post("/auth/logout", dependencies=[Depends(check_auth)], tags=["auth"])
-async def logout(user_id: int = Depends(check_auth)) -> Dict[str, str]:
-    token_response = signJWT(0)
-    authpair.post(token_response["access_token"], user_id)
+async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
+    authpair.post(token, None)
     return {"message": "Logout"}
 
 # end region auth
@@ -70,7 +70,7 @@ async def logout(user_id: int = Depends(check_auth)) -> Dict[str, str]:
 # secure region
 @router.get("/user/info", dependencies=[Depends(check_auth)], tags=["user"])
 async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
-    user = db.get_user(user_id)
+    user = db.get_user_by_id(user_id)
     return UserSchema.from_orm(user).dict()
 
 @router.post("user/register", dependencies=[Depends(check_auth)], tags=["user"])
@@ -91,11 +91,11 @@ async def get_notes(dorm_id: int, floor: int) -> List[Optional[ViolationWithRoom
     return [ViolationWithRoomSchema.from_orm(violation) for violation in violations]
 
 @router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
-async def get_notes(dorm_id: int, floor: int) -> Optional[List]:
-    return db.get_notes(dorm_id, floor)
+async def get_notes(dorm_id: int) -> Optional[List]:
+    return db.get_notes(dorm_id)
 
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
-async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
+async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
     return db.add_note(user_id, data)
 
 # end secure region

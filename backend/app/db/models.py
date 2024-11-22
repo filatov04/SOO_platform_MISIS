@@ -70,7 +70,7 @@ class User(Base):
     first_name = Column(String(255), nullable=False)
     second_name = Column(String(255), nullable=False)
     third_name = Column(String(255), nullable=True)
-    number = Column(String(25), nullable=False, unique=True)
+    phone = Column(String(25), nullable=False, unique=True)
     tg = Column(String(50), nullable=True)
     role = Column(Enum(Role), nullable=False)
     dorm_id = Column(BigInteger, ForeignKey("Dorm.dorm_id"), nullable=False)

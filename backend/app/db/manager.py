@@ -78,10 +78,10 @@ class DBManager:
         self.session.add(User(
                         first_name = "Ivan",
                         second_name = "Ivanov",
-                        number = "78005553535",
+                        phone = "78005553535",
                         dorm_id = 1,
                         role = "soo_leader",
-                        hashed_password = bcrypt.hash("00000000")
+                        hashed_password = bcrypt.hash("example")
                     ))
         self.session.commit()
         
@@ -93,9 +93,9 @@ class DBManager:
 
     # endregion ------------
     
-    def user_exists(self, number: str) -> bool:
+    def user_exists(self, phone: str) -> bool:
         """Get user by email from the database"""
-        return self.session.query(User).filter_by(number=number).first() is not None
+        return self.session.query(User).filter_by(phone=phone).first() is not None
     
     def add_user(self, data: UserRegisterSchema) -> bool:
         if self.user_exists(data.number):
@@ -106,8 +106,11 @@ class DBManager:
         self.session.commit()
         return True
     
-    def get_user(self, number: str) -> Optional[User]:
-        return self.session.query(User).filter_by(number=number).first() 
+    def get_user_by_phone(self, phone: str) -> Optional[User]:
+        return self.session.query(User).filter_by(phone=phone).first()
+    
+    def get_user_by_id(self, user_id: int) -> Optional[User]:
+        return self.session.query(User).filter_by(user_id=user_id).first()
     
     def get_user_dorm(self, user_id: int) -> Optional[int]:
         user = self.session.query(User).filter_by(user_id=user_id).first()
@@ -139,7 +142,8 @@ class DBManager:
         self.session.commit()
         
     def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
-        data = self.session.query(Note).filter(and_(dorm_id == Note.dorm_id, Note.deleted_at != None)).order_by(desc(Note.created_at)).all()
+        data = self.session.query(Note).filter(and_(dorm_id == Note.dorm_id, Note.deleted_at.isnot(None))).order_by(desc(Note.created_at)).all()
+        print(data)
         return [{
             "room": note.room,
             "description": note.description

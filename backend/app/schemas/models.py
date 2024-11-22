@@ -4,14 +4,15 @@ from typing import Optional
 from enum import Enum
 from datetime import datetime
 import re
-
+from db.models import Role, DocumentType, ViolationType
+# TODO: ENUMS
 class UserSchema(BaseModel):
     first_name: str = Field(..., min_length=2, max_length=50) # TODO: подумать над паролем для создания
     second_name: str = Field(..., min_length=2, max_length=50)
     third_name: Optional[str] = Field(None, min_length=2, max_length=50)
-    number: str = Field(..., min_length=4, max_length=25)
+    phone: str = Field(..., min_length=4, max_length=25)
     tg: str = Field(None, min_length=4, max_length=50)
-    role: str = Field(..., min_length=4, max_length=50)
+    role: Role = Field(...)
     dorm_id: int = Field(...)
     
     class Config:
@@ -21,7 +22,7 @@ class UserSchema(BaseModel):
                 "first_name": "Ivan",
                 "second_name": "Ivanov",
                 "third_name": "Ivanovich",
-                "number": "88005553535",
+                "phone": "78005553535",
                 "tg": "@example",
                 "role": "spectator",
                 "dorm_id": 1,
@@ -29,7 +30,7 @@ class UserSchema(BaseModel):
         }
         
 class UserRegisterSchema(UserSchema):
-    password: str = Field(..., min_length=8, max_length=64)
+    password: str = Field(..., min_length=4, max_length=64)
     
     class Config:
         orm_mode = True
@@ -38,7 +39,7 @@ class UserRegisterSchema(UserSchema):
                 "first_name": "Ivan",
                 "second_name": "Ivanov",
                 "third_name": "Ivanovich",
-                "number": "88005553535",
+                "phone": "78005553535",
                 "tg": "@example",
                 "role": "spectator",
                 "dorm_id": 1,
@@ -48,9 +49,9 @@ class UserRegisterSchema(UserSchema):
 
 
 class ViolationSchema(BaseModel):
-    document_type: str = Field(...)
+    document_type: DocumentType = Field(...)
     violator_name: str = Field(...)
-    violation_type: str = Field(...)
+    violation_type: ViolationType = Field(...)
     description: str = Field(...)
     room_id: int = Field(...)
     witness: str = Field(...) # Свидетель блять
@@ -72,9 +73,9 @@ class ViolationWithRoomSchema(BaseModel):
     room_id: int = Field(...)
     block_number: str = Field(...)
     room_number: str = Field(...)
-    document_type: str = Field(...)
+    document_type: DocumentType = Field(...)
     violator_name: str = Field(...)
-    violation_type: str = Field(...)
+    violation_type: ViolationType = Field(...)
     description: str = Field(...)
     witness: str = Field(...)
     created_at: datetime = Field(...)
