@@ -4,17 +4,40 @@ import vector2 from '../../shared/assets/LoginForm/Vector2.png';
 import ellipse14 from '../../shared/assets/LoginForm/Ellipse14.png';
 import vector1 from '../../shared/assets/LoginForm/Vector1.png';
 import './LoginForm.scss';
+import { useAppDispatch } from '../../app/hooks/hooks';
+import { isAuth } from '../../app/features/Auth/AuthSlice';
+import axios from 'axios';
+
+interface formProps {
+  phone: string;
+  password: string;
+}
 
 export const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm({ mode: 'onBlur' });
+  } = useForm<formProps>({ mode: 'onBlur' });
 
-  const onSubmit = (e: object) => {
-    console.log(e);
+  async function requests(data: formProps) {
+    const post = await axios
+      .post('auth/login', JSON.stringify(data), {
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then((response) => {
+        console.log(response.data);
+        dispatch(isAuth());
+      })
+      .catch((error) => {
+        console.error('Ошибка', error.message);
+      });
+  }
+
+  const onSubmit = (e: formProps) => {
+    requests(e);
   };
 
   return (
@@ -29,13 +52,13 @@ export const LoginForm = () => {
         <img src={vector1} />
       </div>
       <div className='form__input'>
-        <input {...register('login')} type='text' placeholder='Логин' className='form__input-inp' />
+        <input {...register('phone')} type='text' placeholder='Телефон' className='form__input-inp' />
       </div>
       <div className='form__input'>
         <input {...register('password')} type='password' placeholder='Пароль' className='form__input-inp' />
       </div>
       <div className='form__submit'>
-        <input type='submit' value='Войти' className='form__submit-sub'></input>
+        <input onClick={() => dispatch(isAuth())} type='submit' value='Войти' className='form__submit-sub'></input>
       </div>
     </form>
   );

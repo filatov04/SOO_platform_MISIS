@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './FloorPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import tg from '../../shared/assets/FloorPage/ContactInfo/Telegram.png';
 import phone from '../../shared/assets/FloorPage/ContactInfo/phone.png';
-import AddIcon from '@mui/icons-material/Add';
-import vector1 from '../../shared/assets/FloorPage/Room/Vector1.png';
-import vector2 from '../../shared/assets/FloorPage/Room/Vector2.png';
 import { useNavigate } from 'react-router-dom';
+import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
+// import { selectFloor } from '../../app/features/ChooseFloor/ChooseFloorSllice';
+// import { useAppSelector } from '../../app/hooks/hooks';
 
 export const FloorPage = () => {
+  // const floor = useAppSelector(selectFloor);
+  const floor = localStorage.getItem('NumberFloor');
   const router = useNavigate();
+
+  useEffect(() => {});
   return (
     <div className='floor-page'>
       <div className='floor-page__info'>
-        <div className='floor-page__arrow-back' onClick={() => router('/mainPage')}>
+        <div className='floor-page__arrow-back' onClick={() => router('/MainPage')}>
           <ArrowBackIosNewIcon sx={{ color: '#187FF6', width: '68px', height: '68px' }} />
         </div>
-        <div className='floor-page__number'>2 этаж</div>
+        <div className='floor-page__number'> {floor} этаж</div>
         <div className='floor-page__contact-info'>
           <div className='floor-page__contact-elder'>Староста</div>
           <div className='floor-page__contact-name'>Сайхаматов Акбар</div>
@@ -33,25 +37,7 @@ export const FloorPage = () => {
         </div>
       </div>
       <div className='floor-page__rooms'>
-        <div className='floor-page__room room'>
-          <div className='room__blur'>
-            <img src={vector1} />
-          </div>
-          <div className='room__blur'>
-            <img src={vector2} />
-          </div>
-          <div className='floor-page__room-header room__header'>
-            <div className='floor-page__room-number room__number'>209</div>
-            <div className='floor-page__room-add room__add'>
-              <AddIcon sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }} />
-            </div>
-          </div>
-          <div className='room__notes floor-page__room-notes'>
-            <div className='room__note floor-page__room-note'>
-              АКТ|202-3|Антисанитария в блоке|Иванов Илья|06.11.2024
-            </div>
-          </div>
-        </div>
+        <RoomFloor floor={floor} number='09' />
       </div>
     </div>
   );
