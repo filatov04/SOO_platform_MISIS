@@ -73,7 +73,7 @@ export const MainPage = () => {
         .then((response) => {
           const length = response.data.length;
           const array = Array.from({ length }, (_, i) => ({ floor: i + 1 }));
-          setFloors(array);
+          setFloors((prev) => [...prev, ...array]);
           setIsLoadingFloors(true);
         })
         .catch((error) => {
