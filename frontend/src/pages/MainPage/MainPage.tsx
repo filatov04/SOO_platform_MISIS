@@ -55,8 +55,14 @@ export const MainPage = () => {
           }
         })
         .then((response) => {
-          setNotes(response.data);
+          const length = response.data.length;
+          const array = Array.from({ length }, (_, i) => ({
+            roomNumber: response.data[i].room,
+            text: response.data[i].description
+          }));
+          setNotes(array);
           setIsLoadindNotes(true);
+          console.log(response.data);
         })
         .catch((error) => {
           if (error.response) {
