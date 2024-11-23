@@ -52,6 +52,12 @@ class FloorSchema(BaseModel):
     floor_id: int = Field(...)
     floor_number: int = Field(...)
     dorm_id: int = Field(...)
+    owner_first_name: str = Field(...)
+    owner_second_name: str = Field(...)
+    owner_third_name: str = Field(None)
+    owner_tg: str = Field(None)
+    owner_phone: str = Field(...)
+    
     
     class Config:
         orm_mode = True
@@ -60,6 +66,11 @@ class FloorSchema(BaseModel):
                 "floor_id": 1,
                 "floor_number": 1,
                 "dorm_id": 1,
+                "owner_first_name": "Ivan",
+                "owner_second_name": "Ivanov",
+                "owner_third_name": "Ivanovich",
+                "owner_tg": "@example",
+                "owner_phone": "78005553535",
             }
         }
         
