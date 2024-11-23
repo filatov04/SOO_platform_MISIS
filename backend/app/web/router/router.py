@@ -27,7 +27,7 @@ import time
 router = APIRouter(prefix="")
 authpair = AuthPair()
 db = DBManager("logger")
-# db._recreate_tables()
+db._recreate_tables()
 
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
