@@ -6,9 +6,11 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { AuthorizationValue, notAuth } from '../../app/features/Auth/AuthSlice';
+import { userInfo } from '../../app/features/User/UserSlice';
 
 export const NavigationBar = () => {
   const auth = useAppSelector(AuthorizationValue);
+  const user = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
   const [isAdmin, setIsAdmin] = useState(false);
   return (
@@ -49,7 +51,9 @@ export const NavigationBar = () => {
                 <></>
               )}
               <div className='navbar__item-panel'>
-                <p className='navbar__name'>Мустафаев М.М</p>
+                <p className='navbar__name'>
+                  {user.secondName} {user.firstName[0]}.{user.thirdName[0]}
+                </p>
                 <LogoutIcon
                   onClick={() => dispatch(notAuth())}
                   sx={{

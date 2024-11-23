@@ -3,9 +3,13 @@ import './Notes.scss';
 import AddIcon from '@mui/icons-material/Add';
 import vector1 from '../../shared/assets/Notes/Vector1.png';
 import vector2 from '../../shared/assets/Notes/Vector2.png';
-import { NotesItem } from '../../entities';
+import { NotesItem, NotesItemProps } from '../../entities';
 
-export const Notes = () => {
+interface NotesProps {
+  notes?: NotesItemProps[];
+}
+
+export const Notes = ({ notes = [] }: NotesProps): JSX.Element => {
   return (
     <div className='content__notes notes'>
       <div className='notes__blur'>
@@ -24,12 +28,11 @@ export const Notes = () => {
       </div>
       <div className='notes__block-list'>
         <div className='notes__list'>
-          <NotesItem />
-          <NotesItem />
-          <NotesItem />
-          <NotesItem />
-          <NotesItem />
-          <NotesItem />
+          {notes.length !== 0 ? (
+            notes.map((item, index) => <NotesItem key={index} roomNumber={item.roomNumber} text={item.text} />)
+          ) : (
+            <NotesItem roomNumber='609-2' text='Заходить в комнату почаще так как есть подозрение на курение' />
+          )}
         </div>
       </div>
     </div>
