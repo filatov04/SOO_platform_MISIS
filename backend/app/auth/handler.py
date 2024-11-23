@@ -11,6 +11,7 @@ import time
 JWT_SECRET = settings.jwt_secret
 JWT_ALGORITHM = settings.jwt_algorithm
 JWT_ACCESS_EXPIRE_TIME = settings.jwt_access_expire_time  # in seconds
+last_clear = time.time()
 
 def token_response(token: str):
     return {"access_token": token,
@@ -25,6 +26,9 @@ def signJWT(id_user: int) -> Dict[str, str]:
 def decodeJWT(token: str) -> Optional[Dict[str, str]]:
     try:
         decoded_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        return decoded_token if decoded_token["expires"] >= time.time() else None
+        if decoded_token["expires"] >= time.time():
+            return decoded_token
+        else:
+            return None
     except:
         return None

@@ -53,6 +53,7 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     
     token_response = signJWT(user.user_id)
     authpair.post(token_response["access_token"], user.user_id)
+    authpair.cleanup()
     return token_response
     
 
