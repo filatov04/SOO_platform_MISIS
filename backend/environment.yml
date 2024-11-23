@@ -1,4 +1,4 @@
-name: kokoc_hack
+name: soo_backend
 channels:
   - python
   - conda-forge
@@ -10,8 +10,6 @@ dependencies:
   - loguru=0.6.0
   - fastapi=0.92.0
   - uvicorn=0.20.0
-  - pydantic=1.10.*
   - PyJWT=2.6.0
+  - bcrypt=4.2.0
   - pip
-  - bcrypt==4.2.0
-

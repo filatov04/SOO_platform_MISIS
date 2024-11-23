@@ -31,9 +31,9 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "postgres" # "sso_user"
-        self.pg_pass = "00000000" # "password"
-        self.pg_host = "localhost" # "postgres"
+        self.pg_user = "sso_user"
+        self.pg_pass = "password"
+        self.pg_host = "postgres"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
         
@@ -130,7 +130,7 @@ class DBManager:
         return None
     
     def get_floors(self, dorm_id: int) -> List[FloorSchema]: #TODO: add user info
-        data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter_by(dorm_id=dorm_id).all()
+        data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter(Floors.dorm_id == dorm_id).all()
         return [
             FloorSchema(
                 **floor.__dict__,
