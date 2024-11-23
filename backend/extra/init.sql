@@ -1,6 +1,6 @@
-CREATE TYPE documenttype AS ENUM ('acr', 'warning');
-CREATE TYPE violationtype AS ENUM ("unsanitation", "alcohol_mode", "fire_security", "electrical_security", "noise_mode", "guest_mode", "break_mode", "block_thing");
-CREATE TYPE role AS ENUM ("headman", "operative", "admin", "soo_leader", "spectator");
+CREATE TYPE documenttype AS ENUM ('act', 'warning');
+CREATE TYPE violationtype AS ENUM ('unsanitation', 'alcohol_mode', 'fire_security', 'electrical_security', 'noise_mode', 'guest_mode', 'break_mode', 'block_thing');
+CREATE TYPE role AS ENUM ('headman', 'operative', 'admin', 'soo_leader', 'spectator');
 
 CREATE TABLE "Dorms" (
         dorm_id BIGSERIAL NOT NULL,
