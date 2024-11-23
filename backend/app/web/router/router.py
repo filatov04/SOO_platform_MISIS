@@ -72,7 +72,7 @@ async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     user = db.get_user_by_id(user_id)
     return UserSchema.from_orm(user).dict()
 
-@router.post("user/register", dependencies=[Depends(check_auth)], tags=["user"])
+@router.post("/user/register", dependencies=[Depends(check_auth)], tags=["user"])
 async def register_user(user: UserRegisterSchema = Body(...)):
     user.password = bcrypt.hash(user.password)
     if db.add_user(user):
