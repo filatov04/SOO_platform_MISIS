@@ -63,7 +63,6 @@ async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
 
 # end region auth
 
-#TODO: добавить получение этажей по общаге
 #TODO: проверку роли (второстепенное)
 
 # secure region
@@ -73,7 +72,7 @@ async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     return UserSchema.from_orm(user).dict()
 
 @router.post("user/register", dependencies=[Depends(check_auth)], tags=["user"])
-async def register_user(user: UserRegisterSchema = Body(...)): #TODO: check roles
+async def register_user(user: UserRegisterSchema = Body(...)):
     user.password = bcrypt.hash(user.password)
     if db.add_user(user):
         return {"message": "User created"}

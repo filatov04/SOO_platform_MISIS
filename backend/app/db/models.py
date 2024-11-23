@@ -19,7 +19,7 @@ Base = declarative_base()
 # Base.metadata = MetaData(schema="Kokoc")
 
 class ViolationType(enum.Enum):
-    unsanitation: str = "unsanitation" # TODO: str
+    unsanitation: str = "unsanitation"
     alcohol_mode: str = "alcohol_mode"
     fire_security: str = "fire_security"
     electrical_security: str = "electrical_security"

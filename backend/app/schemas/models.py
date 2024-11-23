@@ -7,7 +7,7 @@ import re
 from db.models import Role, DocumentType, ViolationType
 
 class UserSchema(BaseModel):
-    first_name: str = Field(..., min_length=2, max_length=50) # TODO: подумать над паролем для создания
+    first_name: str = Field(..., min_length=2, max_length=50)
     second_name: str = Field(..., min_length=2, max_length=50)
     third_name: Optional[str] = Field(None, min_length=2, max_length=50)
     phone: str = Field(..., min_length=4, max_length=25)

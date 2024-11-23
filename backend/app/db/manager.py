@@ -31,9 +31,9 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "postgres"
-        self.pg_pass = "00000000"
-        self.pg_host = "localhost"
+        self.pg_user = "sso_user"
+        self.pg_pass = "password"
+        self.pg_host = "postgres"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
         
