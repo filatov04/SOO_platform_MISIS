@@ -13,7 +13,7 @@ from schemas.models import (
     UserSchema,
     UserRegisterSchema,
     ViolationSchema,
-    ViolationWithRoomSchema,
+    RoomSchema,
     NoteSchema,
     FloorSchema
 )
@@ -89,9 +89,9 @@ async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(che
     return db.add_violation(user_id, data)
 
 @router.get("/violations/rooms/get/{floor_id}", dependencies=[Depends(check_auth)], tags=["violations"])
-async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[Optional[ViolationWithRoomSchema]]:
-    violations = db.get_rooms_with_violations(floor_id)
-    return violations
+async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[RoomSchema]:
+    data = db.get_rooms_with_violations(floor_id)
+    return data
 
 @router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:

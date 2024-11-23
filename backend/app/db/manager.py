@@ -18,7 +18,7 @@ from schemas.models import (
     ViolationSchema,
     NoteSchema,
     UserRegisterSchema,
-    ViolationWithRoomSchema,
+    RoomSchema,
     FloorSchema
 )
 
@@ -133,24 +133,16 @@ class DBManager:
         data = self.session.query(Floors).filter_by(dorm_id=dorm_id).all()
         return [FloorSchema(**floor.__dict__) for floor in data]
 
-    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: NEED TO FIX
-        data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
-
-        violations = []
-        for room, violation in data:
-            violations.append(ViolationWithRoomSchema(
-                room_id = room.room_id,
-                room_number = room.room_number,
-                block_number = room.block_number,
-                document_type = violation.document_type,
-                violator_name = violation.violator_name,
-                violation_type = violation.violation_type,
-                description = violation.description,
-                witness = violation.witness,
-                created_at = violation.created_at
-            ))
+    def get_rooms_with_violations(self, floor_id: int) -> List[RoomSchema]: # TODO: NEED TO FIX
+        # data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
+        rooms = self.session.query(Rooms).filter_by(floor_id=floor_id).all()
+        data = []
+        for room in rooms:
+            obj_room = RoomSchema(**room.__dict__)
+            obj_room.violations = self.session.query(Violations).filter_by(room_id=room.room_id).all()
+            data.append(obj_room)
             
-        return violations
+        return data
     
     def add_violation(self, user_id: int, data: ViolationSchema):
         violation = Violations(
