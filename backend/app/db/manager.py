@@ -49,7 +49,6 @@ class DBManager:
         self._update_db()
         
         # for table in Base.metadata.sorted_tables:
-        #     print(f"--- SQL для таблицы {table.name} ---")
         #     print(CreateTable(table).compile(self.engine))
         #     print()
 

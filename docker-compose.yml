@@ -9,11 +9,11 @@ services:
     networks:
       - backend
     depends_on:
-      - db
+      - postgres
     ports:
       - 8000:8000
 
-  db:
+  postgres:
     image: postgres:15.2-alpine
     environment:
       POSTGRES_USER: sso_user
@@ -23,8 +23,8 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
-    # volumes:
-    #   - ./extra/init.sql:/docker-entrypoint-initdb.d/init.sql
+    volumes:
+      - ./extra/init.sql:/docker-entrypoint-initdb.d/init.sql
     #   - ./app/data/pg/:/var/lib/postgresql/data/
     networks:
       - backend
