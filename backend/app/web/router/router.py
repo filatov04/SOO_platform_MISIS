@@ -80,7 +80,7 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     else:
         return {"message": "User already exists"}
 
-@router.get("floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
+@router.get("/floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
 async def get_floors(dorm_id: int = Path(..., example=1)) -> List[Optional[FloorSchema]]:
     return db.get_floors(dorm_id)
 
