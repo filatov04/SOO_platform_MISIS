@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["klsepan67 <zxccdw@mail.ru>"]
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+loguru = "^0.6.0"
+fastapi = "^0.92.0"
+uvicorn = "^0.20.0"
+sqlalchemy = "^1.4.36"
+psycopg2-binary = "^2.9.3"
+pydantic = {extras = ["dotenv"], version = "^1.10.7"}
+passlib = "^1.7.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
