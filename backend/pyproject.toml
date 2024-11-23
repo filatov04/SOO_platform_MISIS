@@ -12,8 +12,9 @@ fastapi = "^0.92.0"
 uvicorn = "^0.20.0"
 sqlalchemy = "^1.4.36"
 psycopg2-binary = "^2.9.3"
-pydantic = {extras = ["dotenv"], version = "^1.10.7"}
 passlib = "^1.7.4"
+PyJWT = "^2.9.0"
+pydantic = {extras = ["dotenv"], version = "^1.10.7"}
 
 [build-system]
 requires = ["poetry-core"]

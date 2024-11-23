@@ -5,16 +5,20 @@ ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.0.0
 
 RUN apt update && apt install -y gcc python3-dev && rm -rf /var/lib/apt/lists/*
+# dicee==1.0.0 for ml
+RUN pip install poetry==1.3.2 
 
 COPY . ./backend
 
 WORKDIR /backend
 
-RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN poetry config virtualenvs.create false \
+    && poetry install --only main --no-interaction --no-ansi
 
-CMD ["python", "app/web_entry_point.py"]
+CMD ["python3", "app/web_entry_point.py"]
 
 EXPOSE 8000
