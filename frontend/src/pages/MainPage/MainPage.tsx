@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { saveInfo, userInfo, UserState } from '../../app/features/User/UserSlice';
 import axios from 'axios';
 import { NotesItemProps } from '../../entities';
+import { saveHeadmans } from '../../app/features/Headmans/HeadmansSlice';
 
 export const MainPage = () => {
   const user = useAppSelector(userInfo);
@@ -14,7 +15,7 @@ export const MainPage = () => {
   const [isLoadingNotes, setIsLoadindNotes] = useState(false);
   const [isLoadingFloors, setIsLoadingFloors] = useState(false);
   const [floors, setFloors] = useState<floorProps[]>([]);
-  //const [dormId, setDormId] = useState(0);
+
   useEffect(() => {
     async function getInfo() {
       const getUserInfo = await axios
@@ -62,7 +63,7 @@ export const MainPage = () => {
           }));
           setNotes(array);
           setIsLoadindNotes(true);
-          console.log(response.data);
+          //console.log(response.data);
         })
         .catch((error) => {
           if (error.response) {
@@ -82,10 +83,18 @@ export const MainPage = () => {
         })
         .then((response) => {
           const length = response.data.length;
-          console.log('http://localhost:8000/floors/get/ ', user.dormId);
+          //console.log('http://localhost:8000/floors/get/ ', user.dormId);
           const array = Array.from({ length }, (_, i) => ({ floor: response.data[i].floor_number }));
-          console.log(response.data);
+          const arrayHeadmans = Array.from({ length }, (_, i) => ({
+            firstName: response.data[i].owner_first_name,
+            secondName: response.data[i].owner_second_name,
+            thirdName: response.data[i].owner_third_name,
+            tg: response.data[i].owner_tg,
+            phone: response.data[i].owner_phone
+          }));
+          //console.log(response.data);
           setFloors(array);
+          dispatch(saveHeadmans(arrayHeadmans));
           setIsLoadingFloors(true);
         })
         .catch((error) => {
