@@ -86,7 +86,8 @@ async def get_floors(dorm_id: int = Path(..., example=1)) -> List[FloorSchema]:
 
 @router.post("/violations/add", dependencies=[Depends(check_auth)], tags=["violations"])
 async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
-    return db.add_violation(user_id, data)
+    db.add_violation(user_id, data)
+    return {"message": "Violation added"}
 
 @router.get("/violations/rooms/get/{floor_id}", dependencies=[Depends(check_auth)], tags=["violations"])
 async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[RoomSchema]:
@@ -99,6 +100,7 @@ async def get_notes(dorm_id: int) -> List:
 
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
 async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
-    return db.add_note(user_id, data)
+    db.add_note(user_id, data)
+    return {"message": "Note added"}
 
 # end secure region
