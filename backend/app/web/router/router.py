@@ -72,7 +72,7 @@ async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     user = db.get_user_by_id(user_id)
     return UserSchema.from_orm(user).dict()
 
-@router.post("user/register", dependencies=[Depends(check_auth)], tags=["user"])
+@router.post("/user/register", dependencies=[Depends(check_auth)], tags=["user"])
 async def register_user(user: UserRegisterSchema = Body(...)):
     user.password = bcrypt.hash(user.password)
     if db.add_user(user):
@@ -80,25 +80,27 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     else:
         return {"message": "User already exists"}
 
-@router.get("floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
-async def get_floors(dorm_id: int = Path(..., example=1)) -> List[Optional[FloorSchema]]:
+@router.get("/floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
+async def get_floors(dorm_id: int = Path(..., example=1)) -> List[FloorSchema]:
     return db.get_floors(dorm_id)
 
 @router.post("/violations/add", dependencies=[Depends(check_auth)], tags=["violations"])
 async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(check_auth)):
-    return db.add_violation(user_id, data)
+    db.add_violation(user_id, data)
+    return {"message": "Violation added"}
 
 @router.get("/violations/rooms/get/{floor_id}", dependencies=[Depends(check_auth)], tags=["violations"])
 async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[RoomSchema]:
     data = db.get_rooms_with_violations(floor_id)
     return data
 
-@router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
+@router.get("/notes/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
 
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
 async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
-    return db.add_note(user_id, data)
+    db.add_note(user_id, data)
+    return {"message": "Note added"}
 
 # end secure region

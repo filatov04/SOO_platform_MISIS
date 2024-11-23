@@ -31,9 +31,9 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "sso_user"
-        self.pg_pass = "password"
-        self.pg_host = "postgres"
+        self.pg_user = "postgres" # "sso_user"
+        self.pg_pass = "00000000" # "password"
+        self.pg_host = "localhost" # "postgres"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
         
@@ -129,11 +129,21 @@ class DBManager:
             return user.dorm_id
         return None
     
-    def get_floors(self, dorm_id: int) -> List[Optional[FloorSchema]]:
-        data = self.session.query(Floors).filter_by(dorm_id=dorm_id).all()
-        return [FloorSchema(**floor.__dict__) for floor in data]
+    def get_floors(self, dorm_id: int) -> List[FloorSchema]: #TODO: add user info
+        data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter_by(dorm_id=dorm_id).all()
+        return [
+            FloorSchema(
+                **floor.__dict__,
+                owner_first_name=user.first_name,
+                owner_second_name=user.second_name,
+                owner_third_name=user.third_name,
+                owner_tg=user.tg,
+                owner_phone=user.phone
+            )
+        for floor, user in data
+        ]
 
-    def get_rooms_with_violations(self, floor_id: int) -> List[RoomSchema]: # TODO: NEED TO FIX
+    def get_rooms_with_violations(self, floor_id: int) -> List[RoomSchema]:
         # data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
         rooms = self.session.query(Rooms).filter_by(floor_id=floor_id).all()
         data = []
