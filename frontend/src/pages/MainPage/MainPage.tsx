@@ -14,6 +14,7 @@ export const MainPage = () => {
   const [isLoadingNotes, setIsLoadindNotes] = useState(false);
   const [isLoadingFloors, setIsLoadingFloors] = useState(false);
   const [floors, setFloors] = useState<floorProps[]>([]);
+  //const [dormId, setDormId] = useState(0);
   useEffect(() => {
     async function getInfo() {
       const getUserInfo = await axios
@@ -32,7 +33,6 @@ export const MainPage = () => {
           };
           dispatch(saveInfo(data));
           setIsLoadingUser(true);
-          console.log(data);
         })
         .catch((error) => {
           if (error.response) {
@@ -43,6 +43,10 @@ export const MainPage = () => {
         });
     }
 
+    getInfo();
+  }, []);
+
+  useEffect(() => {
     async function getNotes() {
       const getNotesInfo = await axios
         .get('http://localhost:8000/notes/get/' + user.dormId, {
@@ -72,8 +76,10 @@ export const MainPage = () => {
         })
         .then((response) => {
           const length = response.data.length;
-          const array = Array.from({ length }, (_, i) => ({ floor: i + 1 }));
-          setFloors((prev) => [...prev, ...array]);
+          console.log('http://localhost:8000/floors/get/ ', user.dormId);
+          const array = Array.from({ length }, (_, i) => ({ floor: response.data[i].floor_number }));
+          console.log(response.data);
+          setFloors(array);
           setIsLoadingFloors(true);
         })
         .catch((error) => {
@@ -85,10 +91,9 @@ export const MainPage = () => {
         });
     }
 
-    getInfo();
     getNotes();
     getFloor();
-  }, []);
+  }, [user.dormId]);
 
   if (isLoadingFloors && isLoadingNotes && isLoadingUser) {
     return (
