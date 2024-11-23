@@ -94,7 +94,7 @@ async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> Lis
     data = db.get_rooms_with_violations(floor_id)
     return data
 
-@router.get("/notes/get", dependencies=[Depends(check_auth)], tags=["notes"])
+@router.get("/notes/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
 
