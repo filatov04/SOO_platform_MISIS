@@ -133,8 +133,8 @@ class DBManager:
         data = self.session.query(Floors).filter_by(dorm_id=dorm_id).all()
         return [FloorSchema(**floor.__dict__) for floor in data]
 
-    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: need test
-        data = self.session.query(Rooms, Violations).join(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
+    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: NEED TO FIX
+        data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
 
         violations = []
         for room, violation in data:
