@@ -24,11 +24,12 @@ export const LoginForm = () => {
 
   async function requests(data: formProps) {
     const post = await axios
-      .post('auth/login', JSON.stringify(data), {
+      .post('http://localhost:8000/auth/login', JSON.stringify(data), {
         headers: { 'Content-Type': 'application/json' }
       })
       .then((response) => {
         console.log(response.data);
+        localStorage.setItem('authToken', `${response.data.access_token}`);
         dispatch(isAuth());
       })
       .catch((error) => {
@@ -58,7 +59,7 @@ export const LoginForm = () => {
         <input {...register('password')} type='password' placeholder='Пароль' className='form__input-inp' />
       </div>
       <div className='form__submit'>
-        <input onClick={() => dispatch(isAuth())} type='submit' value='Войти' className='form__submit-sub'></input>
+        <input /*onClick={() => dispatch(isAuth())}*/ type='submit' value='Войти' className='form__submit-sub'></input>
       </div>
     </form>
   );
