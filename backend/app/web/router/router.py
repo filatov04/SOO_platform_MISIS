@@ -63,7 +63,6 @@ async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
 
 # end region auth
 
-#TODO: Fixx alllll
 #TODO: добавить получение этажей по общаге
 #TODO: проверку роли (второстепенное)
 

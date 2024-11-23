@@ -99,7 +99,7 @@ class Violations(Base):
     violator_name = Column(String(255), nullable=False)
     violation_type = Column(Enum(ViolationType), nullable=False)
     description = Column(Text, nullable=False)
-    room_id = Column(BigInteger, ForeignKey("Rooms.room_id"), nullable=False)
+    room_id = Column(BigInteger, ForeignKey("Rooms.room_id"), nullable=False) #TODO: roon number in block???
     witness = Column(String(255), nullable=False) # TODO: свидетель блять
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None)

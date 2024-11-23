@@ -31,9 +31,9 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "sso_user"
-        self.pg_pass = "password"
-        self.pg_host = "db"
+        self.pg_user = "postgres"
+        self.pg_pass = "00000000"
+        self.pg_host = "localhost"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
         
@@ -77,7 +77,7 @@ class DBManager:
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
-        self.session.add(Dorms(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва")) #TODO: вынести в init.sql
+        self.session.add(Dorms(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва"))
         self.session.commit()
         
         self.session.add(Users(
@@ -134,11 +134,10 @@ class DBManager:
         data = self.session.query(Floors).filter_by(dorm_id=dorm_id).all()
         return [FloorSchema(**floor.__dict__) for floor in data]
 
-    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: validation FIX FIX FIX
-        data = self.session.query(Rooms).join(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).filter(Violations.deleted_at == None).order_by(Rooms.block_number).all()
+    def get_rooms_with_violations(self, floor_id: int) -> List[Optional[ViolationWithRoomSchema]]: # TODO: need test
+        data = self.session.query(Rooms, Violations).join(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
 
         violations = []
-        print(data)
         for room, violation in data:
             violations.append(ViolationWithRoomSchema(
                 room_id = room.room_id,
@@ -181,11 +180,11 @@ class DBManager:
         for note in data
         ]
         
-    def get_room_number(self, room_id: int) -> Optional[int]: #TODO: ???
-        room = self.session.query(Rooms).filter_by(room_id=room_id).first()
-        if room: 
-            return room.room_number
-        return None
+    # def get_room_number(self, room_id: int) -> Optional[int]:
+    #     room = self.session.query(Rooms).filter_by(room_id=room_id).first()
+    #     if room: 
+    #         return room.room_number
+    #     return None
 
     # def get_violations(self, rooms: List[int]) -> List[Optional[ViolationWithRoomSchema]]:
     #     data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(Rooms.room_id.in_(rooms)).all()

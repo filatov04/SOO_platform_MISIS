@@ -69,3 +69,20 @@ CREATE TABLE "Violations" (
         FOREIGN KEY(user_id) REFERENCES "Users" (user_id), 
         FOREIGN KEY(room_id) REFERENCES "Rooms" (room_id)
 )
+
+
+INSERT INTO "Dorms" (dorm_id, name, address) VALUES 
+(1, 'Горняк-2', 'просп. 60-летия Октября, 11, Москва'),
+(2, 'Горняк-1', 'просп. 60-летия Октября, 13, Москва');
+
+INSERT INTO "Users" (user_id, first_name, second_name, third_name, phone, tg, role, dorm_id, hashed_password) VALUES 
+(1, 'Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
+(2, 'Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
+
+INSERT INTO "Floors" (floor_id, dorm_id, owner_id, floor_number, renovated_date) VALUES 
+(1, 1, 1, 8, '2023-01-01'),
+(2, 2, 2, 1, '2023-01-01');
+
+INSERT INTO "Rooms" (floor_id, block_number, room_number) VALUES 
+(1, 808, 3),
+(1, 810, 2);
