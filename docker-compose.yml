@@ -24,7 +24,7 @@ services:
       - "5432:5432"
     restart: unless-stopped
     volumes:
-      - ./extra/init.sql:./docker-entrypoint-initdb.d/init.sql
+      - ./backend/extra/init.sql:/docker-entrypoint-initdb.d/init.sql
     #   - ./app/data/pg/:/var/lib/postgresql/data/
     networks:
       - backend

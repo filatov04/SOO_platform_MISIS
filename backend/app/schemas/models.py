@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, EmailStr
 from sqlalchemy.ext.declarative import declarative_base
-from typing import Optional
+from typing import Optional, List
 from enum import Enum
 from datetime import datetime
 import re
@@ -85,27 +85,24 @@ class ViolationSchema(BaseModel):
             }
         }
         
-class ViolationWithRoomSchema(ViolationSchema):
-    block_number: str = Field(...)
-    room_number: str = Field(...)
-    created_at: datetime = Field(...)
+class RoomSchema(BaseModel):
+    room_id: int = Field(...)
+    floor_id: int = Field(...)
+    block_number: int = Field(...)
+    room_number: Optional[int] = Field(None)
+    violations: List[ViolationSchema] = Field(default_factory=list)
     
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
                 "room_id": 1,
-                "block_number": "101",
-                "room_number": "3",
-                "document_type": "act",
-                "violator_name": "Иванов Иван Иванович",
-                "violation_type": "fire_security",
-                "description": "Smoke",
-                "witness": "Иванов Сосед Соседович",
-                "created_at": "2022-01-01 00:00:00"
+                "floor_id": 1,
+                "block_number": 1,
+                "room_number": 101,
+                "violations": []
             }
         }
-        
 
 class NoteSchema(BaseModel):
     dorm_id: int = Field(...)
