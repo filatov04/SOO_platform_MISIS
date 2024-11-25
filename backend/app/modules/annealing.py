@@ -6,6 +6,7 @@ import random
 import secrets
 import random
 from collections import defaultdict
+from math import exp
 
 class Annealing:
     def __init__(self, data: Dict[int, List[int]], work_days: int = 4): # data format dict: {user_id: [days, when people dont work]}
@@ -14,53 +15,92 @@ class Annealing:
         self.work_days = work_days
          
     def gen(self):
-        ar = [[0] * self.month_days for i in range(self.work_days)]
+        ar = [[0] * self.month_days for i in range(2)]
         users = list(self.data.keys())
-        count_workdays_dict = defaultdict(int)
-        fl = 1
-        for _ in range(20):
-            if not fl:
-                break
+        for i in range(4):
             random.shuffle(users)
-            it = -1
-            cnt = 0
-            operations = 0
-            fl = 0
-            while cnt < self.month_days:
-                if operations > 1000:
-                    fl = 1
-                    break
-                it += 1
-                it %= len(users)
-                
-                if (cnt + 1) in self.data[users[it]] or count_workdays_dict[users[it]] > self.work_days:
-                    operations += 1
-                    continue
-                
-                ar[0][cnt] = users[it]
-                count_workdays_dict[users[it]] += 1
-                cnt += 1      
         
-        if fl:
-            print('fail')
-            return
-        print(ar)
+        n = len(users)
         
-    # def get_data(self):
-    #     self.shu
+        it = 0
+        while it < self.month_days:
+            ar[0][it] = users[it % n]
+            it += 1
         
+        cnt = 0
+        while cnt < self.month_days:
+            it += 1
+            if (cnt + 1) in self.data[users[it % n]]:
+                continue
+            
+            ar[1][cnt] = users[it % n]
+            cnt += 1
 
+            
+        return ar
+    
+    def cnt(self, ar):
+        cnt = 0
+        for i in range(self.month_days):
+            if (i + 1) in self.data[ar[0][i]]:
+                cnt += 1
+                
+            if ar[0][i] == ar[1][i]:
+                cnt += 1
+                
+        return cnt
+
+    def main(self):
+        t = 1.0
+        for IT1 in range(10):
+            ar = self.gen()
+            for IT2 in range(10**7 // 10 // self.month_days):
+                t *= 0.99
+                cnt = self.cnt(ar)
+                if cnt == 0:
+                    return ar
+                
+                x, y = secrets.randbelow(self.month_days), secrets.randbelow(self.month_days)
+                while x == y:
+                    y = secrets.randbelow(self.month_days)
+                    
+                ar[0][x], ar[0][y] = ar[0][y], ar[0][x]
+                
+                cnt2 = self.cnt(ar)
+                
+                try:
+                    if not (cnt2 < cnt or exp((cnt2 - cnt) / t) < 2147483647):
+                        ar[0][x], ar[0][y] = ar[0][y], ar[0][x]
+                except:
+                    print(cn2, cnt, t)
+                    
+        return []
+            
 data = {
-    1: [3, 2],
-    2: [1, 3],
-    3: [1, 5],
-    4: [1, 2],
-    5: [1, 9],
-    6: [1, 10],
-    7: [1, 19],
-    8: [1, 21],
-    9: [1, 1],
-    10: [1, 7] 
+    1: [2, 2],
+    2: [3, 3],
+    3: [4, 4],
+    4: [5, 5],
+    5: [6, 6],
+    6: [7, 7],
+    7: [8, 8],
+    8: [9, 9],
+    9: [10, 10],
+    10: [11, 11],
+    11: [12, 12],
+    12: [13, 13],
+    13: [14, 14],
+    14: [15, 15],
+    15: [16, 16] 
 }
 
-an = Annealing(data, work_days=2).gen()
+an = Annealing(data, work_days=4).main()
+print(an[0])
+print(an[1])
+d = {}
+for i in range(2):
+    for j in range(30):
+        d[an[i][j]] = d.get(an[i][j], 0) + 1
+
+for el in d.items():
+    print(el)
