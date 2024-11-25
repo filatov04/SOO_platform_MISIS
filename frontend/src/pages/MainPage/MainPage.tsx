@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './MainPage.scss';
-import { Employee, Floor, floorProps, Last, Notes } from '../../widgets';
+import { Employee, Floor, Last, Notes } from '../../widgets';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { saveInfo, userInfo, UserState } from '../../app/features/User/UserSlice';
 import axios from 'axios';
 import { NotesItemProps } from '../../entities';
-import { saveHeadmans } from '../../app/features/Headmans/HeadmansSlice';
+import { HeadmanDictionary, saveHeadmans } from '../../app/features/Headmans/HeadmansSlice';
+
+export interface FloorHeadman {
+  floor: string;
+  floor_id: string;
+}
 
 export const MainPage = () => {
   const user = useAppSelector(userInfo);
@@ -14,7 +19,7 @@ export const MainPage = () => {
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const [isLoadingNotes, setIsLoadindNotes] = useState(false);
   const [isLoadingFloors, setIsLoadingFloors] = useState(false);
-  const [floors, setFloors] = useState<floorProps[]>([]);
+  const [floors, setFloors] = useState<FloorHeadman[]>([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -83,16 +88,22 @@ export const MainPage = () => {
         })
         .then((response) => {
           const length = response.data.length;
-          //console.log('http://localhost:8000/floors/get/ ', user.dormId);
-          const array = Array.from({ length }, (_, i) => ({ floor: response.data[i].floor_number }));
-          const arrayHeadmans = Array.from({ length }, (_, i) => ({
-            firstName: response.data[i].owner_first_name,
-            secondName: response.data[i].owner_second_name,
-            thirdName: response.data[i].owner_third_name,
-            tg: response.data[i].owner_tg,
-            phone: response.data[i].owner_phone
+          const array = Array.from({ length }, (_, i) => ({
+            floor: response.data[i].floor_number,
+            floor_id: response.data[i].floor_id
           }));
-          //console.log(response.data);
+          let arrayHeadmans: HeadmanDictionary = {};
+          for (let i = 0; i < length; i++) {
+            arrayHeadmans[response.data[i].floor_id] = {
+              firstName: response.data[i].owner_first_name,
+              secondName: response.data[i].owner_second_name,
+              thirdName: response.data[i].owner_third_name,
+              tg: response.data[i].owner_tg,
+              phone: response.data[i].owner_phone
+            };
+          }
+          // console.log(arrayHeadmans);
+          // //console.log(response.data);
           setFloors(array);
           dispatch(saveHeadmans(arrayHeadmans));
           setIsLoadingFloors(true);

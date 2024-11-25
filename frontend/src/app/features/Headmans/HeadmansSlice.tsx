@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store/store';
 
-export interface HeadmanState {
+export interface HeadmanRecord {
   firstName: string;
   secondName: string;
   thirdName: string;
@@ -9,20 +9,24 @@ export interface HeadmanState {
   phone: string;
 }
 
-interface HeadmansState {
-  headmansArray: HeadmanState[];
+export interface HeadmanDictionary {
+  [floor_id: string]: HeadmanRecord;
 }
 
-const initialState: HeadmansState = {
-  headmansArray: [{ firstName: '', secondName: '', thirdName: '', tg: '', phone: '' }]
+// interface HeadmanState {
+//   data: HeadmanDictionary[];
+// }
+
+const initialState: HeadmanDictionary = {
+  '0': { firstName: '', secondName: '', thirdName: '', tg: '', phone: '' }
 };
 
 export const HeadmansSlice = createSlice({
   name: 'headmans',
   initialState,
   reducers: {
-    saveHeadmans: (state, action: PayloadAction<HeadmanState[]>) => {
-      state.headmansArray = action.payload;
+    saveHeadmans: (state, action: PayloadAction<HeadmanDictionary>) => {
+      Object.assign(state, action.payload);
     }
   }
 });

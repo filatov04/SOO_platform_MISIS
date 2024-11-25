@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import vector7 from '../../shared/assets/FloorList/Vector2.png';
 import './Floor.scss';
 import { useNavigate } from 'react-router-dom';
-
-export interface floorProps {
-  floor: number;
-}
+import { FloorHeadman } from '../../pages/MainPage';
 
 interface FloorProps {
-  floors: floorProps[];
+  floors: FloorHeadman[];
 }
 
 export const Floor = ({ floors }: FloorProps): JSX.Element => {
@@ -17,7 +14,7 @@ export const Floor = ({ floors }: FloorProps): JSX.Element => {
     <div className='content__floor floor'>
       <div className='floor__scroll'>
         <ul className='content__floor-list floor__list'>
-          {floors.map((o, index) => {
+          {floors.map((o) => {
             return (
               <li
                 key={o.floor}
@@ -25,7 +22,7 @@ export const Floor = ({ floors }: FloorProps): JSX.Element => {
                 onClick={() => {
                   router('/FloorPage');
                   localStorage.setItem('NumberFloor', JSON.stringify(o.floor));
-                  localStorage.setItem('FloorId', JSON.stringify(index + 1));
+                  localStorage.setItem('FloorId', JSON.stringify(o.floor_id));
                 }}
               >
                 <div className='floor__blur'>

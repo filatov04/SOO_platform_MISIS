@@ -12,10 +12,14 @@ import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
 
 export const FloorPage = () => {
   // const floor = useAppSelector(selectFloor);
-  const floor = Number(localStorage.getItem('NumberFloor'));
+  const floor = localStorage.getItem('NumberFloor');
   const router = useNavigate();
   const headmans = useAppSelector(headmansInfo);
-  const floorId = Number(localStorage.getItem('FloorId'));
+  const floorId = localStorage.getItem('FloorId');
+
+  useEffect(() => {
+    console.log(floorId);
+  });
 
   return (
     <div className='floor-page'>
@@ -27,16 +31,18 @@ export const FloorPage = () => {
         <div className='floor-page__contact-info'>
           <div className='floor-page__contact-elder'>Староста</div>
           <div className='floor-page__contact-name'>
-            {headmans.headmansArray[floorId - 1].secondName} {headmans.headmansArray[floorId - 1].firstName}
+            {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'Not'}{' '}
+            {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'found'}
           </div>
         </div>
         <div className='floor-page__contact-info'>
           <div className='floor-page__contact-elder'>
             <img src={tg} className='floor-page__tg' />
-            {headmans.headmansArray[floorId - 1].tg}
+            {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not found'}
           </div>
           <div className='floor-page__contact-name'>
-            <img src={phone} className='floor-page__phone' />+{headmans.headmansArray[floorId - 1].phone}
+            <img src={phone} className='floor-page__phone' />+
+            {floorId && headmans[floorId]?.phone ? headmans[floorId].phone : 'Not found'}
           </div>
         </div>
       </div>
