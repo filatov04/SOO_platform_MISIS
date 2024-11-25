@@ -16,6 +16,7 @@ class Annealing:
          
     def gen(self):
         ar = [[0] * self.month_days for i in range(2)]
+        duty_users = dict()
         users = list(self.data.keys())
         for i in range(4):
             random.shuffle(users)
@@ -25,15 +26,20 @@ class Annealing:
         it = 0
         while it < self.month_days:
             ar[0][it] = users[it % n]
+            duty_users[users[it % n]] = duty_users.get(users[it % n], 0) + 1
             it += 1
         
         cnt = 0
         while cnt < self.month_days:
             it += 1
+            
+            if min(duty_users.values()) + 3 < duty_users[users[it % n]]:
+                continue
             if (cnt + 1) in self.data[users[it % n]]:
                 continue
             
             ar[1][cnt] = users[it % n]
+            duty_users[users[it % n]] = duty_users.get(users[it % n], 0) + 1
             cnt += 1
 
             
@@ -91,7 +97,7 @@ data = {
     12: [13, 13],
     13: [14, 14],
     14: [15, 15],
-    15: [16, 16] 
+    15: [16, 16], 
 }
 
 an = Annealing(data, work_days=4).main()

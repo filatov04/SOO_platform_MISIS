@@ -130,7 +130,7 @@ class DBManager:
         return None
     
     def get_floors(self, dorm_id: int) -> List[FloorSchema]: #TODO: add user info
-        data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter(Floors.dorm_id == dorm_id).all()
+        data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter(Floors.dorm_id == dorm_id).order_by(Floors.floor_number).all()
         return [
             FloorSchema(
                 **floor.__dict__,
