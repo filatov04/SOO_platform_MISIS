@@ -1,11 +1,12 @@
 import React from 'react';
 import { LoginPage } from '../LoginPage';
-import { MainPage } from '../MainPage/MainPage';
-import { FloorPage } from '../FloorPage/FloorPage';
+import { MainPage } from '../MainPage';
+import { FloorPage } from '../FloorPage';
 import { HomeRoutes } from './homeRoutes';
 import { WithAuth } from './withAuth';
 import { WithoutAuth } from './withoutAuth';
 import { UndefinedRoute } from './undefinedRoute';
+import { CalendarPage } from '../CalendarPage';
 
 export const routesData = () => {
   return [
@@ -28,6 +29,10 @@ export const routesData = () => {
     {
       path: '/FloorPage',
       element: React.createElement(WithAuth(FloorPage))
+    },
+    {
+      path: '/CalendarPage',
+      element: React.createElement(WithAuth(CalendarPage))
     }
   ];
 };

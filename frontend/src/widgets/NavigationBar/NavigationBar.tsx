@@ -7,12 +7,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { AuthorizationValue, notAuth } from '../../app/features/Auth/AuthSlice';
 import { userInfo } from '../../app/features/User/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const NavigationBar = () => {
   const auth = useAppSelector(AuthorizationValue);
   const user = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
   const [isAdmin, setIsAdmin] = useState(false);
+  const router = useNavigate();
   return (
     <div className='navbar'>
       <div className='navbar__content'>
@@ -22,7 +24,7 @@ export const NavigationBar = () => {
         <div className='navbar__list-panel'>
           {auth ? (
             <>
-              <div className='navbar__item-panel'>
+              <div className='navbar__item-panel' onClick={() => router('/CalendarPage')}>
                 <CalendarMonthIcon
                   sx={{
                     cursor: 'pointer',
