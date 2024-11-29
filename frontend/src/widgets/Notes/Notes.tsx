@@ -10,9 +10,10 @@ import '../../features/ModalCreateNotes/ModalCreateNotes.scss';
 
 interface NotesProps {
   notes?: NotesItemProps[];
+  setNotes: React.Dispatch<React.SetStateAction<NotesItemProps[]>>;
 }
 
-export const Notes = ({ notes = [] }: NotesProps): JSX.Element => {
+export const Notes = ({ setNotes, notes = [] }: NotesProps): JSX.Element => {
   const dialogRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,12 +41,12 @@ export const Notes = ({ notes = [] }: NotesProps): JSX.Element => {
             {notes.length !== 0 ? (
               notes.map((item, index) => <NotesItem key={index} roomNumber={item.roomNumber} text={item.text} />)
             ) : (
-              <NotesItem roomNumber='609-2' text='Заходить в комнату почаще так как есть подозрение на курение' />
+              <></>
             )}
           </div>
         </div>
       </div>
-      <ModalCreateNotes isOpen={isOpen} setIsOpen={() => setIsOpen(false)} dialogRef={dialogRef} />
+      <ModalCreateNotes setNotes={setNotes} isOpen={isOpen} setIsOpen={() => setIsOpen(false)} dialogRef={dialogRef} />
     </>
   );
 };

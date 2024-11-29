@@ -7,6 +7,7 @@ import { WithAuth } from './withAuth';
 import { WithoutAuth } from './withoutAuth';
 import { UndefinedRoute } from './undefinedRoute';
 import { CalendarPage } from '../CalendarPage';
+import { AllUserPage } from '../AllUserPage';
 
 export const routesData = () => {
   return [
@@ -33,6 +34,10 @@ export const routesData = () => {
     {
       path: '/CalendarPage',
       element: React.createElement(WithAuth(CalendarPage))
+    },
+    {
+      path: '/AllUserPage',
+      element: React.createElement(WithAuth(AllUserPage))
     }
   ];
 };

@@ -2,19 +2,49 @@ import React, { RefObject, useEffect } from 'react';
 import './ModalCreateNotes.scss';
 import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import { useForm } from 'react-hook-form';
+import { NotesItemProps } from '../../entities';
+import { useAppSelector } from '../../app/hooks/hooks';
+import { userInfo } from '../../app/features/User/UserSlice';
+import axios from 'axios';
 
 interface ModalCreateNotes {
   isOpen: boolean;
   dialogRef: RefObject<HTMLDialogElement>;
   setIsOpen: () => void;
+  setNotes: React.Dispatch<React.SetStateAction<NotesItemProps[]>>;
 }
 
-export const ModalCreateNotes = ({ dialogRef, isOpen, setIsOpen }: ModalCreateNotes): JSX.Element => {
+interface FormNote {
+  room_id: number;
+  room: string;
+  description: string;
+}
+
+export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotes): JSX.Element => {
+  const room_id = useAppSelector(userInfo);
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid }
-  } = useForm({ mode: 'onBlur' });
+  } = useForm<FormNote>({ mode: 'onBlur' });
+
+  async function addNotes(e: { dorm_id: number; room: string; description: string }) {
+    const post = await axios
+      .post('http://localhost:8000/notes/add', JSON.stringify(e), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -24,9 +54,21 @@ export const ModalCreateNotes = ({ dialogRef, isOpen, setIsOpen }: ModalCreateNo
     }
   }, [isOpen]);
 
+  const onSubmit = (e: FormNote) => {
+    const data = {
+      dorm_id: room_id.dormId,
+      room: e.room,
+      description: e.description
+    };
+    console.log(data);
+    addNotes(data);
+    reset();
+    setNotes((prev: NotesItemProps[]) => [{ roomNumber: e.room, text: e.description }, ...prev]);
+  };
+
   return (
     <dialog ref={dialogRef} onClose={setIsOpen} id='modalNotes' className='dialog' aria-label='Modal for create notes'>
-      <form method='dialog'>
+      <form method='dialog' onSubmit={handleSubmit(onSubmit)}>
         <div className='dialog__content'>
           <div className='dialog__header'>
             <div className='dialog__header-arrow'>
@@ -45,7 +87,7 @@ export const ModalCreateNotes = ({ dialogRef, isOpen, setIsOpen }: ModalCreateNo
           </div>
           <div className='dialog__note'>
             <textarea
-              {...register('room', {
+              {...register('description', {
                 required: true
               })}
               className='dialog__note-inp'
@@ -53,7 +95,11 @@ export const ModalCreateNotes = ({ dialogRef, isOpen, setIsOpen }: ModalCreateNo
             />
           </div>
           <div className='dialog__submit'>
-            <button disabled={isValid} type='submit' className='dialog__submit-btn'>
+            <button
+              disabled={!isValid}
+              type='submit'
+              className={!isValid ? 'dialog__submit-btn dialog__submit-btn--error' : 'dialog__submit-btn'}
+            >
               Внести
             </button>
           </div>

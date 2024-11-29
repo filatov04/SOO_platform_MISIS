@@ -124,7 +124,7 @@ export const MainPage = () => {
   if (isLoadingFloors && isLoadingNotes && isLoadingUser) {
     return (
       <div className='content'>
-        <Notes notes={notes} />
+        <Notes setNotes={setNotes} notes={notes} />
         <div className='content__main'>
           <Employee />
           <Last />

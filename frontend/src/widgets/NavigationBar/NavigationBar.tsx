@@ -13,7 +13,7 @@ export const NavigationBar = () => {
   const auth = useAppSelector(AuthorizationValue);
   const user = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const router = useNavigate();
   return (
     <div className='navbar'>
@@ -37,7 +37,7 @@ export const NavigationBar = () => {
                 />
               </div>
               {isAdmin ? (
-                <div className='navbar__item-panel'>
+                <div className='navbar__item-panel' onClick={() => router('/AllUserPage')}>
                   <PersonAddAlt1Icon
                     sx={{
                       cursor: 'pointer',

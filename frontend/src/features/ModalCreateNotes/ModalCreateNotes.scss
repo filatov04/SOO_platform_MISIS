@@ -76,5 +76,15 @@
             color: #187FF6;
             background-color: white;
         }
+
+        &--error{
+            opacity: 0.5;
+
+            &:hover{
+                cursor: default;
+                color: white;
+                background-color: #187FF6;
+            }
+        }
     }
 }
