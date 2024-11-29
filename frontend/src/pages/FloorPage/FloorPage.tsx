@@ -19,6 +19,7 @@ export const FloorPage = () => {
   const floorId = localStorage.getItem('FloorId');
   const modalRef = useRef(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [roomViolation, setRoomViolation] = useState('');
 
   useEffect(() => {
     console.log(floorId);
@@ -50,16 +51,17 @@ export const FloorPage = () => {
         </div>
       </div>
       <div className='floor-page__rooms'>
-        <RoomFloor floor={floor} number='09' />
-        <RoomFloor floor={floor} number='10' />
-        <RoomFloor floor={floor} number='11' />
-        <RoomFloor floor={floor} number='12' />
-        <RoomFloor floor={floor} number='13' />
+        <RoomFloor floor={floor} number='09' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
+        <RoomFloor floor={floor} number='10' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
+        <RoomFloor floor={floor} number='11' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
+        <RoomFloor floor={floor} number='12' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
+        <RoomFloor floor={floor} number='13' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
       </div>
       <ModalCreateViolation
+        room={roomViolation}
         modalRef={modalRef}
         modalIsOpen={modalIsOpen}
-        setModalIsOpen={() => setModalIsOpen(false)}
+        setModalIsOpen={setModalIsOpen}
       />
     </div>
   );
