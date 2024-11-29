@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './FloorPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import tg from '../../shared/assets/FloorPage/ContactInfo/Telegram.png';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
+import { ModalCreateViolation } from '../../features/ModalCreateViolation';
 // import { selectFloor } from '../../app/features/ChooseFloor/ChooseFloorSllice';
 // import { useAppSelector } from '../../app/hooks/hooks';
 
@@ -16,6 +17,8 @@ export const FloorPage = () => {
   const router = useNavigate();
   const headmans = useAppSelector(headmansInfo);
   const floorId = localStorage.getItem('FloorId');
+  const modalRef = useRef(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     console.log(floorId);
@@ -31,8 +34,8 @@ export const FloorPage = () => {
         <div className='floor-page__contact-info'>
           <div className='floor-page__contact-elder'>Староста</div>
           <div className='floor-page__contact-name'>
-            {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'Not'}{' '}
-            {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'found'}
+            {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'found'}{' '}
+            {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'Not'}
           </div>
         </div>
         <div className='floor-page__contact-info'>
@@ -48,7 +51,16 @@ export const FloorPage = () => {
       </div>
       <div className='floor-page__rooms'>
         <RoomFloor floor={floor} number='09' />
+        <RoomFloor floor={floor} number='10' />
+        <RoomFloor floor={floor} number='11' />
+        <RoomFloor floor={floor} number='12' />
+        <RoomFloor floor={floor} number='13' />
       </div>
+      <ModalCreateViolation
+        modalRef={modalRef}
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={() => setModalIsOpen(false)}
+      />
     </div>
   );
 };

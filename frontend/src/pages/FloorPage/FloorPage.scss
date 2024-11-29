@@ -6,7 +6,7 @@
     &__info{
         display: flex;
         width: 100%;
-        column-gap: 2%;
+        justify-content: space-between;
         margin-bottom: 40px;
         height: 68px;
     }
@@ -19,7 +19,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 16%;
+        padding: 0 20px;
+        //width: 16%;
         border-radius: 20px;
         font-size: 48px;
         background-color: #187FF6;
@@ -29,7 +30,6 @@
     &__contact-info{
         display: flex;
         background-color: #187FF6;
-        width: 37%;
         border-radius: 20px;
         align-items: center;
     }
@@ -46,11 +46,11 @@
         border-right: 2px solid white;
         height: 100%;
         align-items: center;        
-        width: 35%;
+        padding: 0 20px;
     }
 
     &__contact-name{
-        flex-grow: 1;
+        padding: 0 20px;
         align-items: center;
 
     }
