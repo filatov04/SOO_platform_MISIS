@@ -31,6 +31,8 @@
     &__item-panel{
         display: flex;
         align-items: center;
+
+        cursor: pointer;
     }
 
     &__name{
@@ -38,7 +40,6 @@
         font-size: 20px;
         margin: 0;
         margin-right: 10px;
-        cursor: default;
     }
 }
 

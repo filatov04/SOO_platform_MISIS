@@ -1,12 +1,8 @@
 import React from 'react';
 import { LoginPage } from '../LoginPage';
-import { MainPage } from '../MainPage';
-import { FloorPage } from '../FloorPage';
+import { MainPage } from '../MainPage/MainPage';
+import { FloorPage } from '../FloorPage/FloorPage';
 import { HomeRoutes } from './homeRoutes';
-import { WithAuth } from './withAuth';
-import { WithoutAuth } from './withoutAuth';
-import { UndefinedRoute } from './undefinedRoute';
-import { CalendarPage } from '../CalendarPage';
 
 export const routesData = () => {
   return [
@@ -14,25 +10,17 @@ export const routesData = () => {
       path: '/',
       element: <HomeRoutes />
     },
-    // {
-    //   path: '*',
-    //   element: <UndefinedRoute />
-    // },
     {
-      path: '/LoginPage',
-      element: React.createElement(WithoutAuth(LoginPage))
+      path: '/login',
+      element: <LoginPage />
     },
     {
-      path: '/MainPage',
-      element: React.createElement(WithAuth(MainPage))
+      path: '/mainPage',
+      element: <MainPage />
     },
     {
       path: '/FloorPage',
-      element: React.createElement(WithAuth(FloorPage))
-    },
-    {
-      path: '/CalendarPage',
-      element: React.createElement(WithAuth(CalendarPage))
+      element: <FloorPage />
     }
   ];
 };

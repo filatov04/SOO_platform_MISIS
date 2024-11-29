@@ -106,14 +106,28 @@ class DBManager:
     
     def user_exists(self, phone: str) -> bool:
         """Get user by email from the database"""
-        return self.session.query(Users).filter_by(phone=phone).first() is not None
+        return self.session.query(Users).filter(and_(Users.phone == phone, Usrs.deleted_at == None)).first() is not None
     
     def add_user(self, data: UserRegisterSchema) -> bool:
-        if self.user_exists(data.number):
-            return False
-        
+        user_in_db = self.session.query(Users).filter_by(phone=data.phone).first()
+        if user_in_db is not None:
+            if user_in_db.deleted_at is not None:
+                user_in_db.deleted_at = None
+                user_in_db.hashed_password = data.hashed_password
+                self.session.commit()
+                return True
+            else:
+                return False
         user = Users(**data.dict(), created_at=datetime.now())
         self.session.add(user)
+        self.session.commit()
+        return True
+    
+    def delete_user(self, user_id: int) -> bool:
+        user = self.session.query(Users).filter_by(user_id=user_id).first()
+        if user is None or user.deleted_at is not None:
+            return False
+        user.deleted_at = datetime.now()
         self.session.commit()
         return True
     
@@ -149,7 +163,7 @@ class DBManager:
         data = []
         for room in rooms:
             obj_room = RoomSchema(**room.__dict__)
-            obj_room.violations = self.session.query(Violations).filter_by(room_id=room.room_id).all()
+            obj_room.violations = self.session.query(Violations).filter_by(room_id=room.room_id).order_by(Violations.created_at.desc()).all()
             data.append(obj_room)
             
         return data

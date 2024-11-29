@@ -40,6 +40,7 @@ class Role(enum.Enum):
     soo_leader: str = "soo_leader"
     spectator: str = "spectator"
     
+    
 class Dorms(Base):
     __tablename__ = "Dorms"
     
@@ -51,6 +52,7 @@ class Dorms(Base):
     floor_dorm_rel = relationship("Floors")
     note_dorm_rel = relationship("Notes")
     
+    
 class Floors(Base):
     __tablename__ = "Floors"
     
@@ -59,6 +61,7 @@ class Floors(Base):
     owner_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
     floor_number = Column(BigInteger, nullable=False)
     renovated_date = Column(DateTime(), nullable=True, default=None)
+   
     
 class Rooms(Base):
     __tablename__ = "Rooms"
@@ -115,4 +118,3 @@ class Notes(Base):
     description = Column(Text, nullable=False)
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None) # TODO: подумать над автоматическим удалением
-    
