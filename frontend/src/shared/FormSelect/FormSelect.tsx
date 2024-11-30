@@ -1,5 +1,6 @@
 import React from 'react';
 import { UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
+import './FormSelect.scss';
 
 interface optionProps {
   id: number;
@@ -12,12 +13,29 @@ interface FormSelectProps {
   options: optionProps[];
   onChange: (value: string) => void;
   value: string;
+  multiple?: boolean;
+  defaultValue?: string;
 }
 
-export const FormSelect = ({ register, options, onChange, value }: FormSelectProps): JSX.Element => {
+export const FormSelect = ({
+  defaultValue = '',
+  multiple = false,
+  register,
+  options,
+  onChange,
+  value
+}: FormSelectProps): JSX.Element => {
   return (
-    <select {...register} value={value} onChange={(e) => onChange(e.currentTarget.value)}>
-      <option value=''></option>
+    <select
+      multiple={multiple}
+      {...register}
+      value={value}
+      onChange={(e) => onChange(e.currentTarget.value)}
+      className='select'
+    >
+      <option disabled value='' selected>
+        {defaultValue}
+      </option>
       {options.map((elem) => (
         <option value={elem.value} key={elem.id}>
           {elem.name}
