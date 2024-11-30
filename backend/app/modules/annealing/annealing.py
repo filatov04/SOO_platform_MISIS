@@ -7,53 +7,51 @@ import secrets
 import random
 from collections import defaultdict
 from math import exp, ceil
+import json
 
 class Annealing:
     def __init__(self, data: Dict[int, List[int]]): # data format dict: {user_id: [days, when people dont work]}
         self.data = data
-        self.month_days = 11 # calendar.monthrange(datetime.now().year, datetime.now().month)[1]
+        self.month_days = 31 # calendar.monthrange(datetime.now().year, datetime.now().month)[1]
         self.work_days = ceil(self.month_days * 2 / len(data.keys()))
          
     def gen(self):
-        duty_users = {}
-        n = len(self.data.keys())
-        users = []
         ar = [[0] * self.month_days for i in range(2)]
-        while len(users) < self.month_days * 2:
-            users.extend(self.data.keys())
-            
-        used = [0] * len(users)
-        it = -1
+        duty_users = dict()
+        users = list(self.data.keys())
+        for i in range(4):
+            random.shuffle(users)
+        
+        n = len(users)
+        
+        it = 0
         cnt = 0
         while cnt < self.month_days:
-            it += 1
-            it %= len(users)
-            if (cnt + 1) in self.data[users[it]] or used[it]:
-                continue
+            if it >= n:
+                it = 0
             
-            ar[0][cnt] = users[it]
-            used[it] = 1
-            cnt += 1
-
+            if (cnt + 1) not in self.data[users[it]]:
+                ar[0][cnt] = users[it]
+                cnt += 1
+            it += 1
+        
         cnt = 0
         while cnt < self.month_days:
-            it += 1
-            it %= len(users)
-            if used[it]:
-                continue
-            
+            if it >= n:
+                it = 0
             ar[1][cnt] = users[it]
-            used[it] = 1
             cnt += 1
-
-        print(ar)
+            it += 1
+            
         return ar
+    
     
     def cnt(self, ar):
         cnt = 0
         for i in range(self.month_days):
-            if (i + 1) in self.data[ar[0][i]]:
+            if (i + 1) in self.data[ar[1][i]]:
                 cnt += 1
+            
                 
             if ar[0][i] == ar[1][i]:
                 cnt += 1
@@ -87,26 +85,21 @@ class Annealing:
                     
         return []
             
-data = {
-    1: [4, 5, 6, 7, 8, 9, 10],
-    2: [4, 5, 6, 7, 8, 9, 10],
-    3: [1, 3, 4],
-    4: [4, 5, 6, 7, 8, 9, 10],
-    5: [5, 6],
-    6: [4, 5, 6, 7, 8, 9, 10],
-    7: [4, 5, 6, 7, 8, 9, 10],
-    8: [4, 5, 6, 7, 8, 9, 10],
-    9: [9, 10],
-    10: [10, 11]
-}
+data = {}
 
-an = Annealing(data).main()
-print(an[0])
-print(an[1])
-d = {}
-for i in range(2):
-    for j in range(11):
-        d[an[i][j]] = d.get(an[i][j], 0) + 1
+with open("/Users/klstepan67/Desktop/SOO_platform_MISIS/backend/app/modules/annealing/data.json", "r") as f:
+    data = json.load(f)
 
-for el in d.items():
-    print(el)
+fl = 1
+while fl:
+    an = Annealing(data).main()
+    # print(an)
+    d = {}
+    for i in range(2):
+        for j in range(31):
+            d[an[i][j]] = d.get(an[i][j], 0) + 1
+
+    if max(d.values()) - min(d.values()) <= 1:
+        print(an)
+        print(d)
+        fl = 0

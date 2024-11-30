@@ -159,7 +159,7 @@ class DBManager:
 
     def get_rooms_with_violations(self, floor_id: int) -> List[RoomSchema]:
         # data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
-        rooms = self.session.query(Rooms).filter_by(floor_id=floor_id).all()
+        rooms = self.session.query(Rooms).filter_by(floor_id=floor_id).order_by(Rooms.block_number).all()
         data = []
         for room in rooms:
             obj_room = RoomSchema(**room.__dict__)
