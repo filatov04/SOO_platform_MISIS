@@ -33,7 +33,7 @@ export const FormSelect = ({
       onChange={(e) => onChange(e.currentTarget.value)}
       className='select'
     >
-      <option disabled value='' selected>
+      <option disabled value=''>
         {defaultValue}
       </option>
       {options.map((elem) => (

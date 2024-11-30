@@ -2,9 +2,10 @@ import React, { RefObject, SetStateAction, useEffect, useState } from 'react';
 import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import './ModalCreateViolation.scss';
 import { useForm } from 'react-hook-form';
-import { FormSelect } from '../../shared/FormSelect';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { FormSelect } from '../../shared';
+import { document_type, violation_type } from '../RoomFloor';
 
 interface ModalCreateViolationProps {
   modalRef: RefObject<HTMLDialogElement>;
@@ -85,13 +86,13 @@ export const ModalCreateViolation = ({
             <FormSelect
               defaultValue='AКТ/ЗМ'
               register={{
-                ...register('punishment', {
+                ...register('document_type', {
                   required: true
                 })
               }}
               options={[
-                { id: 1, value: 'warning', name: 'ЗМ' },
-                { id: 2, value: 'act', name: 'АКТ' }
+                { id: 1, value: 'warning', name: document_type.warning },
+                { id: 2, value: 'act', name: document_type.act }
               ]}
               onChange={(e) => setViolation(e)}
               value={violation}
@@ -114,55 +115,50 @@ export const ModalCreateViolation = ({
           <FormSelect
             defaultValue='Вид нарушения'
             register={{
-              ...register('violationtype', {
+              ...register('violation_type', {
                 required: true
               })
             }}
             options={[
-              { id: 1, value: 'unsanitation', name: 'Антисанитария в блоке (туалет, ванная)' },
+              { id: 1, value: 'unsanitation_block', name: violation_type.unsanitation_block },
               {
                 id: 2,
-                value: 'unsanitation',
-                name: 'Антисанитария в комнате (грязная посуда, разрбросанные вещи, грязный пол)'
+                value: 'unsanitation_room',
+                name: violation_type.unsanitation_room
               },
               {
                 id: 3,
-                value: 'unsanitation',
-                name: 'Антисанитария в общественном месте (кухня, мусоропровод)'
+                value: 'unsanitation_general_place',
+                name: violation_type.unsanitation_general_place
               },
-              { id: 4, value: 'alcohol_mode', name: 'Распитие спиртных напитков на территории общежития' },
+              { id: 4, value: 'drink_alcohol', name: violation_type.drink_alcohol },
               {
                 id: 5,
-                value: 'alcohol_mode',
-                name: 'Проход в общежитие в состоянии алкогольного (наркотического опьянения)'
+                value: 'passage_alcohol',
+                name: violation_type.passage_alcohol
               },
               {
                 id: 6,
-                value: 'alcohol_mode',
-                name: 'Пронос, хранение, распространение спиртных напитков на территории общежития'
+                value: 'keeping_alcohol',
+                name: violation_type.keeping_alcohol
               },
               {
                 id: 7,
                 value: 'fire_security',
-                name: 'Нарушение пожарной безопасности - курение в помещениях общежития сигарет, электронных сигарет, средств нагревания табака'
+                name: violation_type.fire_security
               },
+              { id: 8, value: 'electrical_security', name: violation_type.electrical_security },
+              { id: 9, value: 'noise_mode', name: violation_type.noise_mode },
               {
-                id: 8,
-                value: 'fire_security',
-                name: 'Нарушение пожарной безопасности - срабатывание АПС, приготовление пищи, вызвавшее задымление помещений  общего пользования'
-              },
-              { id: 9, value: 'electrical_security', name: 'Нарушение правил электробезопасности' },
-              { id: 10, value: 'noise_mode', name: 'Нарушение шумового режима с 22:00 до 07:00' },
-              {
-                id: 11,
+                id: 10,
                 value: 'guest_mode',
-                name: 'Нарушение гостевого режима (выход гостей после 23:00, незаконное проведение посторонних лиц)'
+                name: violation_type.guest_mode
               },
-              { id: 12, value: 'break_mode', name: 'Порча имущества общежития' },
+              { id: 11, value: 'break_mode', name: violation_type.break_mode },
               {
-                id: 13,
+                id: 12,
                 value: 'block_thing',
-                name: 'Хранение лищних вещей, загромождающие комнаты и проходы в коридорах'
+                name: violation_type.block_thing
               }
             ]}
             onChange={(e) => setViolationType(e)}

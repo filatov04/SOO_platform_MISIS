@@ -8,11 +8,26 @@ import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
 import { ModalCreateViolation } from '../../features/ModalCreateViolation';
-// import { selectFloor } from '../../app/features/ChooseFloor/ChooseFloorSllice';
-// import { useAppSelector } from '../../app/hooks/hooks';
+import axios from 'axios';
+
+export interface violation {
+  document_type: string;
+  violator_name: string;
+  violation_type: string;
+  description: string;
+  room_id: number;
+  witness: string;
+}
+
+interface roomsViolation {
+  room_id: number;
+  floor_id: number;
+  block_number: number;
+  room_number: number;
+  violations: violation[];
+}
 
 export const FloorPage = () => {
-  // const floor = useAppSelector(selectFloor);
   const floor = localStorage.getItem('NumberFloor');
   const router = useNavigate();
   const headmans = useAppSelector(headmansInfo);
@@ -20,10 +35,27 @@ export const FloorPage = () => {
   const modalRef = useRef(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [roomViolation, setRoomViolation] = useState('');
+  const [roomsWithViolation, setRoomsWithViolations] = useState<roomsViolation[]>([]);
+  let blockNumber: number = 0;
 
   useEffect(() => {
-    console.log(floorId);
-  });
+    async function getRoomWithViolation() {
+      const getRoom = await axios
+        .get('http://localhost:8000/violations/rooms/get/' + floorId, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+          }
+        })
+        .then((response) => {
+          setRoomsWithViolations(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+
+    getRoomWithViolation();
+  }, []);
 
   return (
     <div className='floor-page'>
@@ -51,11 +83,20 @@ export const FloorPage = () => {
         </div>
       </div>
       <div className='floor-page__rooms'>
-        <RoomFloor floor={floor} number='09' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
-        <RoomFloor floor={floor} number='10' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
-        <RoomFloor floor={floor} number='11' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
-        <RoomFloor floor={floor} number='12' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
-        <RoomFloor floor={floor} number='13' setModalIsOpen={setModalIsOpen} setRoomViolation={setRoomViolation} />
+        {roomsWithViolation.map((elem, index) => {
+          if (elem.block_number !== blockNumber) {
+            blockNumber = elem.block_number;
+            return (
+              <RoomFloor
+                violations={elem.violations}
+                floor={floor}
+                number={elem.block_number.toString()}
+                setModalIsOpen={setModalIsOpen}
+                setRoomViolation={setRoomViolation}
+              />
+            );
+          }
+        })}
       </div>
       <ModalCreateViolation
         room={roomViolation}
