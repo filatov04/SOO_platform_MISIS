@@ -6,13 +6,14 @@ import random
 import secrets
 import random
 from collections import defaultdict
-from math import exp
+from math import exp, ceil
+import json
 
 class Annealing:
-    def __init__(self, data: Dict[int, List[int]], work_days: int = 4): # data format dict: {user_id: [days, when people dont work]}
+    def __init__(self, data: Dict[int, List[int]]): # data format dict: {user_id: [days, when people dont work]}
         self.data = data
-        self.month_days = 30 # calendar.monthrange(datetime.now().year, datetime.now().month)[1]
-        self.work_days = work_days
+        self.month_days = 31 # calendar.monthrange(datetime.now().year, datetime.now().month)[1]
+        self.work_days = ceil(self.month_days * 2 / len(data.keys()))
          
     def gen(self):
         ar = [[0] * self.month_days for i in range(2)]
@@ -24,32 +25,33 @@ class Annealing:
         n = len(users)
         
         it = 0
-        while it < self.month_days:
-            ar[0][it] = users[it % n]
-            duty_users[users[it % n]] = duty_users.get(users[it % n], 0) + 1
+        cnt = 0
+        while cnt < self.month_days:
+            if it >= n:
+                it = 0
+            
+            if (cnt + 1) not in self.data[users[it]]:
+                ar[0][cnt] = users[it]
+                cnt += 1
             it += 1
         
         cnt = 0
         while cnt < self.month_days:
+            if it >= n:
+                it = 0
+            ar[1][cnt] = users[it]
+            cnt += 1
             it += 1
             
-            if min(duty_users.values()) + 3 < duty_users[users[it % n]]:
-                continue
-            if (cnt + 1) in self.data[users[it % n]]:
-                continue
-            
-            ar[1][cnt] = users[it % n]
-            duty_users[users[it % n]] = duty_users.get(users[it % n], 0) + 1
-            cnt += 1
-
-            
         return ar
+    
     
     def cnt(self, ar):
         cnt = 0
         for i in range(self.month_days):
-            if (i + 1) in self.data[ar[0][i]]:
+            if (i + 1) in self.data[ar[1][i]]:
                 cnt += 1
+            
                 
             if ar[0][i] == ar[1][i]:
                 cnt += 1
@@ -70,43 +72,34 @@ class Annealing:
                 while x == y:
                     y = secrets.randbelow(self.month_days)
                     
-                ar[0][x], ar[0][y] = ar[0][y], ar[0][x]
+                ar[1][x], ar[1][y] = ar[1][y], ar[1][x]
                 
                 cnt2 = self.cnt(ar)
                 
                 try:
                     if not (cnt2 < cnt or exp((cnt2 - cnt) / t) < 2147483647):
-                        ar[0][x], ar[0][y] = ar[0][y], ar[0][x]
+                        ar[1][x], ar[1][y] = ar[1][y], ar[1][x]
                 except:
-                    print(cn2, cnt, t)
+                    print(cnt2, cnt, t)
+                    return
                     
         return []
             
-data = {
-    1: [2, 2],
-    2: [3, 3],
-    3: [4, 4],
-    4: [5, 5],
-    5: [6, 6],
-    6: [7, 7],
-    7: [8, 8],
-    8: [9, 9],
-    9: [10, 10],
-    10: [11, 11],
-    11: [12, 12],
-    12: [13, 13],
-    13: [14, 14],
-    14: [15, 15],
-    15: [16, 16], 
-}
+data = {}
 
-an = Annealing(data, work_days=4).main()
-print(an[0])
-print(an[1])
-d = {}
-for i in range(2):
-    for j in range(30):
-        d[an[i][j]] = d.get(an[i][j], 0) + 1
+with open("/Users/klstepan67/Desktop/SOO_platform_MISIS/backend/app/modules/annealing/data.json", "r") as f:
+    data = json.load(f)
 
-for el in d.items():
-    print(el)
+fl = 1
+while fl:
+    an = Annealing(data).main()
+    # print(an)
+    d = {}
+    for i in range(2):
+        for j in range(31):
+            d[an[i][j]] = d.get(an[i][j], 0) + 1
+
+    if max(d.values()) - min(d.values()) <= 1:
+        print(an)
+        print(d)
+        fl = 0

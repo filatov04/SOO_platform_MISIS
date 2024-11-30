@@ -45,7 +45,7 @@ async def get_server_status() -> str:
 @router.post("/auth/login", tags=["auth"])
 async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     user = db.get_user_by_phone(data.phone)
-    if user is None:
+    if user is None or user.deleted_at is not None:
         return {"message": "User not found"}
     
     if not bcrypt.verify(data.password, user.hashed_password):
@@ -80,6 +80,19 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     else:
         return {"message": "User already exists"}
 
+@router.post("user/delete", dependencies=[Depends(check_auth)], tags=["user"])
+async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int = Body(...)):
+    if user_id_to_delete == user_id:
+        return {"message": "You cannot delete yourself"}
+    
+    if db.delete_user(user_id_to_delete):
+        return {"message": "User deleted"}
+    
+    return {"message": "User not found"}
+    
+    
+#TODO: get all users
+#TODO: delete user by id
 @router.get("/floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
 async def get_floors(dorm_id: int = Path(..., example=1)) -> List[FloorSchema]:
     return db.get_floors(dorm_id)
@@ -97,7 +110,6 @@ async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> Lis
 @router.get("/notes/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
-
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
 async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
     db.add_note(user_id, data)
