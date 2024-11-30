@@ -89,5 +89,7 @@ INSERT INTO "Floors" (floor_id, dorm_id, owner_id, floor_number, renovated_date)
 
 INSERT INTO "Rooms" (floor_id, block_number, room_number) VALUES
 (1, 808, 3),
+(1, 808, 2),
 (1, 810, 2),
+(1, 810, 3),
 (1, 811, NULL);
