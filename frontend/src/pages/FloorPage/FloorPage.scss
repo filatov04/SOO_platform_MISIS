@@ -1,0 +1,79 @@
+.floor-page{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &__info{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        height: 68px;
+    }
+
+    &__arrow-back{
+        cursor: pointer;
+    }
+
+    &__number{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        //width: 16%;
+        border-radius: 20px;
+        font-size: 48px;
+        background-color: #187FF6;
+        color: white;
+    }
+
+    &__contact-info{
+        display: flex;
+        background-color: #187FF6;
+        border-radius: 20px;
+        align-items: center;
+    }
+
+    &__contact-elder, &__contact-name{
+        font-size: 36px;
+        color:  white;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    &__contact-elder{
+        border-right: 2px solid white;
+        height: 100%;
+        align-items: center;        
+        padding: 0 20px;
+    }
+
+    &__contact-name{
+        padding: 0 20px;
+        align-items: center;
+
+    }
+
+    &__tg{
+        width: 33px;
+        aspect-ratio: 1;
+        margin-right: 6%;
+    }
+
+    &__phone{
+        width: 40px;
+        height: 40px;
+        margin-right: 5%;
+    }
+
+    &__rooms{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 40px;
+        row-gap: 30px;
+    }
+    
+}
+
+

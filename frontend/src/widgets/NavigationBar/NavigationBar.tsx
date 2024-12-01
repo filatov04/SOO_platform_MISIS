@@ -4,10 +4,17 @@ import logo from '../../shared/assets/NavigationBar/logo/logo.png';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
+import { AuthorizationValue, notAuth } from '../../app/features/Auth/AuthSlice';
+import { userInfo } from '../../app/features/User/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const NavigationBar = () => {
-  const [isAuth, setIsAuth] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = useAppSelector(AuthorizationValue);
+  const user = useAppSelector(userInfo);
+  const dispatch = useAppDispatch();
+  const [isAdmin, setIsAdmin] = useState(true);
+  const router = useNavigate();
   return (
     <div className='navbar'>
       <div className='navbar__content'>
@@ -15,11 +22,12 @@ export const NavigationBar = () => {
           <img src={logo} className='logo' />
         </div>
         <div className='navbar__list-panel'>
-          {isAuth ? (
+          {auth ? (
             <>
-              <div className='navbar__item-panel'>
+              <div className='navbar__item-panel' onClick={() => router('/CalendarPage')}>
                 <CalendarMonthIcon
                   sx={{
+                    cursor: 'pointer',
                     color: 'white',
                     width: '63px',
                     height: '71px',
@@ -29,9 +37,10 @@ export const NavigationBar = () => {
                 />
               </div>
               {isAdmin ? (
-                <div className='navbar__item-panel'>
+                <div className='navbar__item-panel' onClick={() => router('/AllUserPage')}>
                   <PersonAddAlt1Icon
                     sx={{
+                      cursor: 'pointer',
                       color: 'white',
                       width: '63px',
                       height: '71px',
@@ -44,9 +53,13 @@ export const NavigationBar = () => {
                 <></>
               )}
               <div className='navbar__item-panel'>
-                <p className='navbar__name'>Мустафаев М.М</p>
+                <p className='navbar__name'>
+                  {user.secondName} {user.firstName[0]}.{user.thirdName[0]}
+                </p>
                 <LogoutIcon
+                  onClick={() => dispatch(notAuth())}
                   sx={{
+                    cursor: 'pointer',
                     color: 'white',
                     width: '63px',
                     height: '71px',
