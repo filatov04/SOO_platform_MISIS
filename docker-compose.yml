@@ -1,11 +1,11 @@
-version: '3.1'
+version: "3.1"
 
 services:
   backend_web:
     restart: always
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: DockerfileWeb
     networks:
       - backend
     depends_on:
@@ -29,6 +29,18 @@ services:
     networks:
       - backend
 
+  # frontend_web:
+  #   restart: always
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - "5173:5173"
+
 networks:
   backend:
     name: backend
+  # fronted:
+  #   name: frontend
