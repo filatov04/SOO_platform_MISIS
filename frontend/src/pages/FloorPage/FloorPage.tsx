@@ -4,13 +4,13 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import tg from '../../shared/assets/FloorPage/ContactInfo/Telegram.png';
 import phone from '../../shared/assets/FloorPage/ContactInfo/phone.png';
 import { useNavigate } from 'react-router-dom';
-import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
+import { document_type, RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
 import { ModalCreateViolation } from '../../features/ModalCreateViolation';
 import axios from 'axios';
 
-export interface violation {
+interface roomData {
   document_type: string;
   violator_name: string;
   violation_type: string;
@@ -19,12 +19,30 @@ export interface violation {
   witness: string;
 }
 
-interface roomsViolation {
+interface roomsData {
   room_id: number;
   floor_id: number;
   block_number: number;
   room_number: number;
-  violations: violation[];
+  violations: roomData[];
+}
+
+export interface violation {
+  document_type: string;
+  violator_name: string;
+  violation_type: string;
+  description: string;
+  room_id: number;
+  room_number: number | null;
+  witness: string;
+}
+
+// export interface roomViolation {
+//   [room_number: number]: violation[];
+// }
+
+interface blockViolation {
+  [block_number: number]: violation[];
 }
 
 export const FloorPage = () => {
@@ -35,8 +53,32 @@ export const FloorPage = () => {
   const modalRef = useRef(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [roomViolation, setRoomViolation] = useState('');
-  const [roomsWithViolation, setRoomsWithViolations] = useState<roomsViolation[]>([]);
-  let blockNumber: number = 0;
+  const [roomsWithViolation, setRoomsWithViolations] = useState<blockViolation>({});
+
+  function mergeRoomsViolations(data: roomsData[]) {
+    const blockMap: blockViolation = {};
+    for (const room of data) {
+      let violation: violation[] = [];
+      let roomNumber = room.room_number;
+      if (room.violations.length == 0) {
+        blockMap[room.block_number] = [...(blockMap[room.block_number] || []), ...violation];
+      } else {
+        for (const violations of room.violations) {
+          violation.push({
+            document_type: violations.document_type,
+            violator_name: violations.violator_name,
+            violation_type: violations.violation_type,
+            description: violations.description,
+            room_id: violations.room_id,
+            room_number: roomNumber,
+            witness: violations.witness
+          });
+          blockMap[room.block_number] = [...(blockMap[room.block_number] || []), ...violation];
+        }
+      }
+    }
+    setRoomsWithViolations(blockMap);
+  }
 
   useEffect(() => {
     async function getRoomWithViolation() {
@@ -47,7 +89,7 @@ export const FloorPage = () => {
           }
         })
         .then((response) => {
-          setRoomsWithViolations(response.data);
+          mergeRoomsViolations(response.data);
         })
         .catch((error) => {
           console.log(error.message);
@@ -83,19 +125,17 @@ export const FloorPage = () => {
         </div>
       </div>
       <div className='floor-page__rooms'>
-        {roomsWithViolation.map((elem, index) => {
-          if (elem.block_number !== blockNumber) {
-            blockNumber = elem.block_number;
-            return (
-              <RoomFloor
-                violations={elem.violations}
-                floor={floor}
-                number={elem.block_number.toString()}
-                setModalIsOpen={setModalIsOpen}
-                setRoomViolation={setRoomViolation}
-              />
-            );
-          }
+        {Object.entries(roomsWithViolation).map(([key, value]) => {
+          console.log('1');
+          return (
+            <RoomFloor
+              floor={floor}
+              number={key}
+              setModalIsOpen={setModalIsOpen}
+              setRoomViolation={setRoomViolation}
+              room_violation={value}
+            />
+          );
         })}
       </div>
       <ModalCreateViolation

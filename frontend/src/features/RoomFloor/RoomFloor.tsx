@@ -1,4 +1,4 @@
-import React, { SetStateAction } from 'react';
+import React, { SetStateAction, useEffect } from 'react';
 import vector1 from '../../shared/assets/FloorPage/Room/Vector1.png';
 import vector2 from '../../shared/assets/FloorPage/Room/Vector2.png';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,7 +10,7 @@ interface RoomFloorProps {
   number: string;
   setModalIsOpen: React.Dispatch<SetStateAction<boolean>>;
   setRoomViolation: React.Dispatch<SetStateAction<string>>;
-  violations: violation[];
+  room_violation: violation[];
 }
 
 export enum document_type {
@@ -34,7 +34,7 @@ export enum violation_type {
 }
 
 export const RoomFloor = ({
-  violations,
+  room_violation,
   floor,
   number,
   setModalIsOpen,
@@ -62,11 +62,11 @@ export const RoomFloor = ({
       </div>
       <div className='room__notes floor-page__room-notes'>
         <div className='room__notes-scroll floor-page__room-notes-scroll'>
-          {violations.map((elem, index) => {
+          {room_violation.map((elem, index) => {
             return (
-              <div className='room__note floor-page__room-note'>
-                {document_type[elem.document_type as keyof typeof document_type]}|{number}-3|Антисанитария в
-                блоке|Иванов Илья|06.11.2024
+              <div key={index} className='room__note floor-page__room-note'>
+                {document_type[elem.document_type as keyof typeof document_type]}|{number}-{elem.room_number}|
+                {violation_type[elem.violation_type as keyof typeof violation_type]}|{elem.violator_name}|06.11.2024
               </div>
             );
           })}
