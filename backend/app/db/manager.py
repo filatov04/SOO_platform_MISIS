@@ -172,7 +172,6 @@ class DBManager:
         violation = Violations(
             user_id=user_id,
             **data.dict(),
-            created_at=datetime.now()
         )
         self.session.add(violation)
         self.session.commit()
