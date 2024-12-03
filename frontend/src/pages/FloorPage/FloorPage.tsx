@@ -103,7 +103,7 @@ export const FloorPage = () => {
         }
       }
     }
-    console.log(blockMap);
+    //console.log(blockMap);
     //Object.entries(blockMap).map(([key, value]) => console.log(key, value));
     setRoomsID(roomID);
     setRoomsWithViolations(blockMap);
@@ -167,7 +167,7 @@ export const FloorPage = () => {
       </div>
       <ModalCreateViolation
         setRoomsWithViolations={setRoomsWithViolations}
-        roomsWithViolation={roomsWithViolation}
+        //roomsWithViolation={roomsWithViolation}
         room={roomViolation}
         roomsID={roomsID}
         modalRef={modalRef}
