@@ -14,7 +14,7 @@ interface ModalCreateViolationProps {
   roomsID: blockNumberRoomNumber;
   room: string;
   setRoomsWithViolations: React.Dispatch<SetStateAction<blockViolation>>;
-  roomsWithViolation: blockViolation;
+  //roomsWithViolation: blockViolation;
 }
 
 interface formData {
@@ -33,8 +33,8 @@ export const ModalCreateViolation = ({
   setModalIsOpen,
   roomsID,
   room,
-  setRoomsWithViolations,
-  roomsWithViolation
+  setRoomsWithViolations
+  //roomsWithViolation
 }: ModalCreateViolationProps): JSX.Element => {
   const [roomNumber, setRoomNumber] = useState<string>('');
   const [violation, setViolation] = useState<string>('');
