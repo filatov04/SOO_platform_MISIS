@@ -25,6 +25,7 @@
         font-size: 48px;
         background-color: #187FF6;
         color: white;
+        box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
     }
 
     &__contact-info{
@@ -32,6 +33,7 @@
         background-color: #187FF6;
         border-radius: 20px;
         align-items: center;
+        box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
     }
 
     &__contact-elder, &__contact-name{
@@ -75,5 +77,3 @@
     }
     
 }
-
-
