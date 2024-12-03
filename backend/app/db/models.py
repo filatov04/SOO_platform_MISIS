@@ -19,17 +19,17 @@ Base = declarative_base()
 # Base.metadata = MetaData(schema="Kokoc")
 
 class ViolationType(enum.Enum):
-    drink_alcohol: str = 'drink_alcohol',
-    passage_alcohol: str = 'passage_alcohol',
-    keeping_alcohol: str = 'keeping_alcohol',
-    fire_security: str = 'fire_security',
-    electrical_security: str = 'electrical_security',
-    noise_mode: str = 'noise_mode',
-    guest_mode: str = 'guest_mode',
-    unsanitation_block: str = 'unsanitation_block',
-    unsanitation_room: str = 'unsanitation_room',
-    unsanitation_general_place: str = 'unsanitation_general_place',
-    break_mode: str = 'break_mode',
+    drink_alcohol: str = 'drink_alcohol'
+    passage_alcohol: str = 'passage_alcohol'
+    keeping_alcohol: str = 'keeping_alcohol'
+    fire_security: str = 'fire_security'
+    electrical_security: str = 'electrical_security'
+    noise_mode: str = 'noise_mode'
+    guest_mode: str = 'guest_mode'
+    unsanitation_block: str = 'unsanitation_block'
+    unsanitation_room: str = 'unsanitation_room'
+    unsanitation_general_place: str = 'unsanitation_general_place'
+    break_mode: str = 'break_mode'
     block_thing: str = 'block_thing'
 
     

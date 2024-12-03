@@ -47,6 +47,7 @@ export const ModalCreateViolation = ({
     const post = await axios
       .post('http://localhost:8000/violations/add', JSON.stringify(data), {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`
         }
       })
@@ -75,7 +76,7 @@ export const ModalCreateViolation = ({
       witness: e.witness,
       description: e.description
     };
-    //console.log(data);
+    console.log(data);
     sendViolation(data);
     //const reverseDict = Object.fromEntries(Object.entries(roomsID).map(([key, value]) => [value, key]));
     const dataLocal = {
@@ -90,7 +91,7 @@ export const ModalCreateViolation = ({
         : Number(findKeyByValue(roomsID, Number(e.room_id))),
       created_at: e.created_at
     };
-    console.log(dataLocal);
+    //console.log(dataLocal);
     addViolation(Number(room), dataLocal);
     resetData();
   };
