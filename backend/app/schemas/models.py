@@ -90,7 +90,7 @@ class ViolationSchema(BaseModel):
             "example": {
                 "document_type": "act",
                 "violator_name": "Иванов Иван Иванович",
-                "violation_type": "fire_security",
+                "violation_type": "electrical_security",
                 "description": "Smoke",
                 "room_id": 1,
                 "witness": "Иванов Сосед Соседович",
