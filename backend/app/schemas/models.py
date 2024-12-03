@@ -82,6 +82,7 @@ class ViolationSchema(BaseModel):
     description: str = Field(...)
     room_id: int = Field(...)
     witness: str = Field(...) # Свидетель блять
+    created_at: datetime = Field(default_factory=datetime.now)
     
     class Config:
         orm_mode = True
@@ -93,6 +94,7 @@ class ViolationSchema(BaseModel):
                 "description": "Smoke",
                 "room_id": 1,
                 "witness": "Иванов Сосед Соседович",
+                "created_at": "2022-01-01 00:00:00"
             }
         }
         
