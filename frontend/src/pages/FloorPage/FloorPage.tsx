@@ -4,7 +4,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import tg from '../../shared/assets/FloorPage/ContactInfo/Telegram.png';
 import phone from '../../shared/assets/FloorPage/ContactInfo/phone.png';
 import { useNavigate } from 'react-router-dom';
-import { document_type, RoomFloor } from '../../features/RoomFloor/RoomFloor';
+import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
 import { ModalCreateViolation } from '../../features/ModalCreateViolation';
@@ -17,6 +17,7 @@ interface roomData {
   description: string;
   room_id: number;
   witness: string;
+  created_at: string;
 }
 
 interface roomsData {
@@ -35,14 +36,19 @@ export interface violation {
   room_id: number;
   room_number: number | null;
   witness: string;
+  created_at: string;
 }
 
-// export interface roomViolation {
-//   [room_number: number]: violation[];
-// }
-
-interface blockViolation {
+export interface blockViolation {
   [block_number: number]: violation[];
+}
+
+export interface roomNumberID {
+  [roomNumber: number]: number | null;
+}
+
+export interface blockNumberRoomNumber {
+  [blockNumber: number]: roomNumberID;
 }
 
 export const FloorPage = () => {
@@ -54,12 +60,31 @@ export const FloorPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [roomViolation, setRoomViolation] = useState('');
   const [roomsWithViolation, setRoomsWithViolations] = useState<blockViolation>({});
+  const [roomsID, setRoomsID] = useState<blockNumberRoomNumber>({});
+  //const [showChosenRoomsID, setShowChosenRoomsID] = useState<roomNumberID>({});
+
+  const formatDateString = (input: string): string => {
+    const date = new Date(input);
+
+    // Получаем компоненты даты
+    const day = date.getDate().toString().padStart(2, '0'); // Два символа для дня
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Месяцы 0-индексированные
+    const year = date.getFullYear();
+
+    return `${day}.${month}.${year}`;
+  };
 
   function mergeRoomsViolations(data: roomsData[]) {
     const blockMap: blockViolation = {};
+    let roomID: blockNumberRoomNumber = {};
     for (const room of data) {
       let violation: violation[] = [];
       let roomNumber = room.room_number;
+      if (!roomID[room.block_number]) {
+        roomID[room.block_number] = { [room.room_number]: room.room_id };
+      } else {
+        roomID[room.block_number] = { ...roomID[room.block_number], [room.room_number]: room.room_id };
+      }
       if (room.violations.length == 0) {
         blockMap[room.block_number] = [...(blockMap[room.block_number] || []), ...violation];
       } else {
@@ -71,12 +96,16 @@ export const FloorPage = () => {
             description: violations.description,
             room_id: violations.room_id,
             room_number: roomNumber,
-            witness: violations.witness
+            witness: violations.witness,
+            created_at: formatDateString(violations.created_at)
           });
           blockMap[room.block_number] = [...(blockMap[room.block_number] || []), ...violation];
         }
       }
     }
+    //console.log(blockMap);
+    //Object.entries(blockMap).map(([key, value]) => console.log(key, value));
+    setRoomsID(roomID);
     setRoomsWithViolations(blockMap);
   }
 
@@ -126,10 +155,8 @@ export const FloorPage = () => {
       </div>
       <div className='floor-page__rooms'>
         {Object.entries(roomsWithViolation).map(([key, value]) => {
-          console.log('1');
           return (
             <RoomFloor
-              floor={floor}
               number={key}
               setModalIsOpen={setModalIsOpen}
               setRoomViolation={setRoomViolation}
@@ -139,7 +166,10 @@ export const FloorPage = () => {
         })}
       </div>
       <ModalCreateViolation
+        setRoomsWithViolations={setRoomsWithViolations}
+        //roomsWithViolation={roomsWithViolation}
         room={roomViolation}
+        roomsID={roomsID}
         modalRef={modalRef}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

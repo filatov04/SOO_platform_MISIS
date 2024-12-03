@@ -82,6 +82,7 @@ class ViolationSchema(BaseModel):
     description: str = Field(...)
     room_id: int = Field(...)
     witness: str = Field(...) # Свидетель блять
+    created_at: datetime = Field(default_factory=datetime.now)
     
     class Config:
         orm_mode = True
@@ -89,10 +90,11 @@ class ViolationSchema(BaseModel):
             "example": {
                 "document_type": "act",
                 "violator_name": "Иванов Иван Иванович",
-                "violation_type": "fire_security",
+                "violation_type": "electrical_security",
                 "description": "Smoke",
                 "room_id": 1,
                 "witness": "Иванов Сосед Соседович",
+                "created_at": "2022-01-01 00:00:00"
             }
         }
         
