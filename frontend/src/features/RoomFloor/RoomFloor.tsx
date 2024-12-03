@@ -3,10 +3,9 @@ import vector1 from '../../shared/assets/FloorPage/Room/Vector1.png';
 import vector2 from '../../shared/assets/FloorPage/Room/Vector2.png';
 import AddIcon from '@mui/icons-material/Add';
 import './RoomFloor.scss';
-import { violation } from '../../pages';
+import { roomNumberID, violation } from '../../pages';
 
 interface RoomFloorProps {
-  floor: number | React.ReactNode;
   number: string;
   setModalIsOpen: React.Dispatch<SetStateAction<boolean>>;
   setRoomViolation: React.Dispatch<SetStateAction<string>>;
@@ -35,11 +34,15 @@ export enum violation_type {
 
 export const RoomFloor = ({
   room_violation,
-  floor,
   number,
   setModalIsOpen,
   setRoomViolation
 }: RoomFloorProps): JSX.Element => {
+  const chosenRoomID = () => {
+    setModalIsOpen(true);
+    setRoomViolation(number);
+  };
+
   return (
     <div className='floor-page__room room'>
       <div className='room__blur'>
@@ -53,10 +56,7 @@ export const RoomFloor = ({
         <div className='floor-page__room-add room__add'>
           <AddIcon
             sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }}
-            onClick={() => {
-              setModalIsOpen(true);
-              setRoomViolation(number);
-            }}
+            onClick={() => chosenRoomID()}
           />
         </div>
       </div>
@@ -65,8 +65,10 @@ export const RoomFloor = ({
           {room_violation.map((elem, index) => {
             return (
               <div key={index} className='room__note floor-page__room-note'>
-                {document_type[elem.document_type as keyof typeof document_type]}|{number}-{elem.room_number}|
-                {violation_type[elem.violation_type as keyof typeof violation_type]}|{elem.violator_name}|06.11.2024
+                {document_type[elem.document_type as keyof typeof document_type]}|{number}
+                {elem.room_number === null ? '' : `-${elem.room_number}`}|
+                {violation_type[elem.violation_type as keyof typeof violation_type]}|{elem.violator_name}|
+                {elem.created_at}
               </div>
             );
           })}

@@ -2,23 +2,39 @@ import React, { RefObject, SetStateAction, useEffect, useState } from 'react';
 import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import './ModalCreateViolation.scss';
 import { useForm } from 'react-hook-form';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { FormSelect } from '../../shared';
 import { document_type, violation_type } from '../RoomFloor';
+import { blockNumberRoomNumber, blockViolation, violation } from '../../pages';
+import axios from 'axios';
 
 interface ModalCreateViolationProps {
   modalRef: RefObject<HTMLDialogElement>;
   modalIsOpen: boolean;
   setModalIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  roomsID: blockNumberRoomNumber;
   room: string;
+  setRoomsWithViolations: React.Dispatch<SetStateAction<blockViolation>>;
+  roomsWithViolation: blockViolation;
+}
+
+interface formData {
+  room_id: string;
+  document_type: string;
+  created_at: string;
+  violation_type: string;
+  violator_name: string;
+  witness: string;
+  description: string;
 }
 
 export const ModalCreateViolation = ({
   modalRef,
   modalIsOpen,
   setModalIsOpen,
-  room
+  roomsID,
+  room,
+  setRoomsWithViolations,
+  roomsWithViolation
 }: ModalCreateViolationProps): JSX.Element => {
   const [roomNumber, setRoomNumber] = useState<string>('');
   const [violation, setViolation] = useState<string>('');
@@ -26,6 +42,21 @@ export const ModalCreateViolation = ({
   const [violator, setViolator] = useState<string>('');
   const [witness, setWitness] = useState<string>('');
   const [date, setDate] = useState<string>('');
+
+  async function sendViolation(data: any) {
+    const post = await axios
+      .post('http://localhost:8000/violations/add', JSON.stringify(data), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 
   const {
     register,
@@ -35,9 +66,62 @@ export const ModalCreateViolation = ({
   } = useForm({ mode: 'onBlur' });
 
   const onSubmit = (e: any) => {
-    console.log(e);
+    const data = {
+      room_id: Number(e.room_id),
+      document_type: e.document_type,
+      created_at: `${e.created_at} 00:00:00`,
+      violation_type: e.violation_type,
+      violator_name: e.violator_name,
+      witness: e.witness,
+      description: e.description
+    };
+    //console.log(data);
+    sendViolation(data);
+    //const reverseDict = Object.fromEntries(Object.entries(roomsID).map(([key, value]) => [value, key]));
+    const dataLocal = {
+      document_type: e.document_type,
+      violation_type: e.violation_type,
+      violator_name: e.violator_name,
+      witness: e.witness,
+      description: e.description,
+      room_id: Number(e.room_id),
+      room_number: isNaN(Number(findKeyByValue(roomsID, Number(e.room_id))))
+        ? null
+        : Number(findKeyByValue(roomsID, Number(e.room_id))),
+      created_at: e.created_at
+    };
+    console.log(dataLocal);
+    addViolation(Number(room), dataLocal);
     resetData();
   };
+
+  const addViolation = (blockNumber: number, violation: violation) => {
+    setRoomsWithViolations((prevData) => {
+      const updatedData = { ...prevData };
+
+      // Проверяем, существует ли массив для ключа
+      if (!updatedData[blockNumber]) {
+        updatedData[blockNumber] = [];
+      }
+
+      // Добавляем объект в массив
+      updatedData[blockNumber].push(violation);
+
+      return updatedData;
+    });
+  };
+
+  function findKeyByValue(dict: blockNumberRoomNumber, targetValue: number): string | undefined {
+    for (const [outerKey, innerDict] of Object.entries(dict)) {
+      for (const [innerKey, value] of Object.entries(innerDict)) {
+        //console.log(value);
+        if (value === targetValue) {
+          return `${innerKey}`; // Возвращаем путь: внешний и внутренний ключ
+        }
+      }
+    }
+    return undefined; // Если значение не найдено
+  }
 
   function resetData() {
     reset();
@@ -70,14 +154,18 @@ export const ModalCreateViolation = ({
             <FormSelect
               defaultValue='Комната'
               register={{
-                ...register('roomNumber', {
+                ...register('room_id', {
                   required: true
                 })
               }}
-              options={[
-                { id: 1, value: `${room}-2`, name: `${room}-2` },
-                { id: 2, value: `${room}-3`, name: `${room}-3` }
-              ]}
+              options={
+                roomsID?.[Number(room)] && Object.entries(roomsID?.[Number(room)]).length !== 1
+                  ? [
+                      { id: 1, value: `${roomsID?.[Number(room)]?.[2]}`, name: `${room}-2` },
+                      { id: 2, value: `${roomsID?.[Number(room)]?.[3]}`, name: `${room}-3` }
+                    ]
+                  : [{ id: 1, value: `${roomsID?.[Number(room)]?.['null']}`, name: `${room}` }]
+              }
               onChange={(e) => setRoomNumber(e)}
               value={roomNumber}
             />
@@ -103,7 +191,7 @@ export const ModalCreateViolation = ({
           <input
             className='modal-violation__inp'
             type='date'
-            {...register('date', {
+            {...register('created_at', {
               required: true
             })}
             onChange={(e) => setDate(e.currentTarget.value)}
