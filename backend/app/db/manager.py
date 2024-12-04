@@ -137,12 +137,15 @@ class DBManager:
     def get_user_by_id(self, user_id: int) -> Optional[Users]:
         return self.session.query(Users).filter_by(user_id=user_id).first()
     
+    def get_users_by_role(self, role: Role, dorm_id) -> List[Users]:
+        return self.session.query(Users).filter(and_(Users.role == role, Users.deleted_at == None, Users.dorm_id == dorm_id)).all()
+        
     def get_user_dorm(self, user_id: int) -> Optional[int]:
         user = self.session.query(Users).filter_by(user_id=user_id).first()
         if user: 
             return user.dorm_id
         return None
-    
+
     def get_floors(self, dorm_id: int) -> List[FloorSchema]: #TODO: add user info
         data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter(Floors.dorm_id == dorm_id).order_by(Floors.floor_number).all()
         return [

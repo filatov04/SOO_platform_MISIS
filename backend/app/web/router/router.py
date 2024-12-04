@@ -18,6 +18,8 @@ from schemas.models import (
     FloorSchema
 )
 
+from db.models import Role
+
 from db.manager import DBManager
 from passlib.hash import bcrypt
 from datetime import datetime, timedelta
@@ -90,6 +92,11 @@ async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int
     
     return {"message": "User not found"}
     
+
+@router.get("user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"])
+async def get_user_by_role(role: Role = Path(...), user_id: int = Depends(check_auth)) -> List[UserSchema]:
+    dorm_id = db.get_user_dorm(user_id)
+    return db.get_users_by_role(role, dorm_id)
     
 #TODO: get all users
 #TODO: delete user by id
