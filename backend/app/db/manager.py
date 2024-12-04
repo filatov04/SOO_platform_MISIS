@@ -137,8 +137,11 @@ class DBManager:
     def get_user_by_id(self, user_id: int) -> Optional[Users]:
         return self.session.query(Users).filter_by(user_id=user_id).first()
     
-    def get_users_by_role(self, role: Role, dorm_id) -> List[Users]:
-        return self.session.query(Users).filter(and_(Users.role == role, Users.deleted_at == None, Users.dorm_id == dorm_id)).all()
+    def get_users_by_role(self, role: Role, dorm_id: int) -> List[UserSchema]:
+        return [
+            UserSchema(**user.__dict__)
+            for user in self.session.query(Users).filter(and_(Users.role == role, Users.deleted_at == None, Users.dorm_id == dorm_id)).all()
+        ]
         
     def get_user_dorm(self, user_id: int) -> Optional[int]:
         user = self.session.query(Users).filter_by(user_id=user_id).first()

@@ -82,7 +82,7 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     else:
         return {"message": "User already exists"}
 
-@router.post("user/delete", dependencies=[Depends(check_auth)], tags=["user"])
+@router.post("/user/delete/{user_id_to_delete}", dependencies=[Depends(check_auth)], tags=["user"])
 async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int = Body(...)):
     if user_id_to_delete == user_id:
         return {"message": "You cannot delete yourself"}
@@ -92,14 +92,14 @@ async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int
     
     return {"message": "User not found"}
     
+# TODO: add checking roles
+# TODO: add checking deleted_at
 
-@router.get("user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"])
-async def get_user_by_role(role: Role = Path(...), user_id: int = Depends(check_auth)) -> List[UserSchema]:
-    dorm_id = db.get_user_dorm(user_id)
+@router.get("/user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"])
+async def get_user_by_role(role: Role = Path(..., example=Role.admin), user_id: int = Depends(check_auth)) -> List[UserSchema]:
+    dorm_id = db.get_user_by_id(user_id).dorm_id
     return db.get_users_by_role(role, dorm_id)
     
-#TODO: get all users
-#TODO: delete user by id
 @router.get("/floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
 async def get_floors(dorm_id: int = Path(..., example=1)) -> List[FloorSchema]:
     return db.get_floors(dorm_id)
