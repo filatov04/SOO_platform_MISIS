@@ -7,7 +7,7 @@ import { useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
 import axios from 'axios';
 
-interface ModalCreateNotes {
+interface ModalCreateNotesProps {
   isOpen: boolean;
   dialogRef: RefObject<HTMLDialogElement>;
   setIsOpen: () => void;
@@ -20,7 +20,7 @@ interface FormNote {
   description: string;
 }
 
-export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotes): JSX.Element => {
+export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotesProps): JSX.Element => {
   const room_id = useAppSelector(userInfo);
 
   const {

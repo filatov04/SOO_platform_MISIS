@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { headmansInfo } from '../../app/features/Headmans/HeadmansSlice';
-import { ModalCreateViolation } from '../../features/ModalCreateViolation';
+import { ModalCreateViolation } from '../../features';
 import axios from 'axios';
 
 interface roomData {
@@ -61,7 +61,6 @@ export const FloorPage = () => {
   const [roomViolation, setRoomViolation] = useState('');
   const [roomsWithViolation, setRoomsWithViolations] = useState<blockViolation>({});
   const [roomsID, setRoomsID] = useState<blockNumberRoomNumber>({});
-  //const [showChosenRoomsID, setShowChosenRoomsID] = useState<roomNumberID>({});
 
   const formatDateString = (input: string): string => {
     const date = new Date(input);
