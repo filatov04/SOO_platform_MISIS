@@ -5,12 +5,24 @@ import './ModalAddPerson.scss';
 import { useForm } from 'react-hook-form';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
+import axios from 'axios';
 
 interface ModalAddPersonProps {
   isOpen: boolean;
   dialogRef: RefObject<HTMLDialogElement>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUsers: React.Dispatch<React.SetStateAction<user[]>>;
+}
+
+interface person {
+  first_name: string;
+  second_name: string;
+  third_name: string;
+  phone: string;
+  tg: string;
+  role: string;
+  dorm_id: number;
+  password: string;
 }
 
 export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: ModalAddPersonProps) => {
@@ -38,17 +50,30 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
   } = useForm({ mode: 'onBlur' });
 
   const onSubmit = (e: any) => {
-    const data: user = {
+    const data: person = {
       first_name: e.first_name,
       second_name: e.second_name,
       third_name: e.third_name,
       phone: e.phone,
       tg: e.tg,
       role: 'operative',
-      dorm_id: user.dormId
+      dorm_id: user.dormId,
+      password: e.password
     };
-    console.log(e);
-    setUsers((prev) => [data, ...prev]);
+    setUsers((prev) => [
+      {
+        first_name: data.first_name,
+        second_name: data.second_name,
+        third_name: data.third_name,
+        role: data.role,
+        phone: data.phone,
+        dorm_id: data.dorm_id,
+        tg: data.tg
+      },
+      ...prev
+    ]);
+    console.log(data);
+    addPerson(data);
     reset();
     setFirstName('');
     setSecondName('');
@@ -57,6 +82,22 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
     setPassword('');
     setTg('');
   };
+
+  async function addPerson(data: person) {
+    const post = await axios
+      .post('http://localhost:8000/user/register', JSON.stringify(data), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 
   return (
     <dialog ref={dialogRef} onClose={() => setIsOpen(false)} className='add-person'>

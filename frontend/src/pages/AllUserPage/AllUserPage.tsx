@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './AllUserPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalAddPerson } from '../../features';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAppSelector } from '../../app/hooks/hooks';
+import { userInfo } from '../../app/features/User/UserSlice';
 
 export interface user {
   first_name: string;
@@ -17,28 +20,30 @@ export interface user {
 
 export const AllUserPage = () => {
   const router = useNavigate();
+  const userInf = useAppSelector(userInfo);
   const modalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<user[]>([
-    {
-      first_name: 'Ivan',
-      second_name: 'Ivanov',
-      third_name: 'Ivanovich',
-      phone: '78005553535',
-      tg: '@example',
-      role: 'operative',
-      dorm_id: 1
-    },
-    {
-      first_name: 'Ilya',
-      second_name: 'Filatov',
-      third_name: 'Artemovich',
-      phone: '71231234323',
-      tg: '@example',
-      role: 'operative',
-      dorm_id: 1
+  const [user, setUser] = useState<user[]>([]);
+
+  useEffect(() => {
+    async function getUser() {
+      const get = await axios
+        .get('http://localhost:8000/user/get/' + userInf.role, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+          }
+        })
+        .then((response) => {
+          console.log(response.data);
+          setUser([...user, ...response.data]);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
-  ]);
+
+    getUser();
+  }, []);
 
   const delUser = (phone: string) => {
     const data = user.filter((a) => a.phone !== phone);
