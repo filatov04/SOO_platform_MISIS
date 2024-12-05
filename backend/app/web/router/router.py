@@ -69,7 +69,7 @@ async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
 #TODO: проверку роли (второстепенное)
 
 # secure region
-@router.get("/user/info", dependencies=[Depends(check_auth)], tags=["user"])
+@router.get("/user/info/", dependencies=[Depends(check_auth)], tags=["user"])
 async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
     user = db.get_user_by_id(user_id)
     return UserSchema.from_orm(user).dict()
@@ -83,7 +83,7 @@ async def register_user(user: UserRegisterSchema = Body(...)):
         return {"message": "User already exists"}
 
 @router.post("/user/delete/{user_id_to_delete}", dependencies=[Depends(check_auth)], tags=["user"])
-async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int = Body(...)):
+async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int = Path(...)):
     if user_id_to_delete == user_id:
         return {"message": "You cannot delete yourself"}
     
