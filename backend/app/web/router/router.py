@@ -58,7 +58,6 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     authpair.cleanup()
     return token_response
     
-
 @router.post("/auth/logout", dependencies=[Depends(check_auth)], tags=["auth"])
 async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
     authpair.post(token, None)
@@ -70,7 +69,7 @@ async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
 
 # secure region
 @router.get("/user/info/", dependencies=[Depends(check_auth)], tags=["user"])
-async def get_user_info(user_id: int = Depends(check_auth)) -> Dict[str, Any]:
+async def get_user_info(user_id: int = Depends(check_auth)) -> UserSchema:
     user = db.get_user_by_id(user_id)
     return UserSchema.from_orm(user).dict()
 
@@ -82,12 +81,12 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     else:
         return {"message": "User already exists"}
 
-@router.post("/user/delete/{user_id_to_delete}", dependencies=[Depends(check_auth)], tags=["user"])
-async def delete_user(user_id: int = Depends(check_auth), user_id_to_delete: int = Path(...)):
-    if user_id_to_delete == user_id:
+@router.post("/user/delete/{numberToDelete}", dependencies=[Depends(check_auth)], tags=["user"])
+async def delete_user(user_id: int = Depends(check_auth), number_to_delete: str = Path(..., alias="numberToDelete")):
+    if db.get_user_by_phone(number_to_delete).user_id == user_id:
         return {"message": "You cannot delete yourself"}
     
-    if db.delete_user(user_id_to_delete):
+    if db.delete_user(number_to_delete):
         return {"message": "User deleted"}
     
     return {"message": "User not found"}

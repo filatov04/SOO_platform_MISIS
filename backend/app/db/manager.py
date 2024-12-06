@@ -113,18 +113,18 @@ class DBManager:
         if user_in_db is not None:
             if user_in_db.deleted_at is not None:
                 user_in_db.deleted_at = None
-                user_in_db.hashed_password = data.hashed_password
+                user_in_db.hashed_password = data.password
                 self.session.commit()
                 return True
             else:
                 return False
-        user = Users(**data.dict(), created_at=datetime.now())
+        user = Users(**data.dict(), hashed_password=data.password, created_at=datetime.now())
         self.session.add(user)
         self.session.commit()
         return True
     
-    def delete_user(self, user_id: int) -> bool:
-        user = self.session.query(Users).filter_by(user_id=user_id).first()
+    def delete_user(self, user_number: str) -> bool:
+        user = self.get_user_by_phone(user_number)
         if user is None or user.deleted_at is not None:
             return False
         user.deleted_at = datetime.now()
