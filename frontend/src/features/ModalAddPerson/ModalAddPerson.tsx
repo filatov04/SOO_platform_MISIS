@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
 import axios from 'axios';
+import ellipse from '../../shared/assets/Modal/Ellipse.png';
+import vector1 from '../../shared/assets/Modal/Vector1.png';
+import vector2 from '../../shared/assets/Modal/Vector2.png';
 
 interface ModalAddPersonProps {
   isOpen: boolean;
@@ -101,6 +104,15 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
 
   return (
     <dialog ref={dialogRef} onClose={() => setIsOpen(false)} className='add-person'>
+      <div className='add-person__blur'>
+        <img src={ellipse} />
+      </div>
+      <div className='add-person__blur'>
+        <img src={vector1} />
+      </div>
+      <div className='add-person__blur'>
+        <img src={vector2} />
+      </div>
       <div className='add-person__header'>
         <img src={arrowBack} className='add-person__header-back' onClick={() => setIsOpen(false)} />
       </div>

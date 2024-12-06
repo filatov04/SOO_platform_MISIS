@@ -4,8 +4,11 @@ import './ModalCreateViolation.scss';
 import { useForm } from 'react-hook-form';
 import { FormSelect } from '../../shared';
 import { document_type, violation_type } from '../RoomFloor';
-import { blockNumberRoomNumber, blockViolation, violation } from '../../pages';
+import { blockNumberRoomNumber, blockViolation, formatDateString, violation } from '../../pages';
 import axios from 'axios';
+import ellipse from '../../shared/assets/Modal/Ellipse.png';
+import vector1 from '../../shared/assets/Modal/Vector1.png';
+import vector2 from '../../shared/assets/Modal/Vector2.png';
 
 interface ModalCreateViolationProps {
   modalRef: RefObject<HTMLDialogElement>;
@@ -42,6 +45,14 @@ export const ModalCreateViolation = ({
   const [violator, setViolator] = useState<string>('');
   const [witness, setWitness] = useState<string>('');
   const [date, setDate] = useState<string>('');
+
+  function maxDate(): string {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Месяц (с ведущим нулем)
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
 
   async function sendViolation(data: any) {
     const post = await axios
@@ -89,7 +100,7 @@ export const ModalCreateViolation = ({
       room_number: isNaN(Number(findKeyByValue(roomsID, Number(e.room_id))))
         ? null
         : Number(findKeyByValue(roomsID, Number(e.room_id))),
-      created_at: e.created_at
+      created_at: formatDateString(e.created_at)
     };
     //console.log(dataLocal);
     addViolation(Number(room), dataLocal);
@@ -106,7 +117,7 @@ export const ModalCreateViolation = ({
       }
 
       // Добавляем объект в массив
-      updatedData[blockNumber].push(violation);
+      updatedData[blockNumber].unshift(violation);
 
       return updatedData;
     });
@@ -146,9 +157,18 @@ export const ModalCreateViolation = ({
 
   return (
     <dialog ref={modalRef} onClose={() => setModalIsOpen(false)} className='modal-violation'>
+      <div className='modal-violation__blur'>
+        <img src={ellipse} />
+      </div>
+      <div className='modal-violation__blur'>
+        <img src={vector1} />
+      </div>
+      <div className='modal-violation__blur'>
+        <img src={vector2} />
+      </div>
       <form method='dialog' onSubmit={handleSubmit(onSubmit)} className='modal-violation__content'>
         <div className='modal-violation__header'>
-          <img style={{ cursor: 'pointer' }} src={arrowBack} onClick={() => setModalIsOpen(false)} />
+          <img style={{ cursor: 'pointer', zIndex: '2' }} src={arrowBack} onClick={() => setModalIsOpen(false)} />
         </div>
         <div className='modal-violation__room-act'>
           <div className='modal-violation__room'>
@@ -192,6 +212,7 @@ export const ModalCreateViolation = ({
           <input
             className='modal-violation__inp'
             type='date'
+            max={maxDate()}
             {...register('created_at', {
               required: true
             })}

@@ -51,6 +51,17 @@ export interface blockNumberRoomNumber {
   [blockNumber: number]: roomNumberID;
 }
 
+export const formatDateString = (input: string): string => {
+  const date = new Date(input);
+
+  // Получаем компоненты даты
+  const day = date.getDate().toString().padStart(2, '0'); // Два символа для дня
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Месяцы 0-индексированные
+  const year = date.getFullYear();
+
+  return `${day}.${month}.${year}`;
+};
+
 export const FloorPage = () => {
   const floor = localStorage.getItem('NumberFloor');
   const router = useNavigate();
@@ -61,17 +72,6 @@ export const FloorPage = () => {
   const [roomViolation, setRoomViolation] = useState('');
   const [roomsWithViolation, setRoomsWithViolations] = useState<blockViolation>({});
   const [roomsID, setRoomsID] = useState<blockNumberRoomNumber>({});
-
-  const formatDateString = (input: string): string => {
-    const date = new Date(input);
-
-    // Получаем компоненты даты
-    const day = date.getDate().toString().padStart(2, '0'); // Два символа для дня
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Месяцы 0-индексированные
-    const year = date.getFullYear();
-
-    return `${day}.${month}.${year}`;
-  };
 
   function mergeRoomsViolations(data: roomsData[]) {
     const blockMap: blockViolation = {};
@@ -117,6 +117,7 @@ export const FloorPage = () => {
           }
         })
         .then((response) => {
+          console.log(floorId);
           mergeRoomsViolations(response.data);
         })
         .catch((error) => {

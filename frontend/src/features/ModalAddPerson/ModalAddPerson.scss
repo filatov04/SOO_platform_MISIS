@@ -3,6 +3,22 @@
     background-color: #187FF6;
     border-radius: 20px;
     width: 450px;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+
+    &__blur{
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        //padding: 0 10px;
+        
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
 
 
     &__content{
@@ -12,11 +28,14 @@
     }
     
     &__form{
-        padding: 10px 10px;
+        padding: 0px 26px;
+        padding-bottom: 26px;
     }
 
     &__header{
-        padding: 0 10px;
+        position: relative;
+        z-index: 2;
+        padding: 16px 26px;
     }
 
     &__header-back{
@@ -24,6 +43,7 @@
     }
 
     &__input{
+        z-index: 2;
         height: 40px;
         border-radius: 15px;
         border: none;
@@ -39,6 +59,7 @@
     }
 
     &__submit-btn{
+        z-index: 2;
         font-size: 20px;
         width: 150px;
         height: 50px;

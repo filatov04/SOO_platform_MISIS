@@ -52,7 +52,7 @@ export const Last = () => {
               <p className='universal-block__last-fullname last__fullname'>Илья Иванов</p>
             </div>
             <div>
-              <p>Антисанитария в блоке</p>
+              <p className='universal-block__last-violation last__violation'>Антисанитария в блоке</p>
             </div>
           </div>
         </div>

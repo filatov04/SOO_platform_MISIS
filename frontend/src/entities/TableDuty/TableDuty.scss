@@ -1,0 +1,44 @@
+.calendar__table-duty{
+    padding: 0 10px;
+    margin-top: 40px;
+}
+
+
+.table-duty{
+    width: 100%;
+
+    &__row-head{
+        width: 100%;
+        color: white;
+    }
+
+    &__item-head{
+        border: 1px solid rgba(255, 255, 255);
+        text-align: center;
+        padding: 5px;
+        width: 20px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+
+        &--border{
+            border: none;
+            width: 29%;
+        }
+    }
+
+    &__item-name{
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        border: 1px solid white;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+
+    &__item-day{
+        text-align: center;
+        color: white;
+        border: 1px solid white;
+    }
+
+}

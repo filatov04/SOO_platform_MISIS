@@ -6,6 +6,9 @@ import { NotesItemProps } from '../../entities';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
 import axios from 'axios';
+import ellipse from '../../shared/assets/Modal/Ellipse.png';
+import vector1 from '../../shared/assets/Modal/Vector1.png';
+import vector2 from '../../shared/assets/Modal/Vector2.png';
 
 interface ModalCreateNotesProps {
   isOpen: boolean;
@@ -68,7 +71,16 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
 
   return (
     <dialog ref={dialogRef} onClose={setIsOpen} id='modalNotes' className='dialog' aria-label='Modal for create notes'>
-      <form method='dialog' onSubmit={handleSubmit(onSubmit)}>
+      <div className='dialog__blur'>
+        <img src={ellipse} />
+      </div>
+      <div className='dialog__blur'>
+        <img src={vector1} />
+      </div>
+      <div className='dialog__blur'>
+        <img src={vector2} />
+      </div>
+      <form method='dialog' className='dialog__form' onSubmit={handleSubmit(onSubmit)}>
         <div className='dialog__content'>
           <div className='dialog__header'>
             <div className='dialog__header-arrow'>

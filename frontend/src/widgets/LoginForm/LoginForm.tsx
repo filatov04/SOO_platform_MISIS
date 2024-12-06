@@ -28,9 +28,9 @@ export const LoginForm = () => {
         headers: { 'Content-Type': 'application/json' }
       })
       .then((response) => {
-        console.log(response.data);
-        localStorage.setItem('authToken', `${response.data.access_token}`);
-        dispatch(isAuth());
+        if (response.data.message !== 'User not found') {
+          dispatch(isAuth());
+        }
       })
       .catch((error) => {
         console.error('Ошибка', error.message);
