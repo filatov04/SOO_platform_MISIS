@@ -80,8 +80,8 @@ INSERT INTO "Dorms" (name, address) VALUES
 ('Горняк-1', 'просп. 60-летия Октября, 13, Москва');
 
 INSERT INTO "Users" (first_name, second_name, third_name, phone, tg, role, dorm_id, password) VALUES
-('Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
-('Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
+('Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', "@example", 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
+('Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', "@example", 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
 
 INSERT INTO "Floors" (dorm_id, owner_id, floor_number, renovated_date) VALUES
 (1, 1, 8, '2023-01-01'),
