@@ -18,6 +18,11 @@ export interface user {
   dorm_id: number;
 }
 
+enum role {
+  soo_leader = 'operative',
+  admin = 'headmans'
+}
+
 export const AllUserPage = () => {
   const router = useNavigate();
   const userInf = useAppSelector(userInfo);
@@ -28,7 +33,7 @@ export const AllUserPage = () => {
   useEffect(() => {
     async function getUser() {
       const get = await axios
-        .get('http://localhost:8000/user/get/' + userInf.role, {
+        .get('http://localhost:8000/user/get/' + role[userInf.role as keyof typeof role], {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }
