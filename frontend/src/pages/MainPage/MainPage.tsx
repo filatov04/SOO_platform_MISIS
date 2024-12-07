@@ -30,6 +30,7 @@ export const MainPage = () => {
           }
         })
         .then((response) => {
+          console.log(response.status);
           const data: UserState = {
             firstName: response.data.first_name,
             secondName: response.data.second_name,

@@ -1,0 +1,98 @@
+.calendar-weekend{
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+
+    &__calendar{
+        width: 60%;
+        height: 628px;
+        background-color: #187FF6;
+        border-radius: 20px;
+        padding: 20px 30px;
+    }
+
+    &__header{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid white;
+    }
+
+    &__confirmation{
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__Bmonth, &__Nmonth{
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    &__day{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+
+    &__month{
+        display: inline-block;
+        margin: 0;
+        margin-right: auto;
+        margin-left: auto;
+        padding: 0;
+        color: white;
+        font-size: 24px;
+    }
+
+    &__day-list{
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        justify-items: center;
+        list-style: none;
+        font-size: 20px;
+        width: 100%;
+        column-gap: 10px;
+    }
+
+    &__item{
+        color: white;
+    }
+
+    &__day-num{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        height: calc(100% - 66px - 70px);        
+    }
+
+    &__day-num-list{
+        display: grid;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        grid-template-columns: repeat(7, 1fr);
+        justify-items: center;
+        list-style: none;
+        column-gap: 10px;
+    }
+
+    &__day-num-item{
+        display: flex;
+        color: white;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        width: 100%;
+
+        &--noClick{
+            cursor: default;
+        }
+    }
+}
