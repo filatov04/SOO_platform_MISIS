@@ -104,6 +104,7 @@ export const MainPage = () => {
           }
           // console.log(arrayHeadmans);
           // //console.log(response.data);
+          console.log(array);
           setFloors(array);
           dispatch(saveHeadmans(arrayHeadmans));
           setIsLoadingFloors(true);

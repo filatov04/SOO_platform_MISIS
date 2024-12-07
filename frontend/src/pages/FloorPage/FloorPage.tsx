@@ -145,7 +145,7 @@ export const FloorPage = () => {
         <div className='floor-page__contact-info'>
           <div className='floor-page__contact-elder'>
             <img src={tg} className='floor-page__tg' />
-            {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not found'}
+            {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not Found'}
           </div>
           <div className='floor-page__contact-name'>
             <img src={phone} className='floor-page__phone' />+

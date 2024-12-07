@@ -4,8 +4,8 @@ import { RootState } from '../../store/store';
 export interface HeadmanRecord {
   firstName: string;
   secondName: string;
-  thirdName: string;
-  tg: string;
+  thirdName: string | null;
+  tg: string | null;
   phone: string;
 }
 

@@ -4,7 +4,7 @@ import { RootState } from '../../store/store';
 export interface UserState {
   firstName: string;
   secondName: string;
-  thirdName: string;
+  thirdName: string | null;
   role: string;
   dormId: number;
 }

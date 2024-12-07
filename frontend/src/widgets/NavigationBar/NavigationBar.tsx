@@ -54,7 +54,7 @@ export const NavigationBar = () => {
               )}
               <div className='navbar__item-panel'>
                 <p className='navbar__name'>
-                  {user.secondName} {user.firstName[0]}.{user.thirdName[0]}
+                  {user.secondName} {user.firstName[0]} {user.thirdName !== null ? `.${user.thirdName[0]}` : ''}
                 </p>
                 <LogoutIcon
                   onClick={() => dispatch(notAuth())}
