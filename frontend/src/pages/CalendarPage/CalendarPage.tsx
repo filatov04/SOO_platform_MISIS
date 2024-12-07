@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import './CalendarPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate } from 'react-router-dom';
-import { TableDuty } from '../../entities';
+import { ContactOperative, TableDuty } from '../../entities';
+import { CalendarWeekend } from '../../features';
 
 export interface personDay {
   first_name: string;
   second_name: string;
+  phone: string;
+  tg: string;
 }
 
 export const CalendarPage = () => {
@@ -19,30 +22,30 @@ export const CalendarPage = () => {
         return <TableDuty person={operative} />;
         break;
       case 2:
-        return <></>;
+        return <CalendarWeekend />;
         break;
       case 3:
-        return <></>;
+        return <ContactOperative contact={operative} />;
         break;
     }
   }
 
   const [operative, setOperative] = useState<personDay[]>([
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' },
-    { first_name: 'Мухаммадали', second_name: 'Мустафаев' }
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
+    { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' }
   ]);
   return (
     <div className='calendar'>
