@@ -34,7 +34,7 @@ db = DBManager("logger")
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
     if user_id is None:
-        raise HTTPException(status_code=401, detail="Invalid token or expired token.")
+        raise HTTPException(status_code=401, detail={"message": "Invalid token or expired token."})
     
     return user_id
     
@@ -48,10 +48,10 @@ async def get_server_status() -> str:
 async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     user = db.get_user_by_phone(data.phone)
     if user is None or user.deleted_at is not None:
-        return {"message": "User not found"}
+        raise HTTPException(status_code=401, detail={"message": "User not found"})
     
     if not bcrypt.verify(data.password, user.password):
-        return {"message": "Invalid password"}
+        raise HTTPException(status_code=401, detail={"message": "Invalid password"})
     
     token_response = signJWT(user.user_id)
     authpair.post(token_response["access_token"], user.user_id)
