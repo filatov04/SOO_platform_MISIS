@@ -9,7 +9,7 @@ INSERT INTO "Dorms" (dorm_id, name, address) VALUES
 (8, 'ДСГ-6', 'ул. Студенческая, 33с6, Москва');-- Вставку надо добавить там 4 этажа по 8 комнат, ТАМ ЕСТЬ ЕЩЕ ЕБАНЫЙ ПРОФИЛАК ГДЕ ПОКА НЕ ПОНЯТНО СКОЛЬОК ЭТАЖЕЙ И КОМНАТ
 
 
-INSERT INTO "Users" (user_id, first_name, second_name, third_name, phone, tg, role, dorm_id, hashed_password) VALUES
+INSERT INTO "Users" (user_id, first_name, second_name, third_name, phone, tg, role, dorm_id, password) VALUES
 (1, 'Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
 (2, 'Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
 

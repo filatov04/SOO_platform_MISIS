@@ -3,14 +3,14 @@ CREATE TYPE violationtype AS ENUM ('drink_alcohol', 'passage_alcohol', 'keeping_
 CREATE TYPE role AS ENUM ('headman', 'operative', 'admin', 'soo_leader', 'spectator');
 
 CREATE TABLE "Dorms" (
-        dorm_id BIGSERIAL NOT NULL,
+        dorm_id BIGSERIAL,
         name VARCHAR(255) NOT NULL,
         address VARCHAR(255) NOT NULL,
         PRIMARY KEY (dorm_id)
 );
 
 CREATE TABLE "Users" (
-        user_id BIGSERIAL NOT NULL,
+        user_id BIGSERIAL,
         first_name VARCHAR(255) NOT NULL,
         second_name VARCHAR(255) NOT NULL,
         third_name VARCHAR(255),
@@ -18,7 +18,7 @@ CREATE TABLE "Users" (
         tg VARCHAR(50),
         role VARCHAR(50) NOT NULL,
         dorm_id BIGINT NOT NULL,
-        hashed_password VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
         deleted_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
         PRIMARY KEY (user_id),
         UNIQUE (phone),
@@ -26,7 +26,7 @@ CREATE TABLE "Users" (
 );
 
 CREATE TABLE "Floors" (
-        floor_id BIGSERIAL NOT NULL,
+        floor_id BIGSERIAL,
         dorm_id BIGINT NOT NULL,
         owner_id BIGINT NOT NULL,
         floor_number BIGINT NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "Floors" (
 );
 
 CREATE TABLE "Notes" (
-        note_id BIGSERIAL NOT NULL,
+        note_id BIGSERIAL,
         user_id BIGINT NOT NULL,
         dorm_id BIGINT NOT NULL,
         room VARCHAR(255) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE "Notes" (
 );
 
 CREATE TABLE "Rooms" (
-        room_id BIGSERIAL NOT NULL,
+        room_id BIGSERIAL,
         floor_id BIGINT NOT NULL,
         block_number BIGINT NOT NULL,
         room_number BIGINT,
@@ -59,7 +59,7 @@ CREATE TABLE "Rooms" (
 );
 
 CREATE TABLE "Violations" (
-        violation_id BIGSERIAL NOT NULL,
+        violation_id BIGSERIAL,
         user_id BIGINT NOT NULL,
         document_type documenttype NOT NULL,
         violator_name VARCHAR(255) NOT NULL,
@@ -75,17 +75,17 @@ CREATE TABLE "Violations" (
 );
 
 
-INSERT INTO "Dorms" (dorm_id, name, address) VALUES
-(1, 'Горняк-2', 'просп. 60-летия Октября, 11, Москва'),
-(2, 'Горняк-1', 'просп. 60-летия Октября, 13, Москва');
+INSERT INTO "Dorms" (name, address) VALUES
+('Горняк-2', 'просп. 60-летия Октября, 11, Москва'),
+('Горняк-1', 'просп. 60-летия Октября, 13, Москва');
 
-INSERT INTO "Users" (user_id, first_name, second_name, third_name, phone, tg, role, dorm_id, hashed_password) VALUES
-(1, 'Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
-(2, 'Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
+INSERT INTO "Users" (first_name, second_name, third_name, phone, tg, role, dorm_id, password) VALUES
+('Ivan', 'Ivanov', 'Ivanovich', '78005553535', 'Ivanov_Ivan', 'soo_leader', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC'),
+('Petr', 'Petrov', 'Petrovich', '77777777777', 'Petrov_Petr', 'operative', 1, '$2b$12$.oyu3ThrDsJCXHe5VfIaS.kCS4wdNMOXsmW8.rn5GOIXkcdrAlcoC');
 
-INSERT INTO "Floors" (floor_id, dorm_id, owner_id, floor_number, renovated_date) VALUES
-(1, 1, 1, 8, '2023-01-01'),
-(2, 2, 2, 1, '2023-01-01');
+INSERT INTO "Floors" (dorm_id, owner_id, floor_number, renovated_date) VALUES
+(1, 1, 8, '2023-01-01'),
+(2, 2, 1, '2023-01-01');
 
 INSERT INTO "Rooms" (floor_id, block_number, room_number) VALUES
 (1, 808, 3),

@@ -74,28 +74,26 @@ class DBManager:
     def _recreate_tables(self) -> None:
         """Recreate tables in DB"""
         Base.metadata.drop_all(self.engine)
-        Base.metadata.create_all(self.engine)
-
-        self.session.add(Dorms(dorm_id = 1, name="Горняк-2", address="просп. 60-летия Октября, 11, Москва"))
+        Base.metadata.create_all(self.engine)   
+        
+        self.session.add(Dorms(name="Горняк-2", address="просп. 60-летия Октября, 11, Москва"))
         self.session.commit()
         
         self.session.add(Users(
-                        user_id = 1,
                         first_name = "Ivan",
                         second_name = "Ivanov",
                         phone = "78005553535",
                         dorm_id = 1,
                         role = "soo_leader",
-                        hashed_password = bcrypt.hash("example")
+                        password = bcrypt.hash("example")
                     ))
         self.session.commit()
         
-        self.session.add(Floors(floor_id = 1, dorm_id = 1, owner_id = 1, floor_number = 8))
+        self.session.add(Floors(dorm_id = 1, owner_id = 1, floor_number = 8))
         self.session.commit()
         
         self.session.add_all([Rooms(floor_id = 1, block_number = 808, room_number = 3), Rooms(floor_id = 1, block_number = 810, room_number = 2)])
-        self.session.commit()
-        
+        self.session.commit()     
 
     def _update_db(self) -> None:
         """Create the database structure if it doesn't exist (update)"""
@@ -113,12 +111,13 @@ class DBManager:
         if user_in_db is not None:
             if user_in_db.deleted_at is not None:
                 user_in_db.deleted_at = None
-                user_in_db.hashed_password = data.password
+                user_in_db.password = data.password
                 self.session.commit()
                 return True
             else:
                 return False
-        user = Users(**data.dict(), hashed_password=data.password, created_at=datetime.now())
+        
+        user = Users(**data.dict())
         self.session.add(user)
         self.session.commit()
         return True
@@ -191,11 +190,13 @@ class DBManager:
         self.session.add(note)
         self.session.commit()
         
-    def get_notes(self, dorm_id: int) -> Optional[List]: # TODO: add active param
+    def get_notes(self, dorm_id: int) -> List: # TODO: add active param
         data = self.session.query(Notes).filter(and_(Notes.dorm_id == dorm_id, Notes.deleted_at == None)).order_by(Notes.created_at.desc()).all()
         return [{
+            "note_id": note.note_id,
             "room": note.room,
             "description": note.description,
+            "created_at": note.created_at
             }
         for note in data
         ]

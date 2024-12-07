@@ -29,7 +29,7 @@ import time
 router = APIRouter(prefix="")
 authpair = AuthPair()
 db = DBManager("logger")
-# db._recreate_tables()
+db._recreate_tables()
 
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
@@ -50,7 +50,7 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     if user is None or user.deleted_at is not None:
         return {"message": "User not found"}
     
-    if not bcrypt.verify(data.password, user.hashed_password):
+    if not bcrypt.verify(data.password, user.password):
         return {"message": "Invalid password"}
     
     token_response = signJWT(user.user_id)
@@ -60,7 +60,7 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     
 @router.post("/auth/logout", dependencies=[Depends(check_auth)], tags=["auth"])
 async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
-    authpair.post(token, None)
+    authpair.post(token, None) # TODO: delete not valid tokens {token: None}
     return {"message": "Logout"}
 
 # end region auth
@@ -91,7 +91,6 @@ async def delete_user(user_id: int = Depends(check_auth), number_to_delete: str 
     
     return {"message": "User not found"}
     
-# TODO: add checking roles
 # TODO: add checking deleted_at
 
 @router.get("/user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"])
@@ -116,6 +115,7 @@ async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> Lis
 @router.get("/notes/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
+
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
 async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
     db.add_note(user_id, data)

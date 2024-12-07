@@ -48,7 +48,7 @@ class Role(enum.Enum):
 class Dorms(Base):
     __tablename__ = "Dorms"
     
-    dorm_id = Column(BigInteger, primary_key=True)
+    dorm_id = Column(BigInteger, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
     address = Column(String(255), nullable=False)
     
@@ -60,7 +60,7 @@ class Dorms(Base):
 class Floors(Base):
     __tablename__ = "Floors"
     
-    floor_id = Column(BigInteger, primary_key=True)
+    floor_id = Column(BigInteger, primary_key=True, autoincrement=True)
     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
     owner_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
     floor_number = Column(BigInteger, nullable=False)
@@ -70,7 +70,7 @@ class Floors(Base):
 class Rooms(Base):
     __tablename__ = "Rooms"
     
-    room_id = Column(BigInteger, primary_key=True)
+    room_id = Column(BigInteger, primary_key=True, autoincrement=True)
     floor_id = Column(BigInteger, ForeignKey("Floors.floor_id"), nullable=False)
     block_number = Column(BigInteger, nullable=False)
     room_number = Column(BigInteger, nullable=True, default=None)
@@ -81,7 +81,7 @@ class Rooms(Base):
 class Users(Base):
     __tablename__ = "Users"
 
-    user_id = Column(BigInteger, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True, autoincrement=True)
     first_name = Column(String(255), nullable=False)
     second_name = Column(String(255), nullable=False)
     third_name = Column(String(255), nullable=True)
@@ -89,7 +89,7 @@ class Users(Base):
     tg = Column(String(50), nullable=True)
     role = Column(Enum(Role), nullable=False)
     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
-    hashed_password = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None)
     
     violation_user_rel = relationship("Violations")
@@ -100,7 +100,7 @@ class Users(Base):
 class Violations(Base):
     __tablename__ = "Violations"
     
-    violation_id = Column(BigInteger, primary_key=True)
+    violation_id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
     document_type = Column(Enum(DocumentType), nullable=False)
     violator_name = Column(String(255), nullable=False)
@@ -115,7 +115,7 @@ class Violations(Base):
 class Notes(Base):
     __tablename__ = "Notes"
     
-    note_id = Column(BigInteger, primary_key=True)
+    note_id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
     room = Column(String(255), nullable=False)
