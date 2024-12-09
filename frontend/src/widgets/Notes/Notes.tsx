@@ -5,7 +5,6 @@ import vector1 from '../../shared/assets/Notes/Vector1.png';
 import vector2 from '../../shared/assets/Notes/Vector2.png';
 import { NotesItem, NotesItemProps } from '../../entities';
 import { ModalCreateNotes } from '../../features';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import '../../features/ModalCreateNotes/ModalCreateNotes.scss';
 
 interface NotesProps {

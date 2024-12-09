@@ -50,7 +50,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
     handleSubmit,
     reset,
     formState: { errors, isValid }
-  } = useForm({ mode: 'onBlur' });
+  } = useForm({ mode: 'onChange' });
 
   const onSubmit = (e: any) => {
     const data: person = {
@@ -77,6 +77,10 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
     ]);
     console.log(data);
     addPerson(data);
+    resetData();
+  };
+
+  function resetData() {
     reset();
     setFirstName('');
     setSecondName('');
@@ -84,7 +88,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
     setPhone('');
     setPassword('');
     setTg('');
-  };
+  }
 
   async function addPerson(data: person) {
     const post = await axios
@@ -114,7 +118,22 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
         <img src={vector2} />
       </div>
       <div className='add-person__header'>
-        <img src={arrowBack} className='add-person__header-back' onClick={() => setIsOpen(false)} />
+        <button
+          type='button'
+          style={{
+            cursor: 'pointer',
+            backgroundColor: 'transparent',
+            border: 'none',
+            position: 'relative',
+            zIndex: '2'
+          }}
+          onClick={() => {
+            setIsOpen(false);
+            resetData();
+          }}
+        >
+          <img src={arrowBack} className='add-person__header-back' />
+        </button>
       </div>
       <form method='dialog' onSubmit={handleSubmit(onSubmit)} className='add-person__form'>
         <div className='add-person__content'>

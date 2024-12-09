@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import './ModalCreateNotes.scss';
 import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import { useForm } from 'react-hook-form';
@@ -25,13 +25,14 @@ interface FormNote {
 
 export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotesProps): JSX.Element => {
   const room_id = useAppSelector(userInfo);
-
+  const [room, setRoom] = useState('');
+  const [note, setNote] = useState('');
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid }
-  } = useForm<FormNote>({ mode: 'onBlur' });
+  } = useForm<FormNote>({ mode: 'onChange' });
 
   async function addNotes(e: { dorm_id: number; room: string; description: string }) {
     const post = await axios
@@ -54,6 +55,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
       dialogRef.current?.showModal();
     } else {
       dialogRef.current?.close();
+      resetData();
     }
   }, [isOpen]);
 
@@ -65,9 +67,15 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
     };
     console.log(data);
     addNotes(data);
-    reset();
+    resetData();
     setNotes((prev: NotesItemProps[]) => [{ roomNumber: e.room, text: e.description }, ...prev]);
   };
+
+  function resetData() {
+    reset();
+    setNote('');
+    setRoom('');
+  }
 
   return (
     <dialog ref={dialogRef} onClose={setIsOpen} id='modalNotes' className='dialog' aria-label='Modal for create notes'>
@@ -84,7 +92,13 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
         <div className='dialog__content'>
           <div className='dialog__header'>
             <div className='dialog__header-arrow'>
-              <img src={arrowBack} onClick={setIsOpen} />
+              <button
+                type='button'
+                onClick={setIsOpen}
+                style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+              >
+                <img src={arrowBack} />
+              </button>
             </div>
             <div className='dialog__header-room'>
               <input
@@ -94,6 +108,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
                 className='dialog__room-inp'
                 type='text'
                 placeholder='Комната'
+                onChange={(e) => setRoom(e.currentTarget.value)}
               />
             </div>
           </div>
@@ -104,6 +119,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
               })}
               className='dialog__note-inp'
               placeholder='Информация...'
+              onChange={(e) => setNote(e.currentTarget.value)}
             />
           </div>
           <div className='dialog__submit'>

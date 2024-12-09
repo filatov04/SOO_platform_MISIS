@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './AllUserPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalAddPerson } from '../../features';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAppSelector } from '../../app/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
+import { notAuth } from '../../app/features/Auth/AuthSlice';
 
 export interface user {
   first_name: string;
@@ -27,6 +28,7 @@ export const AllUserPage = () => {
   const router = useNavigate();
   const userInf = useAppSelector(userInfo);
   const modalRef = useRef(null);
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<user[]>([]);
 
@@ -43,7 +45,9 @@ export const AllUserPage = () => {
           setUser([...user, ...response.data]);
         })
         .catch((error) => {
-          console.log(error.message);
+          if (error.status === 401 || error.status === 403) {
+            dispatch(notAuth());
+          }
         });
     }
 

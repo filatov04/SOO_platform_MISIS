@@ -74,8 +74,8 @@ export const ModalCreateViolation = ({
     register,
     handleSubmit,
     reset,
-    formState: { isValid }
-  } = useForm({ mode: 'onBlur' });
+    formState: { errors, isValid } // TODO Накинуть паттерны для проверки вводимых полей
+  } = useForm({ mode: 'onChange' });
 
   const onSubmit = (e: any) => {
     const data = {
@@ -168,7 +168,19 @@ export const ModalCreateViolation = ({
       </div>
       <form method='dialog' onSubmit={handleSubmit(onSubmit)} className='modal-violation__content'>
         <div className='modal-violation__header'>
-          <img style={{ cursor: 'pointer', zIndex: '2' }} src={arrowBack} onClick={() => setModalIsOpen(false)} />
+          <button
+            type='button'
+            style={{
+              cursor: 'pointer',
+              zIndex: '2',
+              position: 'relative',
+              backgroundColor: 'transparent',
+              border: 'none'
+            }}
+            onClick={() => setModalIsOpen(false)}
+          >
+            <img src={arrowBack} />
+          </button>
         </div>
         <div className='modal-violation__room-act'>
           <div className='modal-violation__room'>

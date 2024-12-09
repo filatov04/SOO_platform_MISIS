@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppSelector } from '../../app/hooks/hooks';
 import { AuthorizationValue } from '../../app/features/Auth/AuthSlice';
 import { Navigate } from 'react-router-dom';

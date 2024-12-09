@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import vector2 from '../../shared/assets/LoginForm/Vector2.png';
 import ellipse14 from '../../shared/assets/LoginForm/Ellipse14.png';
@@ -20,7 +19,7 @@ export const LoginForm = () => {
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm<formProps>({ mode: 'onBlur' });
+  } = useForm<formProps>({ mode: 'onChange' });
 
   async function requests(data: formProps) {
     const post = await axios
@@ -28,14 +27,11 @@ export const LoginForm = () => {
         headers: { 'Content-Type': 'application/json' }
       })
       .then((response) => {
-        //console.log(response.status, response.data);
-        if (response.data.message !== 'User not found') {
-          localStorage.setItem('authToken', `${response.data.access_token}`);
-          dispatch(isAuth());
-        }
+        localStorage.setItem('authToken', `${response.data.access_token}`);
+        dispatch(isAuth());
       })
       .catch((error) => {
-        console.error('Ошибка', error.status);
+        console.error(error.status);
       });
   }
 

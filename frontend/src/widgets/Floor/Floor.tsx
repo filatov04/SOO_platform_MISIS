@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import vector7 from '../../shared/assets/FloorList/Vector2.png';
 import './Floor.scss';
 import { useNavigate } from 'react-router-dom';

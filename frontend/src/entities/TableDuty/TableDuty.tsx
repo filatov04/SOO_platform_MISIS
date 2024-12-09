@@ -1,4 +1,3 @@
-import React from 'react';
 import { personDay } from '../../pages';
 import './TableDuty.scss';
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import { UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import './FormSelect.scss';
 
 interface optionProps {

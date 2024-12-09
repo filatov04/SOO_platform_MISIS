@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
+import React from 'react';
+import { useAppSelector } from '../../app/hooks/hooks';
 import { AuthorizationValue, isAuth, notAuth } from '../../app/features/Auth/AuthSlice';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
 
 export const WithAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
   const auth = useAppSelector(AuthorizationValue);

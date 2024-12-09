@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './MainPage.scss';
 import { Employee, Floor, Last, Notes } from '../../widgets';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
@@ -6,6 +6,8 @@ import { saveInfo, userInfo, UserState } from '../../app/features/User/UserSlice
 import axios from 'axios';
 import { NotesItemProps } from '../../entities';
 import { HeadmanDictionary, saveHeadmans } from '../../app/features/Headmans/HeadmansSlice';
+import { notAuth } from '../../app/features/Auth/AuthSlice';
+import { Spinner } from '../../shared';
 
 export interface FloorHeadman {
   floor: string;
@@ -30,7 +32,7 @@ export const MainPage = () => {
           }
         })
         .then((response) => {
-          console.log(response.status);
+          //console.log(response.status);
           const data: UserState = {
             firstName: response.data.first_name,
             secondName: response.data.second_name,
@@ -40,16 +42,14 @@ export const MainPage = () => {
           };
           dispatch(saveInfo(data));
           setIsLoadingUser(true);
+          //dispatch(isAuth());
         })
         .catch((error) => {
-          if (error.response) {
-            console.error(`Error: ${error.response.status} - ${error.response.statusText}`);
-          } else {
-            console.error('Error:', error.message);
+          if (error.status === 401 || error.status === 403) {
+            dispatch(notAuth());
           }
         });
     }
-
     getInfo();
   }, []);
 
@@ -135,6 +135,6 @@ export const MainPage = () => {
       </div>
     );
   } else {
-    return <div>Загрузка...</div>;
+    return <Spinner />;
   }
 };

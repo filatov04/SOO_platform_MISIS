@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Employee.scss';
 import vector3 from '../../shared/assets/UniversalBlock/Vector1.png';
 import vector4 from '../../shared/assets/UniversalBlock/Vector2.png';

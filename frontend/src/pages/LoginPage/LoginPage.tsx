@@ -1,4 +1,3 @@
-import React from 'react';
 import './LoginPage.scss';
 import { LoginForm } from '../../widgets/LoginForm/LoginForm';
 

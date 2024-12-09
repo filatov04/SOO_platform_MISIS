@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavigationBar } from '../../widgets';
 import { Outlet } from 'react-router-dom';
 import './AppLayout.scss';

@@ -1,4 +1,3 @@
-import React from 'react';
 import './NotesItem.scss';
 
 export interface NotesItemProps {

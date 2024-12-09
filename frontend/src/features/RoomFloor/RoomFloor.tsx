@@ -1,9 +1,9 @@
-import React, { SetStateAction, useEffect } from 'react';
+import React, { SetStateAction } from 'react';
 import vector1 from '../../shared/assets/FloorPage/Room/Vector1.png';
 import vector2 from '../../shared/assets/FloorPage/Room/Vector2.png';
 import AddIcon from '@mui/icons-material/Add';
 import './RoomFloor.scss';
-import { roomNumberID, violation } from '../../pages';
+import { violation } from '../../pages';
 
 interface RoomFloorProps {
   number: string;

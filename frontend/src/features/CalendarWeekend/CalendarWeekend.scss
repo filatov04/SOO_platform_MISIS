@@ -47,6 +47,7 @@
         padding: 0;
         color: white;
         font-size: 24px;
+        cursor: default;
     }
 
     &__day-list{
@@ -62,6 +63,7 @@
 
     &__item{
         color: white;
+        cursor: default;
     }
 
     &__day-num{
@@ -80,6 +82,7 @@
         justify-items: center;
         list-style: none;
         column-gap: 10px;
+        align-items: center;
     }
 
     &__day-num-item{
@@ -89,7 +92,14 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        width: 100%;
+        width: 50%;
+        height: 55%;
+
+        &--red{
+            background-color: rgb(233, 56, 56);
+            border-radius: 200px;
+            border: none;
+        }
 
         &--noClick{
             cursor: default;

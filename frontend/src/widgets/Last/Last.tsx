@@ -1,4 +1,3 @@
-import React from 'react';
 import './Last.scss';
 import vector5 from '../../shared/assets/UniversalBlock/Vector3.png';
 import vector6 from '../../shared/assets/UniversalBlock/Vector4.png';
