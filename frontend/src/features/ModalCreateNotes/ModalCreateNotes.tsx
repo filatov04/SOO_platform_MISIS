@@ -3,12 +3,13 @@ import './ModalCreateNotes.scss';
 import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import { useForm } from 'react-hook-form';
 import { NotesItemProps } from '../../entities';
-import { useAppSelector } from '../../app/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
 import axios from 'axios';
 import ellipse from '../../shared/assets/Modal/Ellipse.png';
 import vector1 from '../../shared/assets/Modal/Vector1.png';
 import vector2 from '../../shared/assets/Modal/Vector2.png';
+import { notAuth } from '../../app/features/Auth/AuthSlice';
 
 interface ModalCreateNotesProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ interface FormNote {
 
 export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotesProps): JSX.Element => {
   const room_id = useAppSelector(userInfo);
+  const dispatch = useAppDispatch();
   const [room, setRoom] = useState('');
   const [note, setNote] = useState('');
   const {
@@ -46,7 +48,9 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
         console.log(response.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        if (error.status === 401 || error.status === 403) {
+          dispatch(notAuth());
+        }
       });
   }
 

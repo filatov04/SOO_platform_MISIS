@@ -3,12 +3,13 @@ import arrowBack from '../../shared/assets/ModalCreateNotes/ArrowBack.png';
 import { user } from '../../pages/AllUserPage';
 import './ModalAddPerson.scss';
 import { useForm } from 'react-hook-form';
-import { useAppSelector } from '../../app/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
 import axios from 'axios';
 import ellipse from '../../shared/assets/Modal/Ellipse.png';
 import vector1 from '../../shared/assets/Modal/Vector1.png';
 import vector2 from '../../shared/assets/Modal/Vector2.png';
+import { notAuth } from '../../app/features/Auth/AuthSlice';
 
 interface ModalAddPersonProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
   const [password, setPassword] = useState('');
   const [tg, setTg] = useState('');
   const user = useAppSelector(userInfo);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isOpen) {
@@ -102,6 +104,9 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
         console.log(response.data);
       })
       .catch((error) => {
+        if (error.status === 401 || error.status === 403) {
+          dispatch(notAuth());
+        }
         console.log(error.message);
       });
   }
@@ -184,6 +189,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
           />
           <input
             {...register('tg', {
+              //TODO минимальная длина ника равна 4
               required: true
             })}
             className='add-person__input'

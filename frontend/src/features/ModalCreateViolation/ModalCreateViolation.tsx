@@ -9,6 +9,8 @@ import axios from 'axios';
 import ellipse from '../../shared/assets/Modal/Ellipse.png';
 import vector1 from '../../shared/assets/Modal/Vector1.png';
 import vector2 from '../../shared/assets/Modal/Vector2.png';
+import { useAppDispatch } from '../../app/hooks/hooks';
+import { notAuth } from '../../app/features/Auth/AuthSlice';
 
 interface ModalCreateViolationProps {
   modalRef: RefObject<HTMLDialogElement>;
@@ -45,6 +47,7 @@ export const ModalCreateViolation = ({
   const [violator, setViolator] = useState<string>('');
   const [witness, setWitness] = useState<string>('');
   const [date, setDate] = useState<string>('');
+  const dispatch = useAppDispatch();
 
   function maxDate(): string {
     const today = new Date();
@@ -66,7 +69,9 @@ export const ModalCreateViolation = ({
         console.log(response.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        if (error.status === 401 || error.status === 403) {
+          dispatch(notAuth());
+        }
       });
   }
 

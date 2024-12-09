@@ -54,10 +54,30 @@ export const AllUserPage = () => {
     getUser();
   }, []);
 
-  const delUser = (phone: string) => {
-    const data = user.filter((a) => a.phone !== phone);
-    setUser(data);
-  };
+  // const delUser = (phone: string) => {
+  //   const data = user.filter((a) => a.phone !== phone);
+  //   setUser(data);
+  // };
+
+  async function delUser(phone: string) {
+    const del = await axios
+      .post('http://localhost:8000/user/delete/' + phone, JSON.stringify({ numberToDelete: phone }), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      })
+      .then(() => {
+        const data = user.filter((a) => a.phone !== phone);
+        setUser(data);
+      })
+      .catch((error) => {
+        if (error.status === 401 || error.status === 403) {
+          dispatch(notAuth());
+        }
+        console.log(error.message);
+      });
+  }
 
   return (
     <div className='users'>
@@ -69,7 +89,7 @@ export const AllUserPage = () => {
       </div>
       <div className='users__content'>
         <ul className='users__list'>
-          {user.map((elem, index) => (
+          {user.map((elem) => (
             <li key={elem.phone} className='users__item'>
               <div className='users__name'>
                 {elem.second_name} {elem.first_name}
