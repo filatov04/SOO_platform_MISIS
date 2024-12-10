@@ -107,7 +107,11 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
             <div className='dialog__header-room'>
               <input
                 {...register('room', {
-                  required: true
+                  required: true,
+                  pattern: {
+                    value: /^\d{3,4}(-[23])?$/,
+                    message: ''
+                  }
                 })}
                 className='dialog__room-inp'
                 type='text'

@@ -79,7 +79,7 @@ export const ModalCreateViolation = ({
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid } // TODO Накинуть паттерны для проверки вводимых полей
+    formState: { errors, isValid }
   } = useForm({ mode: 'onChange' });
 
   const onSubmit = (e: any) => {

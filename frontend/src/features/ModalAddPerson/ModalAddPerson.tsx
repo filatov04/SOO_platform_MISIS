@@ -171,11 +171,15 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
           />
           <input
             {...register('phone', {
-              required: true
+              required: true,
+              pattern: {
+                value: /^7\d{10}$/,
+                message: ''
+              }
             })}
             className='add-person__input'
             type='text'
-            placeholder='Телефон'
+            placeholder='Телефон (79876543210)'
             onChange={(e) => setPhone(e.currentTarget.value)}
           />
           <input
@@ -189,8 +193,12 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
           />
           <input
             {...register('tg', {
-              //TODO минимальная длина ника равна 4
-              required: true
+              required: true,
+              pattern: {
+                value: /^[a-zA-Z0-9_]+$/,
+                message: ''
+              },
+              minLength: 5
             })}
             className='add-person__input'
             type='text'
