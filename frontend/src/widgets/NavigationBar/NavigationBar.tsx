@@ -13,12 +13,12 @@ export const NavigationBar = () => {
   const auth = useAppSelector(AuthorizationValue);
   const user = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
-  const [isAdmin, setIsAdmin] = useState(true);
+  //const [isAdmin, setIsAdmin] = useState(true);
   const router = useNavigate();
   return (
     <div className='navbar'>
       <div className='navbar__content'>
-        <div className='navbar__logo'>
+        <div className='navbar__logo' onClick={auth ? () => router('/MainPage') : () => {}}>
           <img src={logo} className='logo' />
         </div>
         <div className='navbar__list-panel'>
@@ -36,7 +36,7 @@ export const NavigationBar = () => {
                   }}
                 />
               </div>
-              {isAdmin ? (
+              {user.role === 'soo_leader' || user.role === 'admin' ? (
                 <div className='navbar__item-panel' onClick={() => router('/AllUserPage')}>
                   <PersonAddAlt1Icon
                     sx={{
@@ -54,10 +54,13 @@ export const NavigationBar = () => {
               )}
               <div className='navbar__item-panel'>
                 <p className='navbar__name'>
-                  {user.secondName} {user.firstName[0]} {user.thirdName !== null ? `.${user.thirdName[0]}` : ''}
+                  {user.secondName} {user.firstName[0]}. {user.thirdName !== null ? `${user.thirdName[0]}.` : ''}
                 </p>
                 <LogoutIcon
-                  onClick={() => dispatch(notAuth())}
+                  onClick={() => {
+                    dispatch(notAuth());
+                    localStorage.clear();
+                  }}
                   sx={{
                     cursor: 'pointer',
                     color: 'white',

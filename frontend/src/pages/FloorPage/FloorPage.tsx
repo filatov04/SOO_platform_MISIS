@@ -144,8 +144,8 @@ export const FloorPage = () => {
           <div className='floor-page__contact-info'>
             <div className='floor-page__contact-elder'>Староста</div>
             <div className='floor-page__contact-name'>
-              {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'found'}{' '}
-              {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'Not'}
+              {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'Not'}{' '}
+              {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'found'}
             </div>
           </div>
           <div className='floor-page__contact-info'>
@@ -154,8 +154,8 @@ export const FloorPage = () => {
               {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not Found'}
             </div>
             <div className='floor-page__contact-name'>
-              <img src={phone} className='floor-page__phone' />+
-              {floorId && headmans[floorId]?.phone ? headmans[floorId].phone : 'Not found'}
+              <img src={phone} className='floor-page__phone' />
+              {floorId && headmans[floorId]?.phone ? `+${headmans[floorId].phone}` : 'Not found'}
             </div>
           </div>
         </div>

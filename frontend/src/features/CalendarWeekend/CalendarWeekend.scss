@@ -10,6 +10,7 @@
         background-color: #187FF6;
         border-radius: 20px;
         padding: 20px 30px;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     }
 
     &__header{
@@ -103,6 +104,32 @@
 
         &--noClick{
             cursor: default;
+        }
+    }
+
+    &__confirmation-btn{
+        width: 70%;
+        height: 60px;
+        background-color: #187FF6;
+        color: white;
+        font-size: 24px;
+        border:none;
+        border-radius: 15px;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover{
+            opacity: 0.7;
+        }
+
+        &--dis{
+            &:hover{
+                
+            }
+            transition: none;
+            cursor: default;
+            opacity: 0.7;
         }
     }
 }

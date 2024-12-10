@@ -32,5 +32,5 @@ export const UserSlice = createSlice({
 });
 
 export const { saveInfo } = UserSlice.actions;
-export const userInfo = (state: RootState) => state.user;
+export const userInfo = (state: RootState) => state.root.user;
 export const userReducer = UserSlice.reducer;

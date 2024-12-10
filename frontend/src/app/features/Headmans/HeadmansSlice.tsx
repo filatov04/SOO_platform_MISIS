@@ -32,5 +32,5 @@ export const HeadmansSlice = createSlice({
 });
 
 export const { saveHeadmans } = HeadmansSlice.actions;
-export const headmansInfo = (state: RootState) => state.headmans;
+export const headmansInfo = (state: RootState) => state.root.headmans;
 export const HeadmansReducer = HeadmansSlice.reducer;

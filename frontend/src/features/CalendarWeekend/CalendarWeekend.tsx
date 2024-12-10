@@ -93,7 +93,7 @@ export const CalendarWeekend = () => {
         </div>
       </div>
       <div className='calendar-weekend__confirmation'>
-        <button>Подтвердить даты</button>
+        <button className='calendar-weekend__confirmation-btn'>Подтвердить даты</button>
       </div>
     </div>
   );
