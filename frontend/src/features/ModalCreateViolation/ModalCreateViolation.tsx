@@ -22,15 +22,15 @@ interface ModalCreateViolationProps {
   //roomsWithViolation: blockViolation;
 }
 
-interface formData {
-  room_id: string;
-  document_type: string;
-  created_at: string;
-  violation_type: string;
-  violator_name: string;
-  witness: string;
-  description: string;
-}
+// interface formData {
+//   room_id: string;
+//   document_type: string;
+//   created_at: string;
+//   violation_type: string;
+//   violator_name: string;
+//   witness: string;
+//   description: string;
+// }
 
 export const ModalCreateViolation = ({
   modalRef,
@@ -58,7 +58,7 @@ export const ModalCreateViolation = ({
   }
 
   async function sendViolation(data: any) {
-    const post = await axios
+    await axios
       .post('http://localhost:8000/violations/add', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export const ModalCreateViolation = ({
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid }
+    formState: { isValid }
   } = useForm({ mode: 'onChange' });
 
   const onSubmit = (e: any) => {
@@ -129,6 +129,7 @@ export const ModalCreateViolation = ({
   };
 
   function findKeyByValue(dict: blockNumberRoomNumber, targetValue: number): string | undefined {
+    //@ts-ignore
     for (const [outerKey, innerDict] of Object.entries(dict)) {
       for (const [innerKey, value] of Object.entries(innerDict)) {
         //console.log(value);
@@ -202,7 +203,8 @@ export const ModalCreateViolation = ({
                       { id: 1, value: `${roomsID?.[Number(room)]?.[2]}`, name: `${room}-2` },
                       { id: 2, value: `${roomsID?.[Number(room)]?.[3]}`, name: `${room}-3` }
                     ]
-                  : [{ id: 1, value: `${roomsID?.[Number(room)]?.['null']}`, name: `${room}` }]
+                  : //@ts-ignore
+                    [{ id: 1, value: `${roomsID?.[Number(room)]?.['null']}`, name: `${room}` }]
               }
               onChange={(e) => setRoomNumber(e)}
               value={roomNumber}

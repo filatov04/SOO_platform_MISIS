@@ -14,15 +14,10 @@ interface formProps {
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = useForm<formProps>({ mode: 'onChange' });
+  const { register, handleSubmit } = useForm<formProps>({ mode: 'onChange' });
 
   async function requests(data: formProps) {
-    const post = await axios
+    await axios
       .post('http://localhost:8000/auth/login', JSON.stringify(data), {
         headers: { 'Content-Type': 'application/json' }
       })
@@ -31,6 +26,7 @@ export const LoginForm = () => {
         dispatch(isAuth());
       })
       .catch((error) => {
+        //alert(error.message);
         console.error(error.status);
       });
   }

@@ -23,7 +23,7 @@ export const NavigationBar = () => {
         <div className='navbar__logo' onClick={auth ? () => router('/MainPage') : () => {}}>
           <img src={logo} className='logo' />
         </div>
-        {isMobile ? (
+        {isMobile && auth ? (
           <div className='navbar__list-panel'>
             <div className='navbar__item-panel'>
               <PersonIcon

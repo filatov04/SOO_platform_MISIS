@@ -30,6 +30,7 @@ export const CalendarPage = () => {
     }
   }
 
+  //@ts-ignore
   const [operative, setOperative] = useState<personDay[]>([
     { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
     { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
@@ -47,6 +48,7 @@ export const CalendarPage = () => {
     { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' },
     { first_name: 'Мухаммадали', second_name: 'Мустафаев', phone: '79919451059', tg: 'miw4ik' }
   ]);
+
   return (
     <div className='calendar'>
       <div className='calendar__header'>

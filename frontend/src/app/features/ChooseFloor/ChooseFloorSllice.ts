@@ -4,9 +4,9 @@ import { RootState } from "../../store/store"
 
 
 
-interface ChooseFloorState{
-    floor: number
-}
+// interface ChooseFloorState{
+//     floor: number
+// }
 
 // const initialState: ChooseFloorState = {
 //     floor: 0,

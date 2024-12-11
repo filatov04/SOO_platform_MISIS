@@ -12,14 +12,14 @@ const initialState: AuthState = {
 }
 
 
-const loadAuthState = () : boolean => {
-    const localState = localStorage.getItem('isAuthenticated');
-    return localState ? JSON.parse(localState) : false;
-};
+// const loadAuthState = () : boolean => {
+//     const localState = localStorage.getItem('isAuthenticated');
+//     return localState ? JSON.parse(localState) : false;
+// };
 
-const saveAuthState = (state:boolean) => {
-    localStorage.setItem('isAuthenticated', JSON.stringify(state));
-};
+// const saveAuthState = (state:boolean) => {
+//     localStorage.setItem('isAuthenticated', JSON.stringify(state));
+// };
 
 export const AuthSlice = createSlice({
     name: 'auth',

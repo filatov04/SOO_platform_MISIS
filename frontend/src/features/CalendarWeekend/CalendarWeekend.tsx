@@ -6,7 +6,8 @@ interface day {
 }
 
 export const CalendarWeekend = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  //const [currentDate, setCurrentDate] = useState(new Date());
+  const currentDate = new Date();
   const [date, setDate] = useState<day>({});
 
   const generateCalendarDays = () => {

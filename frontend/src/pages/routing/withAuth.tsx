@@ -12,13 +12,13 @@ export const WithAuth = <P extends object>(WrappedComponent: React.ComponentType
 
   useEffect(() => {
     async function getInfo() {
-      const getUserInfo = await axios
+      await axios
         .get('http://localhost:8000/user/info', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }
         })
-        .then((response) => {
+        .then(() => {
           //console.log(response.data);
           dispatch(isAuth());
           //setLoading(true);

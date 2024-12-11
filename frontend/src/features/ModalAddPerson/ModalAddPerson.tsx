@@ -51,7 +51,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid }
+    formState: { isValid }
   } = useForm({ mode: 'onChange' });
 
   const onSubmit = (e: any) => {
@@ -93,7 +93,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
   }
 
   async function addPerson(data: person) {
-    const post = await axios
+    await axios
       .post('http://localhost:8000/user/register', JSON.stringify(data), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -150,6 +150,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Фамилия'
             onChange={(e) => setSecondName(e.currentTarget.value)}
+            value={secondName}
           />
           <input
             {...register('first_name', {
@@ -159,6 +160,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Имя'
             onChange={(e) => setFirstName(e.currentTarget.value)}
+            value={firstName}
           />
           <input
             {...register('third_name', {
@@ -168,6 +170,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Отчество'
             onChange={(e) => setThirdName(e.currentTarget.value)}
+            value={thirdName}
           />
           <input
             {...register('phone', {
@@ -181,6 +184,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Телефон (79876543210)'
             onChange={(e) => setPhone(e.currentTarget.value)}
+            value={phone}
           />
           <input
             {...register('password', {
@@ -190,6 +194,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Пароль'
             onChange={(e) => setPassword(e.currentTarget.value)}
+            value={password}
           />
           <input
             {...register('tg', {
@@ -204,6 +209,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             type='text'
             placeholder='Telegram'
             onChange={(e) => e.currentTarget.value}
+            value={tg}
           />
         </div>
         <div className='add-person__submit'>

@@ -27,17 +27,17 @@ interface FormNote {
 export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: ModalCreateNotesProps): JSX.Element => {
   const room_id = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
-  const [room, setRoom] = useState('');
-  const [note, setNote] = useState('');
+  const [room, setRoom] = useState<string>('');
+  const [note, setNote] = useState<string>('');
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid }
+    formState: { isValid }
   } = useForm<FormNote>({ mode: 'onChange' });
 
   async function addNotes(e: { dorm_id: number; room: string; description: string }) {
-    const post = await axios
+    await axios
       .post('http://localhost:8000/notes/add', JSON.stringify(e), {
         headers: {
           'Content-Type': 'application/json',
@@ -117,6 +117,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
                 type='text'
                 placeholder='Комната'
                 onChange={(e) => setRoom(e.currentTarget.value)}
+                value={room}
               />
             </div>
           </div>
@@ -128,6 +129,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
               className='dialog__note-inp'
               placeholder='Информация...'
               onChange={(e) => setNote(e.currentTarget.value)}
+              value={note}
             />
           </div>
           <div className='dialog__submit'>

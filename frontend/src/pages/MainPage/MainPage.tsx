@@ -29,7 +29,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     async function getInfo() {
-      const getUserInfo = await axios
+      await axios
         .get('http://localhost:8000/user/info', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -59,7 +59,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     async function getNotes() {
-      const getNotesInfo = await axios
+      await axios
         .get('http://localhost:8000/notes/get/' + user.dormId, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -85,7 +85,7 @@ export const MainPage = () => {
     }
 
     async function getFloor() {
-      const getFloorInfo = await axios
+      await axios
         .get('http://localhost:8000/floors/get/' + user.dormId, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`

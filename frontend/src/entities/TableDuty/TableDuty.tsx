@@ -6,6 +6,7 @@ interface TableDutyProps {
 }
 
 export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
+  //@ts-ignore
   const day: Array<number> = Array.from({ length: 30 }, (v, k) => k + 1);
   return (
     <div className='calendar__content'>
@@ -18,7 +19,7 @@ export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
           <thead>
             <tr className='table-duty__row-head'>
               <th className='table-duty__item-head table-duty__item-head--border'></th>
-              {day.map((elem, index) => {
+              {day.map((elem) => {
                 return <th className='table-duty__item-head'>{elem}</th>;
               })}
             </tr>
@@ -30,7 +31,7 @@ export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
                   <td className='table-duty__item-name'>
                     {index + 1} {elem.first_name} {elem.second_name}
                   </td>
-                  {day.map((elem, index) => {
+                  {day.map(() => {
                     return <td className='table-duty__item-day'> </td>;
                   })}
                 </tr>
