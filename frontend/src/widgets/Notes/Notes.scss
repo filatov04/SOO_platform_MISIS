@@ -93,17 +93,6 @@
     }
     
     .notes{
-        // position: relative;
-    
-        // &__blur{
-        //     position: absolute;
-        //     width: 100%;
-        //     height: 100%;
-        //     img{
-        //         width: 100%;
-        //         height: 100%;
-        //     }
-        // }
     
         &__header{
             display: flex;
@@ -149,17 +138,6 @@
     }
     
     .notes{
-        // position: relative;
-    
-        // &__blur{
-        //     position: absolute;
-        //     width: 100%;
-        //     height: 100%;
-        //     img{
-        //         width: 100%;
-        //         height: 100%;
-        //     }
-        // }
     
         &__header{
             display: flex;
@@ -201,7 +179,7 @@
             width: 35%;
             min-width: 200px;
             border-radius: 15px;
-            height: 800px;
+            height: 650px;
         }
     
     }

@@ -52,7 +52,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-grow: 1;
+        width: 65%;
     }
 }
 
@@ -98,6 +98,23 @@
     }
 }
 
-@media(max-width: 768px){
+@media(max-width: 615px){
+    .last{
+
+        height: 50px;
+
+        &__act{
+            &--yellow, &--red{
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+        }
     
+        &__room{
+            width: 20%;
+            font-size: 15px;
+            border-left: 1px solid #505569;
+            border-right: 1px solid #505569;
+        }
+    }
 }

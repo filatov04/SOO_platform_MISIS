@@ -11,6 +11,7 @@ import { persistReducer, FLUSH,
     REGISTER, } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import persistStore from "redux-persist/es/persistStore";
+import { footerReducer } from "../features/Footer/FooterSlice";
 
 const persistConfig = {
     key: 'root',
@@ -29,7 +30,8 @@ export const store = configureStore({
     reducer: {
         choose: chooseReducer,
         auth: AuthReducer,
-        root: persistedReducer
+        root: persistedReducer,
+        footer: footerReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

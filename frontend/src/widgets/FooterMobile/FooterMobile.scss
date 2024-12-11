@@ -1,0 +1,15 @@
+.footer{
+    display: flex;
+    width: 100vw;
+    height: 65px;
+    background: rgb(5,65,240);
+    background: linear-gradient(9deg, rgba(5,65,240,1) 6%, rgba(55,235,255,1) 100%);
+    justify-content: center;
+
+    &__content{
+        display: flex;
+        height: 100%;
+        width: 50%;
+        justify-content: space-between
+    }
+}

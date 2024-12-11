@@ -17,6 +17,23 @@
         width: calc(100% - 20px);
         justify-content: center;
         padding: 0px 10px;
+
+        &__main{
+            width: 70%;
+        }
+    }
+}
+
+@media (max-width: 615px){
+    .content{
+        width: calc(100% - 20px);
+        justify-content: center;
+        padding: 0px 10px;
+
+        &__main{
+            width: 80%;
+            min-width: 350px;
+        }
     }
 }
 

@@ -9,6 +9,7 @@ import { HeadmanDictionary, saveHeadmans } from '../../app/features/Headmans/Hea
 import { notAuth } from '../../app/features/Auth/AuthSlice';
 import { Spinner } from '../../shared';
 import { useMediaQuery } from '@mui/material';
+import { footerOptions } from '../../app/features/Footer/FooterSlice';
 
 export interface FloorHeadman {
   floor: string;
@@ -18,6 +19,7 @@ export interface FloorHeadman {
 export const MainPage = () => {
   const user = useAppSelector(userInfo);
   const dispatch = useAppDispatch();
+  const footer = useAppSelector(footerOptions);
   const [notes, setNotes] = useState<NotesItemProps[]>([]);
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const [isLoadingNotes, setIsLoadindNotes] = useState(false);
@@ -128,16 +130,28 @@ export const MainPage = () => {
   if (isLoadingFloors && isLoadingNotes && isLoadingUser) {
     return (
       <div className='content'>
-        <Notes setNotes={setNotes} notes={notes} />
         {isMobile ? (
-          <></>
+          footer === 1 ? (
+            <div className='content__main'>
+              <Employee />
+              <Last />
+            </div>
+          ) : (
+            <>
+              <Notes setNotes={setNotes} notes={notes} />
+              <Floor floors={floors} />
+            </>
+          )
         ) : (
-          <div className='content__main'>
-            <Employee />
-            <Last />
-          </div>
+          <>
+            <Notes setNotes={setNotes} notes={notes} />
+            <div className='content__main'>
+              <Employee />
+              <Last />
+            </div>
+            <Floor floors={floors} />
+          </>
         )}
-        <Floor floors={floors} />
       </div>
     );
   } else {

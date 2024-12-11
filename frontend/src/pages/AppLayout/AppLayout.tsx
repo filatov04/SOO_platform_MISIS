@@ -1,9 +1,10 @@
-import { NavigationBar } from '../../widgets';
+import { FooterMobile, NavigationBar } from '../../widgets';
 import { Outlet } from 'react-router-dom';
 import './AppLayout.scss';
+import { useMediaQuery } from '@mui/material';
 
 export const AppLayout = () => {
-  //const isMobile = useMediaQuery(`(max-width: 768px)`);
+  const isMobile = useMediaQuery(`(max-width: 768px)`);
   return (
     <div className='app-layout'>
       <header className='app-header'>
@@ -12,9 +13,7 @@ export const AppLayout = () => {
       <main className='main-content'>
         <Outlet />
       </main>
-      <footer className='app-footer'>
-        <></>
-      </footer>
+      <footer className='app-footer'>{isMobile ? <FooterMobile /> : <></>}</footer>
     </div>
   );
 };
