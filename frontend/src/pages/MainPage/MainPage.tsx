@@ -8,6 +8,7 @@ import { NotesItemProps } from '../../entities';
 import { HeadmanDictionary, saveHeadmans } from '../../app/features/Headmans/HeadmansSlice';
 import { notAuth } from '../../app/features/Auth/AuthSlice';
 import { Spinner } from '../../shared';
+import { useMediaQuery } from '@mui/material';
 
 export interface FloorHeadman {
   floor: string;
@@ -22,6 +23,7 @@ export const MainPage = () => {
   const [isLoadingNotes, setIsLoadindNotes] = useState(false);
   const [isLoadingFloors, setIsLoadingFloors] = useState(false);
   const [floors, setFloors] = useState<FloorHeadman[]>([]);
+  const isMobile = useMediaQuery(`(max-width:768px)`);
 
   useEffect(() => {
     async function getInfo() {
@@ -127,10 +129,14 @@ export const MainPage = () => {
     return (
       <div className='content'>
         <Notes setNotes={setNotes} notes={notes} />
-        <div className='content__main'>
-          <Employee />
-          <Last />
-        </div>
+        {isMobile ? (
+          <></>
+        ) : (
+          <div className='content__main'>
+            <Employee />
+            <Last />
+          </div>
+        )}
         <Floor floors={floors} />
       </div>
     );

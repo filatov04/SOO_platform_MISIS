@@ -3,7 +3,7 @@
     width: 100vw;
     display: flex;
     flex-direction: column;
-    min-height: 100dvh;
+    height: auto;
 }
 
 .app-header{
@@ -27,6 +27,7 @@
 }
 
 
+
 @media (max-width: 1280px){
 }
 
@@ -34,7 +35,4 @@
 }
 
 @media (max-width: 768px){
-    .main-content{
-        margin-top: 0px;
-    }
 }

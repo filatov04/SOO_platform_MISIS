@@ -4,3 +4,4 @@ export * from './Employee';
 export * from './Last';
 export * from './Floor'; 
 export * from './Notes';
+export * from './FooterMobile';

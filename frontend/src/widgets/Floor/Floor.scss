@@ -31,7 +31,7 @@
     }
 
     &__scroll{
-        height: auto;
+        height: 870px;
         overflow: auto;
         scrollbar-width: none;
         &::-webkit-scrollbar{
@@ -63,5 +63,131 @@
         font-size: 48px;
         color: white;
         cursor: pointer;
+    }
+}
+
+
+@media(max-width: 1280px){
+    .content{
+        &__floor{
+            height: 598px;
+        }
+    
+        &__floor-list{
+            row-gap: 18px;
+        }
+    
+        &__floor-item{
+            font-size: 48px;
+            height: 70px;
+            border-radius: 18px;
+        }
+    }
+    
+    .floor{
+    
+        &__blur{
+            img{
+                border-radius: 18px;
+            }
+        }
+    
+        &__item-text{
+            font-size: 39px;
+        }
+    }
+}
+
+@media(max-width: 1000px){
+    .content{
+        &__floor{
+            height: 480px;
+        }
+    
+        &__floor-list{
+            row-gap: 14px;
+        }
+    
+        &__floor-item{
+            font-size: 48px;
+            height: 55px;
+            border-radius: 10px;
+        }
+    }
+    
+    .floor{
+    
+        &__blur{
+            img{
+                border-radius: 10px;
+            }
+        }
+    
+        &__item-text{
+            font-size: 28px;
+        }
+    }
+}
+
+@media(max-width: 768px){
+    .content{
+        &__floor{
+            width: 30%;
+            min-width: 120px;
+            flex-grow: initial;
+            height: 800px;
+        }
+    
+        &__floor-list{
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            row-gap: 15px;
+        }
+    
+        &__floor-item{
+            font-size: 48px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+    }
+    
+    .floor{
+        display: flex;
+        flex-direction: column;
+    
+    
+        &__scroll{
+            height: 870px;
+            overflow: auto;
+            scrollbar-width: none;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+        }
+    
+        &__blur{
+            img{
+                border-radius: 10px;
+            }
+        }
+    
+        &__item{
+            position: relative;
+            list-style: none;
+            background-color: #187FF6;
+            cursor: pointer;
+        }
+    
+        &__item-text{
+            z-index: 1;
+            margin: 0;
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+        }
     }
 }
