@@ -1,27 +1,43 @@
+@function calcFluidFontSize($f-min, $f-max, $v-min, $v-max) {
+    $k: calc(($f-max - $f-min) / ($v-max - $v-min));
+    $b: $f-min - $k * $v-min;
+  
+    $b: $b * 1px;
+  
+    @return calc( #{$k} * 100vw + #{$b} );
+}
+
+
 .floor-page{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: calc(100% - 40px);
+    padding: 0px 20px;
 
     &__info{
         display: flex;
         width: 100%;
+        column-gap: 1%;
         justify-content: space-between;
         margin-bottom: 40px;
-        height: 68px;
+        min-height: 68px;
+        height: auto;
     }
 
     &__arrow-back{
         cursor: pointer;
+        display: flex;
+        align-items: center;
     }
 
     &__number{
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 20px;
+        padding: 5px 20px;
         //width: 16%;
         border-radius: 20px;
+        line-height: 35px;
         font-size: 48px;
         background-color: #187FF6;
         color: white;
@@ -42,26 +58,27 @@
         color:  white;
         display: flex;
         justify-content: center;
+        word-break: break-all;
 
     }
 
     &__contact-elder{
+        display: flex;
         border-right: 2px solid white;
         height: 100%;
         align-items: center;        
-        padding: 0 20px;
+        padding: 0 10px;
     }
 
     &__contact-name{
         padding: 0 20px;
         align-items: center;
-
     }
 
     &__tg{
         width: 33px;
         aspect-ratio: 1;
-        margin-right: 6%;
+        margin-right: 10px;
     }
 
     &__phone{
@@ -77,4 +94,201 @@
         row-gap: 30px;
     }
     
+}
+
+@media (max-width: 1280px){
+    .floor-page{
+    
+        &__info{
+            margin-bottom: 30px;
+            min-height: 53px;
+        }
+
+        &__number{
+            padding: 5px 15px;
+            //width: 16%;
+            border-radius: 15px;
+            line-height: 30px;
+            font-size: 35px;
+            cursor: default;
+        }
+    
+        &__contact-info{
+            border-radius: 15px;
+        }
+    
+        &__contact-elder, &__contact-name{
+            font-size: 30px;
+            line-height: 28px;
+            cursor: default;
+        }
+    
+        &__contact-elder{        
+            padding: 0 8px;
+        }
+    
+        &__contact-name{
+            padding: 0 15px;
+            align-items: center;
+        }
+    
+        &__tg{
+            width: 28px;
+            aspect-ratio: 1;
+            margin-right: 8px;
+        }
+    
+        &__rooms{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            column-gap: 25px;
+            row-gap: 20px;
+        }
+        
+    }
+}
+
+@media(max-width: 1000px){
+    .floor-page{
+    
+        &__info{
+            margin-bottom: 20px;
+            min-height: 45px;
+        }
+
+        &__number{
+            padding: 5px 10px;
+            //width: 16%;
+            border-radius: 10px;
+            line-height: 20px;
+            font-size: 27px;
+        }
+    
+        &__contact-info{
+            border-radius: 10px;
+        }
+    
+        &__contact-elder, &__contact-name{
+            font-size: 22px;
+            line-height: 20px;
+        }
+    
+        &__contact-elder{        
+            padding: 0 8px;
+        }
+    
+        &__contact-name{
+            padding: 0 10px;
+            align-items: center;
+        }
+    
+        &__tg{
+            width: 22px;
+            aspect-ratio: 1;
+            margin-right: 5px;
+        }
+    
+        &__rooms{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            column-gap: 25px;
+            row-gap: 20px;
+        }
+        
+    }
+}
+
+@media(max-width: 768px){
+    .floor-page{
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 20px);
+        padding: 0px 10px;
+
+        &__blur{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+            }
+        }
+
+        &__mobile-header{
+            z-index: 2;
+            position: relative;
+            background-color: #1C72D6;
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            padding-bottom: 10px;
+            min-height: 71px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        &__mobile-headinf{
+            display: flex;
+            width: 100%;
+            color: white;
+            cursor: default;
+        }
+
+        &__mobile-floor, &__mobile-headman, &__mobile-tg, &__mobile-phone{
+            z-index: 2;
+        }
+
+        &__mobile-floor{
+            width: 30%;
+            font-size: calcFluidFontSize(25, 35, 375, 768);
+            border-bottom: 2px solid white;
+            border-right: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom-right-radius: 10px;
+            box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
+
+        }
+
+        &__mobile-headman ,  &__mobile-phone{
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__mobile-headman{
+            font-size: calcFluidFontSize(28, 40, 375, 768);
+        }
+
+        &__mobile-tg{
+            display: flex;
+            width: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: calcFluidFontSize(19, 30, 375, 768)
+        }
+
+        &__mobile-phone{
+            font-size: calcFluidFontSize(19, 30, 375, 768);
+        }
+
+        &__tg{
+            width: calcFluidFontSize(22, 35, 375, 768);
+            height: calcFluidFontSize(27, 40, 375, 768);
+            margin-right: 5px;
+        }
+
+        &__rooms{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 15px;
+            row-gap: 10px;
+            margin-bottom: 75px;
+        }
+        
+    }
 }

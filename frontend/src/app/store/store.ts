@@ -21,6 +21,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer, 
     headmans: HeadmansReducer,
+    footer: footerReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -31,7 +32,6 @@ export const store = configureStore({
         choose: chooseReducer,
         auth: AuthReducer,
         root: persistedReducer,
-        footer: footerReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

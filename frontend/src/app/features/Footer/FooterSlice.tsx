@@ -20,5 +20,5 @@ export const FooterSlice = createSlice({
 });
 
 export const { setOption } = FooterSlice.actions;
-export const footerOptions = (state: RootState) => state.footer.option;
+export const footerOptions = (state: RootState) => state.root.footer.option;
 export const footerReducer = FooterSlice.reducer;

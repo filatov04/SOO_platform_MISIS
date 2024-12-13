@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import './FloorPage.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import tg from '../../shared/assets/FloorPage/ContactInfo/Telegram.png';
-import phone from '../../shared/assets/FloorPage/ContactInfo/phone.png';
 import { useNavigate } from 'react-router-dom';
 import { RoomFloor } from '../../features/RoomFloor/RoomFloor';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
@@ -11,6 +10,10 @@ import { ModalCreateViolation } from '../../features';
 import axios from 'axios';
 import { notAuth } from '../../app/features/Auth/AuthSlice';
 import { Spinner } from '../../shared';
+import { useMediaQuery } from '@mui/material';
+import vector1 from '../../shared/assets/FloorPage/ContactInfoMobile/Vector1.png';
+import vector2 from '../../shared/assets/FloorPage/ContactInfoMobile/Vector2.png';
+import ellipse from '../../shared/assets/FloorPage/ContactInfoMobile/Ellipse14.png';
 
 interface roomData {
   document_type: string;
@@ -67,6 +70,7 @@ export const formatDateString = (input: string): string => {
 export const FloorPage = () => {
   const floor = localStorage.getItem('NumberFloor');
   const router = useNavigate();
+  const isMobile = useMediaQuery(`(max-width:768px)`);
   const dispatch = useAppDispatch();
   const headmans = useAppSelector(headmansInfo);
   const [isLoading, setIsLoading] = useState(false);
@@ -137,27 +141,69 @@ export const FloorPage = () => {
     return (
       <div className='floor-page'>
         <div className='floor-page__info'>
-          <div className='floor-page__arrow-back' onClick={() => router('/MainPage')}>
-            <ArrowBackIosNewIcon sx={{ color: '#187FF6', width: '68px', height: '68px' }} />
-          </div>
-          <div className='floor-page__number'> {floor} этаж</div>
-          <div className='floor-page__contact-info'>
-            <div className='floor-page__contact-elder'>Староста</div>
-            <div className='floor-page__contact-name'>
-              {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'Not'}{' '}
-              {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'found'}
+          {isMobile ? (
+            <div className='floor-page__mobile-header'>
+              <div className='floor-page__blur'>
+                <img src={vector1} />
+              </div>
+              <div className='floor-page__blur'>
+                <img src={vector2} />
+              </div>
+              <div className='floor-page__blur'>
+                <img src={ellipse} />
+              </div>
+              <div className='floor-page__mobile-headinf'>
+                <div className='floor-page__mobile-floor'>{floor} этаж</div>
+                <div className='floor-page__mobile-headman'>
+                  {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'Not'}{' '}
+                  {floorId && headmans[floorId]?.firstName ? `${headmans[floorId].firstName[0]}.` : 'found'}
+                  {floorId && headmans[floorId]?.thirdName ? `${headmans[floorId].thirdName[0]}.` : ''}
+                </div>
+              </div>
+              <div className='floor-page__mobile-headinf'>
+                <div className='floor-page__mobile-tg'>
+                  <img src={tg} className='floor-page__tg' />
+                  {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not Found'}
+                </div>
+                <div className='floor-page__mobile-phone'>
+                  {floorId && headmans[floorId]?.phone ? `+${headmans[floorId].phone}` : 'Not found'}
+                </div>
+              </div>
             </div>
-          </div>
-          <div className='floor-page__contact-info'>
-            <div className='floor-page__contact-elder'>
-              <img src={tg} className='floor-page__tg' />
-              {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not Found'}
-            </div>
-            <div className='floor-page__contact-name'>
-              <img src={phone} className='floor-page__phone' />
-              {floorId && headmans[floorId]?.phone ? `+${headmans[floorId].phone}` : 'Not found'}
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className='floor-page__arrow-back' onClick={() => router('/MainPage')}>
+                <ArrowBackIosNewIcon
+                  sx={{
+                    color: '#187FF6',
+                    width: '68px',
+                    height: '68px',
+                    '@media (max-width: 1280px)': { width: '53px', height: '53px' },
+                    '@media (max-width: 1000px)': { width: '45px', height: '45px' },
+                    '@media (max-width: 768px)': { width: '55px', height: '100px' }
+                  }}
+                />
+              </div>
+              <div className='floor-page__number'> {floor} этаж</div>
+              <div className='floor-page__contact-info'>
+                <div className='floor-page__contact-elder'>Староста</div>
+                <div className='floor-page__contact-name'>
+                  {floorId && headmans[floorId]?.secondName ? headmans[floorId].secondName : 'Not'}{' '}
+                  {floorId && headmans[floorId]?.firstName ? headmans[floorId].firstName : 'found'}
+                </div>
+              </div>
+              <div className='floor-page__contact-info'>
+                <div className='floor-page__contact-elder'>
+                  <img src={tg} className='floor-page__tg' />
+                  {floorId && headmans[floorId]?.tg ? headmans[floorId].tg : 'Not Found'}
+                </div>
+                <div className='floor-page__contact-name'>
+                  {/* <img src={phone} className='floor-page__phone' /> */}
+                  {floorId && headmans[floorId]?.phone ? `+${headmans[floorId].phone}` : 'Not found'}
+                </div>
+              </div>
+            </>
+          )}
         </div>
         <div className='floor-page__rooms'>
           {Object.entries(roomsWithViolation).map(([key, value]) => {

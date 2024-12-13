@@ -77,14 +77,14 @@
 @media (max-width: 768px){
     .login{
         margin-top: 0px;
-        height: 100dvh;
+        //height: 100dvh;
         align-items: center;
         &__form{
             width: 45%;
-            min-width: 275px;
-            height: 300px;
+            min-width: 340px;
+            height: 275px;
             padding: 10px 5px;
-            padding-top: 25px;
+            padding-top: 40px;
             border-radius: 15px;
         }
     }

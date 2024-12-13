@@ -1,3 +1,13 @@
+@function calcFluidFontSize($f-min, $f-max, $v-min, $v-max) {
+    $k: calc(($f-max - $f-min) / ($v-max - $v-min));
+    $b: $f-min - $k * $v-min;
+  
+    $b: $b * 1px;
+  
+    @return calc( #{$k} * 100vw + #{$b} );
+}
+
+
 .room{
     width: 100%;
     background-color: #187FF6;
@@ -81,6 +91,7 @@
         width: 30%;
         box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
         font-weight: 300;
+        cursor: default;
     }
 
     &__room-notes{
@@ -99,5 +110,184 @@
         padding-left: 10px;
         padding-right: 10px;
         font-weight: 300;
+        cursor: default;
+    }
+}
+
+
+@media (max-width: 1280px){
+    .room{
+    
+        &__notes-scroll{
+            row-gap: 10px;
+        }
+    }
+    
+    .floor-page{
+        &__room{
+            height: 280px;
+            box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+        }
+    
+        &__room-header{
+            height: 44px;
+        }
+    
+        &__room-number{
+            font-size: 32px;
+            border-bottom-right-radius: 15px;
+            border-top-left-radius: 15px;
+            width: 27%;
+        }
+    
+        &__room-notes{
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 8px;
+            margin-top: 15px;
+            height: calc(280px - 44px - 23px);
+            // border: 2px solid white;
+        }
+    
+        &__room-note{
+            font-size: 17px;
+            border-radius: 10px;
+            min-height: 55px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
+}
+
+@media(max-width: 1000px){
+    .room{
+    
+        &__notes-scroll{
+            row-gap: 8px;
+        }
+    }
+    
+    .floor-page{
+        &__room{
+            height: 220px;
+            box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+        }
+    
+        &__room-header{
+            height: 37px;
+        }
+    
+        &__room-number{
+            font-size: 25px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 10px;
+            width: 30%;
+        }
+    
+        &__room-notes{
+            padding-left: 7px;
+            padding-right: 7px;
+            padding-bottom: 5px;
+            margin-top: 10px;
+            height: calc(220px - 37px - 15px);
+            // border: 2px solid white;
+        }
+    
+        &__room-note{
+            font-size: 14px;
+            border-radius: 10px;
+            min-height: 55px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
+}
+
+@media(max-width: 768px){
+    .room{
+
+    
+        &__add{
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: right;
+            padding-right: 5%;
+            z-index: 1;
+        }
+    
+        &__blur{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    
+        &__notes{
+            overflow: auto;
+            scrollbar-width: none;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+        }
+    
+        &__notes-scroll{
+            row-gap: 15px;
+            display: flex;
+            flex-direction: column;
+            min-height: auto;
+        }
+    
+        &__note{
+            color: white;
+            display: flex;
+            z-index: 1;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white;
+        }
+    }
+    
+    .floor-page{
+
+        &__room{
+            height: 270px;
+            box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+        }
+    
+        &__room-header{
+            height: 40px calcFluidFontSize(40, 53, 375, 768);
+        }
+    
+        &__room-number{
+            font-size: calcFluidFontSize(25, 35, 375, 768);
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 10px;
+            width: 35%;
+        }
+    
+        &__room-notes{
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 8px;
+            margin-top: 10px;
+            height: calc(270px - 40px - 18px);
+            // border: 2px solid white;
+        }
+    
+        &__room-note{
+            font-size: calcFluidFontSize(14, 20, 375, 768);
+            border-radius: 10px;
+            min-height: 71px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-weight: 300;
+        }
     }
 }

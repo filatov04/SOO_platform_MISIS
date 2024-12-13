@@ -55,7 +55,15 @@ export const RoomFloor = ({
         <div className='floor-page__room-number room__number'>{number}</div>
         <div className='floor-page__room-add room__add'>
           <AddIcon
-            sx={{ color: 'white', width: '50px', height: '50px', cursor: 'pointer' }}
+            sx={{
+              color: 'white',
+              width: '50px',
+              height: '50px',
+              cursor: 'pointer',
+              '@media (max-width: 1280px)': { width: '44px', height: '44px' },
+              '@media (max-width: 1000px)': { width: '37px', height: '37px' },
+              '@media (max-width: 768px)': { width: '40px', height: '40px' }
+            }}
             onClick={() => chosenRoomID()}
           />
         </div>
