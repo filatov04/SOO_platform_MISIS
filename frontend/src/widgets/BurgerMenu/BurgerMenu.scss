@@ -1,0 +1,114 @@
+.burger-menuWin{
+    width: 100vw;
+    //min-height: 500px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 10;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+    
+}
+
+.burger-menuWin.active{
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.burger-menu{
+    display: block;
+    background-color: #187FF6;
+    margin: 0;
+    //padding-top: 100px;
+    width: 250px;
+    height: calc(100vh - 95px);
+    position: fixed;
+    overflow: hidden;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+    right: 0;
+    top: 0;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    //z-index: 15;
+
+    &__blur{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__list{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: end;
+        //align-items: center;
+        ///justify-content: end;
+        padding: 0;
+        padding-top: 100px;
+        margin-top: 20px;
+        row-gap: 20px;
+    }
+
+    &__item{
+        z-index: 1;
+        display: flex;
+        list-style: none;
+        font-size: 15px;
+        font-weight: 500;
+        width: 90%;
+        height: 40px;
+        color: white;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border: 1px solid white;
+        border-right: none;
+        //border-left: none;
+        align-items: center;
+        //justify-content: center;
+        box-shadow: 0px 0px 1px 0px white;
+        transition: 0.3s;
+    }
+
+    &__item-icon{
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 20%;
+        background-color: white;
+        border: 1px solid white;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius:10px;
+    }
+
+    &__icon{
+        width: 30px;
+        height: 30px;
+    }
+
+    &__text{
+        cursor: default;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+.burger-menu.active{
+    transform: translateX(0);
+}

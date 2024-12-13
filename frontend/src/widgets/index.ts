@@ -5,3 +5,4 @@ export * from './Last';
 export * from './Floor'; 
 export * from './Notes';
 export * from './FooterMobile';
+export * from './BurgerMenu';

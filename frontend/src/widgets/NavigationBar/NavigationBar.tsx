@@ -9,6 +9,8 @@ import { userInfo } from '../../app/features/User/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { useState } from 'react';
+import { BurgerMenu } from '../BurgerMenu';
 
 export const NavigationBar = () => {
   const auth = useAppSelector(AuthorizationValue);
@@ -17,6 +19,7 @@ export const NavigationBar = () => {
   //const [isAdmin, setIsAdmin] = useState(true);
   const router = useNavigate();
   const isMobile = useMediaQuery(`(max-width:768px)`);
+  const [burgerMenu, setBurgerMenu] = useState(false);
   return (
     <div className='navbar'>
       <div className='navbar__content'>
@@ -24,21 +27,29 @@ export const NavigationBar = () => {
           <img src={logo} className='logo' />
         </div>
         {isMobile && auth ? (
-          <div className='navbar__list-panel'>
-            <div className='navbar__item-panel'>
-              <PersonIcon
-                sx={{
-                  cursor: 'pointer',
-                  color: 'white',
-                  width: '63px',
-                  height: '71px',
-                  '@media (max-width: 1280px)': { width: '52px', height: '63px' },
-                  '@media (max-width: 1000px)': { width: '45px', height: '55px' },
-                  '@media (max-width: 768px)': { width: '55px', height: '100px' }
-                }}
-              />
+          <>
+            <div className='navbar__list-panel'>
+              <div className='navbar__item-panel'>
+                <PersonIcon
+                  sx={{
+                    cursor: 'pointer',
+                    color: 'white',
+                    width: '63px',
+                    height: '71px',
+                    '@media (max-width: 1280px)': { width: '52px', height: '63px' },
+                    '@media (max-width: 1000px)': { width: '45px', height: '55px' },
+                    '@media (max-width: 768px)': { width: '55px', height: '100px' },
+                    zIndex: '16',
+                    position: 'absolute',
+                    right: '0'
+                  }}
+                  onClick={() => setBurgerMenu(!burgerMenu)}
+                />
+              </div>
             </div>
-          </div>
+            {/* {burgerMenu && <BurgerMenu active={burgerMenu} setActive={setBurgerMenu} />} */}
+            <BurgerMenu active={burgerMenu} setActive={setBurgerMenu} />
+          </>
         ) : (
           <div className='navbar__list-panel'>
             {auth ? (

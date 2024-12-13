@@ -1,11 +1,15 @@
+import { useMediaQuery } from '@mui/material';
 import { personDay } from '../../pages';
 import './TableDuty.scss';
+import { SetStateAction } from 'react';
 
 interface TableDutyProps {
   person: personDay[];
+  setNumChosen: React.Dispatch<SetStateAction<number>>;
 }
 
-export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
+export const TableDuty = ({ person, setNumChosen }: TableDutyProps): JSX.Element => {
+  const isMobile = useMediaQuery(`(max-width: 768px)`);
   //@ts-ignore
   const day: Array<number> = Array.from({ length: 30 }, (v, k) => k + 1);
   return (
@@ -29,7 +33,7 @@ export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
               return (
                 <tr>
                   <td className='table-duty__item-name'>
-                    {index + 1} {elem.first_name} {elem.second_name}
+                    {index + 1}. {elem.first_name} {elem.second_name}
                   </td>
                   {day.map(() => {
                     return <td className='table-duty__item-day'> </td>;
@@ -40,6 +44,20 @@ export const TableDuty = ({ person }: TableDutyProps): JSX.Element => {
           </tbody>
         </table>
       </div>
+      {isMobile && (
+        <div className='calendar__option'>
+          <div className='calendar__option-item'>
+            <button className='calendar__option-btn' onClick={() => setNumChosen(2)}>
+              Выбор дат
+            </button>
+          </div>
+          <div className='calendar__option-item'>
+            <button className='calendar__option-btn' onClick={() => setNumChosen(3)}>
+              Контакты
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

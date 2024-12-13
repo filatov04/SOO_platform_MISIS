@@ -1,14 +1,19 @@
+import { useMediaQuery } from '@mui/material';
 import './CalendarWeekend.scss';
-import { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 
+interface CalendarWeekendProps {
+  setNumChosen: React.Dispatch<SetStateAction<number>>;
+}
 interface day {
   [index: number]: number | null;
 }
 
-export const CalendarWeekend = () => {
+export const CalendarWeekend = ({ setNumChosen }: CalendarWeekendProps): JSX.Element => {
   //const [currentDate, setCurrentDate] = useState(new Date());
   const currentDate = new Date();
   const [date, setDate] = useState<day>({});
+  const isMobile = useMediaQuery(`(max-width: 768px)`);
 
   const generateCalendarDays = () => {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
@@ -57,12 +62,17 @@ export const CalendarWeekend = () => {
     <div className='calendar-weekend'>
       <div className='calendar-weekend__calendar'>
         <div className='calendar-weekend__header'>
-          <p className='calendar-weekend__month'>
-            {new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).toLocaleDateString('ru-RU', {
-              month: 'long',
-              year: 'numeric'
-            })}
-          </p>
+          <div className='calendar-weekend__month-block'>
+            <p className='calendar-weekend__month'>
+              {new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).toLocaleDateString('ru-RU', {
+                month: 'long',
+                year: 'numeric'
+              })}
+            </p>
+          </div>
+          <div className='calendar-weekend__confirmation'>
+            <button className='calendar-weekend__confirmation-btn'>Подтвердить даты</button>
+          </div>
         </div>
         <div className='calendar-weekend__day'>
           <ul className='calendar-weekend__day-list'>
@@ -92,9 +102,20 @@ export const CalendarWeekend = () => {
             ))}
           </ul>
         </div>
-      </div>
-      <div className='calendar-weekend__confirmation'>
-        <button className='calendar-weekend__confirmation-btn'>Подтвердить даты</button>
+        {isMobile && (
+          <div className='calendar-weekend__option'>
+            <div className='calendar-weekend__option-item'>
+              <button className='calendar-weekend__option-btn' onClick={() => setNumChosen(3)}>
+                Контакты
+              </button>
+            </div>
+            <div className='calendar-weekend__option-item'>
+              <button className='calendar-weekend__option-btn' onClick={() => setNumChosen(1)}>
+                График
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
