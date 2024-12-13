@@ -208,7 +208,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
             className='add-person__input'
             type='text'
             placeholder='Telegram'
-            onChange={(e) => e.currentTarget.value}
+            onChange={(e) => setTg(e.currentTarget.value)}
             value={tg}
           />
         </div>

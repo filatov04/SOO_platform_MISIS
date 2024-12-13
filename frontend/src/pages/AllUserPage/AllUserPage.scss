@@ -79,3 +79,143 @@
         }
     }
 }
+
+
+@media (max-width: 1280px){
+    .users{
+        &__header{
+            display: flex;
+            margin-bottom: 30px;
+            height: 54px;
+        }
+    
+        &__list{
+            row-gap: 15px;
+        }
+    
+        &__item{
+            height: 55px;
+        }
+    
+        &__name{
+            width: 400px;
+            border-radius: 15px;
+            font-size: 28px;
+        }
+    
+        &__del{
+            margin-left: 18px;
+        }
+    
+        &__add{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-top: 40px;
+        }
+    
+        &__add-btn{
+            width: 220px;
+            height: 50px;
+            font-size: 28px;
+        }
+    }
+}
+
+@media (max-width: 1000px){
+    .users{
+        &__header{
+            display: flex;
+            margin-bottom: 30px;
+            height: 41px;
+        }
+    
+        &__list{
+            row-gap: 10px;
+        }
+    
+        &__item{
+            height: 48px;
+        }
+    
+        &__name{
+            width: 350px;
+            border-radius: 10px;
+            font-size: 23px;
+        }
+    
+        &__del{
+            margin-left: 14px;
+        }
+    
+        &__add{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    
+        &__add-btn{
+            width: 180px;
+            height: 45px;
+            font-size: 23px;
+        }
+    }
+}
+
+
+@media (max-width: 768px){
+    .users{
+        min-width: 350px;
+        &__header{
+            display: flex;
+            margin-bottom: 20px;
+            height: 35px;
+        }
+    
+        &__list{
+            row-gap: 8px;
+        }
+    
+        &__item{
+            height: 40px;
+        }
+    
+        &__name{
+            width: 290px;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+    
+        &__del{
+            margin-left: 10px;
+        }
+    
+        &__add{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    
+        &__add-btn{
+            width: 140px;
+            height: 40px;
+            font-size: 18px;
+        }
+    }
+}
+
+
+@media(max-width: 560px){
+    .users{
+        &__content{
+            display: flex;
+            justify-content: center;
+        }
+
+        &__list{
+            padding: 0;
+        }
+    }
+}

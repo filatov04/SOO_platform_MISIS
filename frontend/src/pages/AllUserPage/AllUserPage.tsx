@@ -54,11 +54,6 @@ export const AllUserPage = () => {
     getUser();
   }, []);
 
-  // const delUser = (phone: string) => {
-  //   const data = user.filter((a) => a.phone !== phone);
-  //   setUser(data);
-  // };
-
   async function delUser(phone: string) {
     await axios
       .post('http://localhost:8000/user/delete/' + phone, JSON.stringify({ numberToDelete: phone }), {
@@ -83,7 +78,15 @@ export const AllUserPage = () => {
     <div className='users'>
       <div className='users__header'>
         <ArrowBackIosNewIcon
-          sx={{ color: '#187FF6', width: '50px', height: '50px', cursor: 'pointer' }}
+          sx={{
+            color: '#187FF6',
+            width: '50px',
+            height: '50px',
+            cursor: 'pointer',
+            '@media (max-width: 1280px)': { width: '45px', height: '45px' },
+            '@media (max-width: 1000px)': { width: '40px', height: '40px' },
+            '@media (max-width: 768px)': { width: '35px', height: '35px' }
+          }}
           onClick={() => router(-1)}
         />
       </div>
@@ -95,7 +98,14 @@ export const AllUserPage = () => {
                 {elem.second_name} {elem.first_name}
               </div>
               <button className='users__del' onClick={() => delUser(elem.phone)}>
-                <DeleteIcon sx={{ color: 'white' }} />
+                <DeleteIcon
+                  sx={{
+                    color: 'white',
+                    '@media (max-width: 1280px)': { width: '20px', height: '20px' },
+                    '@media (max-width: 1000px)': { width: '16px', height: '16px' },
+                    '@media (max-width: 768px)': { width: '14px', height: '14px' }
+                  }}
+                />
               </button>
             </li>
           ))}
