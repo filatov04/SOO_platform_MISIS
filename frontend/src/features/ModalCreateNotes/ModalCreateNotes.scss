@@ -116,3 +116,106 @@
         }
     }
 }
+
+@media (max-width: 1280px){
+    .dialog{
+        width: 400px;
+        height: 400px;
+        border-radius: 15px;
+    
+        &__form{
+            padding: 15px 25px;
+        }
+
+    
+        &__room-inp{
+            height: 30px;
+            width: 90px;
+            font-size: 18px;
+            padding: 0 8px;
+        }
+    
+        &__header-arrow{
+            img{
+                width: 18px;
+                height: 27px;
+            }
+        }
+    
+        &__note{
+            display: flex;
+            height: 210px;
+            margin-top: 25px;
+        }
+    
+        &__note-inp{
+            border-radius: 15px;
+            padding: 12px 10px;
+            padding-left: 12px;
+            font-size: 18px;
+        }
+    
+        &__submit{
+            margin-top: 25px;
+        }
+    
+        &__submit-btn{
+            font-size: 28px;
+            width: 220px;
+            height: 50px;
+        }
+    }
+}
+
+@media (max-width: 1000px){
+    .dialog{
+        width: 320px;
+        height: 320px;
+        border-radius: 15px;
+    
+        &__form{
+            padding: 10px 18px;
+        }
+
+    
+        &__room-inp{
+            height: 25px;
+            width: 75px;
+            font-size: 16px;
+            padding: 0 6px;
+        }
+    
+        &__header-arrow{
+            img{
+                width: 15px;
+                height: 24px;
+            }
+        }
+    
+        &__note{
+            display: flex;
+            height: 170px;
+            margin-top: 18px;
+        }
+    
+        &__note-inp{
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    
+        &__submit{
+            margin-top: 20px;
+        }
+    
+        &__submit-btn{
+            font-size: 24px;
+            width: 160px;
+            height: 45px;
+        }
+    }
+}
+
+@media(max-width: 768px){
+
+}

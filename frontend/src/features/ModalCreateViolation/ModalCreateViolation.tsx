@@ -19,18 +19,7 @@ interface ModalCreateViolationProps {
   roomsID: blockNumberRoomNumber;
   room: string;
   setRoomsWithViolations: React.Dispatch<SetStateAction<blockViolation>>;
-  //roomsWithViolation: blockViolation;
 }
-
-// interface formData {
-//   room_id: string;
-//   document_type: string;
-//   created_at: string;
-//   violation_type: string;
-//   violator_name: string;
-//   witness: string;
-//   description: string;
-// }
 
 export const ModalCreateViolation = ({
   modalRef,
@@ -39,7 +28,6 @@ export const ModalCreateViolation = ({
   roomsID,
   room,
   setRoomsWithViolations
-  //roomsWithViolation
 }: ModalCreateViolationProps): JSX.Element => {
   const [roomNumber, setRoomNumber] = useState<string>('');
   const [violation, setViolation] = useState<string>('');
@@ -92,9 +80,7 @@ export const ModalCreateViolation = ({
       witness: e.witness,
       description: e.description
     };
-    console.log(data);
     sendViolation(data);
-    //const reverseDict = Object.fromEntries(Object.entries(roomsID).map(([key, value]) => [value, key]));
     const dataLocal = {
       document_type: e.document_type,
       violation_type: e.violation_type,
@@ -107,7 +93,6 @@ export const ModalCreateViolation = ({
         : Number(findKeyByValue(roomsID, Number(e.room_id))),
       created_at: formatDateString(e.created_at)
     };
-    //console.log(dataLocal);
     addViolation(Number(room), dataLocal);
     resetData();
   };

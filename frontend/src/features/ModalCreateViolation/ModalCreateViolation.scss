@@ -102,3 +102,99 @@
         }
     }
 }
+
+
+@media (max-width: 1280px){
+    .modal-violation{
+        width: 400px;
+        min-height: 400px;
+        border-radius: 15px;
+    
+        &__content{
+            row-gap: 15px;
+            padding: 16px 26px;
+            width: calc(100% - 52px);
+        }
+    
+        &__header{
+            img{
+                width: 22px;
+                height: 30px;
+            }
+        }
+    
+        &__room-act{
+            height: 40px;
+        }
+    
+        &__general{
+            height: 40px;
+        }
+    
+        &__inp{
+            border-radius: 12px;
+            padding: 0 17px;
+            font-size: 18px;
+        }
+    
+        &__submit{
+            display: flex;
+            justify-content: center;
+        }
+    
+        &__btn{
+            font-size: 28px;
+            width: 220px;
+            height: 50px;
+            &:hover{
+                color: #187FF6;
+                background-color: white;
+            }
+        }
+    }
+}
+
+@media (max-width: 1000px){
+    .modal-violation{
+        width: 350px;
+        min-height: 350px;
+        border-radius: 15px;
+    
+        &__content{
+            row-gap: 15px;
+            padding: 12px 19px;
+            width: calc(100% - 38px);
+        }
+    
+        &__header{
+            img{
+                width: 19px;
+                height: 26px;
+            }
+        }
+    
+        &__room-act{
+            height: 30px;
+        }
+    
+        &__general{
+            height: 30px;
+        }
+    
+        &__inp{
+            border-radius: 10px;
+            padding: 0 14px;
+            font-size: 15px;
+        }
+    
+        &__btn{
+            font-size: 24px;
+            width: 160px;
+            height: 45px;
+        }
+    }
+}
+
+@media(max-width: 768px){
+    
+}
