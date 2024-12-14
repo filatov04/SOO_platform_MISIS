@@ -103,20 +103,12 @@ class DBManager:
     # endregion ------------
     
     def user_exists(self, phone: str) -> bool:
-        """Get user by email from the database"""
-        return self.session.query(Users).filter(and_(Users.phone == phone, Usrs.deleted_at == None)).first() is not None
+        return self.session.query(Users).filter(and_(Users.phone == phone, Users.deleted_at == None)).first() is not None
     
-    def add_user(self, data: UserRegisterSchema) -> bool:
-        user_in_db = self.session.query(Users).filter_by(phone=data.phone).first()
+    def add_user(self, data: UserRegisterSchema) -> bool: # TODO: check deleted???
+        user_in_db = self.session.query(Users).filter(and_(Users.phone == data.phone, Users.deleted_at == None)).first()
         if user_in_db is not None:
-            if user_in_db.deleted_at is not None:
-                user_in_db.deleted_at = None
-                user_in_db.password = data.password
-                self.session.commit()
-                return True
-            else:
-                return False
-        
+            return False
         user = Users(**data.dict())
         self.session.add(user)
         self.session.commit()
@@ -124,14 +116,14 @@ class DBManager:
     
     def delete_user(self, user_number: str) -> bool:
         user = self.get_user_by_phone(user_number)
-        if user is None or user.deleted_at is not None:
+        if user is None:
             return False
         user.deleted_at = datetime.now()
         self.session.commit()
         return True
     
     def get_user_by_phone(self, phone: str) -> Optional[Users]:
-        return self.session.query(Users).filter_by(phone=phone).first()
+        return self.session.query(Users).filter(and_(Users.phone == phone, Users.deleted_at == None)).first()
     
     def get_user_by_id(self, user_id: int) -> Optional[Users]:
         return self.session.query(Users).filter_by(user_id=user_id).first()

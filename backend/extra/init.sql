@@ -21,9 +21,9 @@ CREATE TABLE "Users" (
         password VARCHAR(255) NOT NULL,
         deleted_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
         PRIMARY KEY (user_id),
-        UNIQUE (phone),
         FOREIGN KEY(dorm_id) REFERENCES "Dorms" (dorm_id)
 );
+CREATE UNIQUE INDEX unique_phone_active_users ON "Users" (phone) WHERE deleted_at IS NULL;
 
 CREATE TABLE "Floors" (
         floor_id BIGSERIAL,
@@ -74,6 +74,15 @@ CREATE TABLE "Violations" (
         FOREIGN KEY(room_id) REFERENCES "Rooms" (room_id)
 );
 
+CREATE TABLE "Duty" (
+        duty_id BIGSERIAL,
+        user_id BIGINT NOT NULL,
+        date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        PRIMARY KEY (duty_id),
+        UNIQUE (user_id, date),
+        FOREIGN KEY(user_id) REFERENCES "Users" (user_id)
+);
 
 INSERT INTO "Dorms" (name, address) VALUES
 ('Горняк-2', 'просп. 60-летия Октября, 11, Москва'),

@@ -19,3 +19,7 @@ class AuthPair:
             for token in self.store.keys():
                 if time.time() - self.store[token] > app_settings.jwt_access_expire_time:
                     del self.store[token]
+
+    def del_token(self, access_token: str):
+        if access_token in self.store:
+            del self.store[access_token]

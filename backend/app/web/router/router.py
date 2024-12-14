@@ -47,7 +47,7 @@ async def get_server_status() -> str:
 @router.post("/auth/login", tags=["auth"])
 async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     user = db.get_user_by_phone(data.phone)
-    if user is None or user.deleted_at is not None:
+    if user is None:
         raise HTTPException(status_code=401, detail={"message": "User not found"})
     
     if not bcrypt.verify(data.password, user.password):
@@ -60,7 +60,7 @@ async def login(data: UserLoginSchema = Body(...)) -> Dict[str, str]:
     
 @router.post("/auth/logout", dependencies=[Depends(check_auth)], tags=["auth"])
 async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
-    authpair.post(token, None) # TODO: delete not valid tokens {token: None}
+    authpair.del_token(token)
     return {"message": "Logout"}
 
 # end region auth
@@ -79,11 +79,16 @@ async def register_user(user: UserRegisterSchema = Body(...)):
     if db.add_user(user):
         return {"message": "User created"}
     else:
-        return {"message": "User already exists"}
+        return {"message": "User number already exists"}
 
 @router.post("/user/delete/{numberToDelete}", dependencies=[Depends(check_auth)], tags=["user"])
 async def delete_user(user_id: int = Depends(check_auth), number_to_delete: str = Path(..., alias="numberToDelete")):
-    if db.get_user_by_phone(number_to_delete).user_id == user_id:
+    user_in_db = db.get_user_by_phone(number_to_delete)
+    if user_in_db is None:
+        return {"message": "User not found"}
+    if authpair.get(user_in_db.user_id):
+        return {"message": "User is logged in"}
+    if user_in_db.user_id == user_id:
         return {"message": "You cannot delete yourself"}
     
     if db.delete_user(number_to_delete):
