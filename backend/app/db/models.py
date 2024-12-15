@@ -85,7 +85,7 @@ class Users(Base):
     first_name = Column(String(255), nullable=False)
     second_name = Column(String(255), nullable=False)
     third_name = Column(String(255), nullable=True)
-    phone = Column(String(25), nullable=False, unique=True)
+    phone = Column(String(25), nullable=False)
     tg = Column(String(50), nullable=True)
     role = Column(Enum(Role), nullable=False)
     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
@@ -95,6 +95,7 @@ class Users(Base):
     violation_user_rel = relationship("Violations")
     note_user_rel = relationship("Notes")
     floor_user_rel = relationship("Floors")
+    duty_user_rel = relationship("Duty")
     
 
 class Violations(Base):
@@ -122,3 +123,12 @@ class Notes(Base):
     description = Column(Text, nullable=False)
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None) # TODO: подумать над автоматическим удалением
+
+
+class Duty(Base):
+    __tablename__ = "Duty"
+    
+    duty_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
+    date = Column(DateTime(), nullable=False)
+    created_at = Column(DateTime(), nullable=False)
