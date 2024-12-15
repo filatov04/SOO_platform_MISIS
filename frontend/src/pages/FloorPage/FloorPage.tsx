@@ -118,7 +118,7 @@ export const FloorPage = () => {
   useEffect(() => {
     async function getRoomWithViolation() {
       await axios
-        .get('http://localhost:8000/violations/rooms/get/' + floorId, {
+        .get('http://192.168.31.61:8000/violations/rooms/get/' + floorId, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }

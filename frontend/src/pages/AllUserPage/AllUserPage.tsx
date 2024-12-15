@@ -35,7 +35,7 @@ export const AllUserPage = () => {
   useEffect(() => {
     async function getUser() {
       await axios
-        .get('http://localhost:8000/user/get/' + role[userInf.role as keyof typeof role], {
+        .get('http://192.168.31.61:8000/user/get/' + role[userInf.role as keyof typeof role], {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }
@@ -56,7 +56,7 @@ export const AllUserPage = () => {
 
   async function delUser(phone: string) {
     await axios
-      .post('http://localhost:8000/user/delete/' + phone, JSON.stringify({ numberToDelete: phone }), {
+      .post('http://192.168.31.61:8000/user/delete/' + phone, JSON.stringify({ numberToDelete: phone }), {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`

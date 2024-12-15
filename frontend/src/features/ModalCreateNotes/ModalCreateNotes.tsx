@@ -38,7 +38,7 @@ export const ModalCreateNotes = ({ setNotes, dialogRef, isOpen, setIsOpen }: Mod
 
   async function addNotes(e: { dorm_id: number; room: string; description: string }) {
     await axios
-      .post('http://localhost:8000/notes/add', JSON.stringify(e), {
+      .post('http://192.168.31.61:8000/notes/add', JSON.stringify(e), {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`

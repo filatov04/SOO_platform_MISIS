@@ -94,7 +94,7 @@ export const ModalAddPerson = ({ isOpen, dialogRef, setIsOpen, setUsers }: Modal
 
   async function addPerson(data: person) {
     await axios
-      .post('http://localhost:8000/user/register', JSON.stringify(data), {
+      .post('http://192.168.31.61:8000/user/register', JSON.stringify(data), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           'Content-Type': 'application/json'

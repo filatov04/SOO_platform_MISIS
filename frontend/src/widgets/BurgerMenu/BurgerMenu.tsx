@@ -1,4 +1,4 @@
-import { act, SetStateAction } from 'react';
+import { SetStateAction } from 'react';
 import './BurgerMenu.scss';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { userInfo } from '../../app/features/User/UserSlice';
@@ -41,6 +41,10 @@ export const BurgerMenu = ({ active, setActive }: BurgerMenuProps): JSX.Element 
           dispatch(notAuth());
           localStorage.clear();
         }
+      })
+      .finally(() => {
+        dispatch(notAuth());
+        localStorage.clear();
       });
   }
 
@@ -60,28 +64,28 @@ export const BurgerMenu = ({ active, setActive }: BurgerMenuProps): JSX.Element 
           <img src={ellipse} />
         </div>
         <ul className='burger-menu__list'>
-          <li className='burger-menu__item'>
-            <div
-              className='burger-menu__item-icon'
-              onClick={() => {
-                logout();
-                setActive(!active);
-              }}
-            >
+          <li
+            className='burger-menu__item'
+            onClick={() => {
+              logout();
+              setActive(!active);
+            }}
+          >
+            <div className='burger-menu__item-icon'>
               <LogoutIcon sx={{ color: '#187FF6' }} className='burger-menu__icon' />
             </div>
             <div className='burger-menu__text'>
               {user.secondName} {user.firstName[0]}. {user.thirdName !== null ? `${user.thirdName[0]}.` : ''}
             </div>
           </li>
-          <li className='burger-menu__item'>
-            <div
-              className='burger-menu__item-icon'
-              onClick={() => {
-                router('/AllUserPage');
-                setActive(!active);
-              }}
-            >
+          <li
+            className='burger-menu__item'
+            onClick={() => {
+              router('/AllUserPage');
+              setActive(!active);
+            }}
+          >
+            <div className='burger-menu__item-icon'>
               <PersonAddAlt1Icon sx={{ color: '#187FF6' }} className='burger-menu__icon' />
             </div>
             <div className='burger-menu__text'>Добавить пользователя</div>

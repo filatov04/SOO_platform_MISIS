@@ -30,7 +30,7 @@ export const MainPage = () => {
   useEffect(() => {
     async function getInfo() {
       await axios
-        .get('http://localhost:8000/user/info', {
+        .get('http://192.168.31.61:8000/user/info', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }
@@ -60,7 +60,7 @@ export const MainPage = () => {
   useEffect(() => {
     async function getNotes() {
       await axios
-        .get('http://localhost:8000/notes/get/' + user.dormId, {
+        .get('http://192.168.31.61:8000/notes/get/' + user.dormId, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }
@@ -86,7 +86,7 @@ export const MainPage = () => {
 
     async function getFloor() {
       await axios
-        .get('http://localhost:8000/floors/get/' + user.dormId, {
+        .get('http://192.168.31.61:8000/floors/get/' + user.dormId, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }

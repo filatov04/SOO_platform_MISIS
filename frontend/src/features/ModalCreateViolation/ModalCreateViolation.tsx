@@ -47,7 +47,7 @@ export const ModalCreateViolation = ({
 
   async function sendViolation(data: any) {
     await axios
-      .post('http://localhost:8000/violations/add', JSON.stringify(data), {
+      .post('http://192.168.31.61:8000/violations/add', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`
