@@ -9,8 +9,9 @@ import axios from 'axios';
 import ellipse from '../../shared/assets/Modal/Ellipse.png';
 import vector1 from '../../shared/assets/Modal/Vector1.png';
 import vector2 from '../../shared/assets/Modal/Vector2.png';
-import { useAppDispatch } from '../../app/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks';
 import { notAuth } from '../../app/features/Auth/AuthSlice';
+import { userInfo } from '../../app/features/User/UserSlice';
 
 interface ModalCreateViolationProps {
   modalRef: RefObject<HTMLDialogElement>;
@@ -36,6 +37,7 @@ export const ModalCreateViolation = ({
   const [witness, setWitness] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const dispatch = useAppDispatch();
+  const user = useAppSelector(userInfo);
 
   function maxDate(): string {
     const today = new Date();
@@ -47,7 +49,7 @@ export const ModalCreateViolation = ({
 
   async function sendViolation(data: any) {
     await axios
-      .post('http://192.168.31.61:8000/violations/add', JSON.stringify(data), {
+      .post('http://localhost:8000/violations/add', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -78,7 +80,8 @@ export const ModalCreateViolation = ({
       violation_type: e.violation_type,
       violator_name: e.violator_name,
       witness: e.witness,
-      description: e.description
+      description: e.description,
+      dorm_id: user.dormId
     };
     sendViolation(data);
     const dataLocal = {

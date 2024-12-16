@@ -13,7 +13,7 @@ export const WithAuth = <P extends object>(WrappedComponent: React.ComponentType
   useEffect(() => {
     async function getInfo() {
       await axios
-        .get('http://192.168.31.61:8000/user/info', {
+        .get('http://localhost:8000/user/info', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
           }

@@ -18,7 +18,7 @@ export const LoginForm = () => {
 
   async function requests(data: formProps) {
     await axios
-      .post('http://192.168.31.61:8000/auth/login', JSON.stringify(data), {
+      .post('http://localhost:8000/auth/login', JSON.stringify(data), {
         headers: { 'Content-Type': 'application/json' }
       })
       .then((response) => {
