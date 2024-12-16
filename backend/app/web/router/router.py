@@ -38,7 +38,6 @@ async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer()))
     
     return user_id
     
-    
 @router.get("/ping", tags=["tests"])
 async def get_server_status() -> str:
     return "pong"
@@ -95,15 +94,13 @@ async def delete_user(user_id: int = Depends(check_auth), number_to_delete: str 
         return {"message": "User deleted"}
     
     return {"message": "User not found"}
-    
-# TODO: add checking deleted_at
 
-@router.get("/user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"])
+@router.get("/user/get/{role}", dependencies=[Depends(check_auth)], tags=["user"]) # TODO: add dorm_id!!!
 async def get_user_by_role(role: Role = Path(..., example=Role.admin), user_id: int = Depends(check_auth)) -> List[UserSchema]:
     dorm_id = db.get_user_by_id(user_id).dorm_id
     return db.get_users_by_role(role, dorm_id)
     
-@router.get("/floors/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["dorm"])
+@router.get("/floors/{dorm_id}/get", dependencies=[Depends(check_auth)], tags=["dorm"])
 async def get_floors(dorm_id: int = Path(..., example=1)) -> List[FloorSchema]:
     return db.get_floors(dorm_id)
 
@@ -112,12 +109,18 @@ async def add_note(data: ViolationSchema = Body(...), user_id: int = Depends(che
     db.add_violation(user_id, data)
     return {"message": "Violation added"}
 
-@router.get("/violations/rooms/get/{floor_id}", dependencies=[Depends(check_auth)], tags=["violations"])
+@router.get("/violations/{floor_id}/rooms/get", dependencies=[Depends(check_auth)], tags=["violations"])
 async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> List[RoomSchema]:
     data = db.get_rooms_with_violations(floor_id)
     return data
 
-@router.get("/notes/get/{dorm_id}", dependencies=[Depends(check_auth)], tags=["notes"])
+@router.get("/violations/{dorm_id}/get", dependencies=[Depends(check_auth)], tags=["violations"])
+async def get_last_violations(dorm_id: int = Path(..., example=1), limit: int = Query(default=5)) -> List[ViolationSchema]:
+    if limit <= 0:
+        raise HTTPException(status_code=400, detail={"message": "Limit must be greater than 0"})
+    return db.get_last_violations(dorm_id, limit)
+
+@router.get("/notes/{dorm_id}/get", dependencies=[Depends(check_auth)], tags=["notes"])
 async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
 

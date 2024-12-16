@@ -140,7 +140,7 @@ class DBManager:
             return user.dorm_id
         return None
 
-    def get_floors(self, dorm_id: int) -> List[FloorSchema]: #TODO: add user info
+    def get_floors(self, dorm_id: int) -> List[FloorSchema]:
         data = self.session.query(Floors, Users).join(Users, Floors.owner_id == Users.user_id).filter(Floors.dorm_id == dorm_id).order_by(Floors.floor_number).all()
         return [
             FloorSchema(
@@ -155,7 +155,6 @@ class DBManager:
         ]
 
     def get_rooms_with_violations(self, floor_id: int) -> List[RoomSchema]:
-        # data = self.session.query(Rooms, Violations).outerjoin(Violations, Rooms.room_id == Violations.room_id).filter(Rooms.floor_id == floor_id).order_by(Rooms.block_number).all()
         rooms = self.session.query(Rooms).filter_by(floor_id=floor_id).order_by(Rooms.block_number).all()
         data = []
         for room in rooms:
@@ -172,6 +171,10 @@ class DBManager:
         )
         self.session.add(violation)
         self.session.commit()
+    
+    def get_last_violations(self, dorm_id: int, limit: int) -> List[ViolationSchema]:
+        data = self.session.query(Violations).filter(and_(Violations.dorm_id == dorm_id, Violations.deleted_at == None)).order_by(Violations.created_at.desc()).limit(limit).all()
+        return [ViolationSchema(**violation.__dict__) for violation in data]
     
     def add_note(self, user_id: int, data: NoteSchema):
         note = Notes(
@@ -192,31 +195,3 @@ class DBManager:
             }
         for note in data
         ]
-        
-    # def get_room_number(self, room_id: int) -> Optional[int]:
-    #     room = self.session.query(Rooms).filter_by(room_id=room_id).first()
-    #     if room: 
-    #         return room.room_number
-    #     return None
-
-    # def get_violations(self, rooms: List[int]) -> List[Optional[ViolationWithRoomSchema]]:
-    #     data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(Rooms.room_id.in_(rooms)).all()
-    #     violations = []
-    #     data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(
-    #         and_(Rooms.dorm_id == dorm_id, func.floor(Rooms.block_number / 100) == floor, Violations.deleted_at == None)).all()
-        
-    #     violations = []
-    #     for violation, room in data:
-    #         violations.append(
-    #             ViolationWithRoomSchema(
-    #                 room_id=room.room_id,
-    #                 block_number=room.block_number,
-    #                 room_number=room.room_number,
-    #                 document_type=violation.document_type,
-    #                 violator_name=violation.violator_name,
-    #                 violation_type=violation.violation_type,
-    #                 description=violation.description,
-    #                 witness=violation.witness,
-    #                 created_at=violation.created_at)
-    #             )
-    #     return violations

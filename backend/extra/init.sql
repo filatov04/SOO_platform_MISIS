@@ -66,12 +66,14 @@ CREATE TABLE "Violations" (
         violation_type violationtype NOT NULL,
         description TEXT NOT NULL,
         room_id BIGINT NOT NULL,
+        dorm_id BIGINT NOT NULL,
         witness VARCHAR(255) NOT NULL,
         created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
         deleted_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
         PRIMARY KEY (violation_id),
         FOREIGN KEY(user_id) REFERENCES "Users" (user_id),
-        FOREIGN KEY(room_id) REFERENCES "Rooms" (room_id)
+        FOREIGN KEY(room_id) REFERENCES "Rooms" (room_id),
+        FOREIGN KEY(dorm_id) REFERENCES "Dorms" (dorm_id)
 );
 
 CREATE TABLE "Duty" (

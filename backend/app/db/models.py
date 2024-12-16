@@ -55,6 +55,7 @@ class Dorms(Base):
     user_dorm_rel = relationship("Users")
     floor_dorm_rel = relationship("Floors")
     note_dorm_rel = relationship("Notes")
+    violation_dorm_rel = relationship("Violations")
     
     
 class Floors(Base):
@@ -107,8 +108,9 @@ class Violations(Base):
     violator_name = Column(String(255), nullable=False)
     violation_type = Column(Enum(ViolationType), nullable=False)
     description = Column(Text, nullable=False)
-    room_id = Column(BigInteger, ForeignKey("Rooms.room_id"), nullable=False) #TODO: roon number in block???
-    witness = Column(String(255), nullable=False) # TODO: свидетель блять
+    room_id = Column(BigInteger, ForeignKey("Rooms.room_id"), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
+    witness = Column(String(255), nullable=False)
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None)
     
