@@ -15,7 +15,8 @@ from schemas.models import (
     ViolationSchema,
     RoomSchema,
     NoteSchema,
-    FloorSchema
+    FloorSchema,
+    UnvalibalDutySchema
 )
 
 from db.models import Role
@@ -29,7 +30,7 @@ import time
 router = APIRouter(prefix="")
 authpair = AuthPair()
 db = DBManager("logger")
-# db._recreate_tables()
+db._recreate_tables()
 
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
@@ -125,8 +126,17 @@ async def get_notes(dorm_id: int) -> List:
     return db.get_notes(dorm_id)
 
 @router.post("/notes/add", dependencies=[Depends(check_auth)], tags=["notes"])
-async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)):
+async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_auth)): # TODO: переделать dorm_id
     db.add_note(user_id, data)
     return {"message": "Note added"}
 
+@router.post("/duty/{dorm_id}/add", tags=["duty"])
+async def add_duty(dorm_id : int = Path(...), data: UnvalibalDutySchema = Body(...)):
+    if db.add_duty(dorm_id, data):
+        return {"message": "Duty added"}
+    return {"message": "Some dates are already taken"}
+
+@router.get("/duty/{dorm_id}/get", tags=["duty"])
+async def test_get_duty(dorm_id : int = Path(...)):
+    return db.get_duty(dorm_id)
 # end secure region

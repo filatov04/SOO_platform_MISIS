@@ -19,7 +19,8 @@ from schemas.models import (
     NoteSchema,
     UserRegisterSchema,
     RoomSchema,
-    FloorSchema
+    FloorSchema,
+    UnvalibalDutySchema
 )
 
 from db.models import *
@@ -31,11 +32,18 @@ class DBManager:
         # self.pg_host = getenv("PG_HOST")
         # self.pg_port = getenv("PG_PORT")
         # self.pg_db = getenv("PG_DB")
-        self.pg_user = "sso_user"
-        self.pg_pass = "password"
-        self.pg_host = "postgres"
+        # self.pg_user = "sso_user"
+        # self.pg_pass = "password"
+        # self.pg_host = "postgres"
+        # self.pg_port = 5432
+        # self.pg_db = "Misis_Kitties"
+        # self.duty_limit = 8
+        self.pg_user = "postgres"
+        self.pg_pass = "00000000"
+        self.pg_host = "localhost"
         self.pg_port = 5432
         self.pg_db = "Misis_Kitties"
+        self.duty_limit = 8
         
         self.log = log
         connected = False
@@ -194,4 +202,37 @@ class DBManager:
             "created_at": note.created_at
             }
         for note in data
+        ]
+    
+    def add_duty(self, dorm_id: int, data: UnvalibalDutySchema) -> bool:
+        check_user_duty = self.session.query(UnvalibalDuties).filter(and_(UnvalibalDuties.user_id == data.user_id, UnvalibalDuties.dorm_id == dorm_id)).first()
+        if check_user_duty is not None:
+            return False
+        
+        for date in data.dates:
+            count_duty = self.session.query(UnvalibalDuties).filter(and_(UnvalibalDuties.dorm_id == dorm_id, UnvalibalDuties.duty_date == date)).count()  
+            if count_duty > self.duty_limit:
+                return False
+        
+            duty = UnvalibalDuties(
+                user_id = data.user_id,
+                dorm_id = dorm_id,
+                duty_date = date,
+                created_at = datetime.now()
+            )
+            self.session.add(duty)
+            
+        self.session.commit()
+        return True
+    
+    def get_duty(self, dorm_id: int): # TODO: test
+        data = self.session.query(UnvalibalDuties).filter_by(dorm_id = dorm_id).order_by(UnvalibalDuties.duty_date).all()
+        return [
+            {
+                "user_id": duty.user_id,
+                "dorm_id": duty.dorm_id,
+                "duty_date": duty.duty_date,
+                "created_at": duty.created_at
+            }
+            for duty in data
         ]

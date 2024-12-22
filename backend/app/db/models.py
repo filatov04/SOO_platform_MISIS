@@ -56,6 +56,7 @@ class Dorms(Base):
     floor_dorm_rel = relationship("Floors")
     note_dorm_rel = relationship("Notes")
     violation_dorm_rel = relationship("Violations")
+    unvalibal_duties_dorm_rel = relationship("UnvalibalDuties")
     
     
 class Floors(Base):
@@ -96,8 +97,8 @@ class Users(Base):
     violation_user_rel = relationship("Violations")
     note_user_rel = relationship("Notes")
     floor_user_rel = relationship("Floors")
-    duty_user_rel = relationship("Duty")
-    
+    unvalibal_duties_user_rel = relationship("UnvalibalDuties")
+
 
 class Violations(Base):
     __tablename__ = "Violations"
@@ -127,10 +128,20 @@ class Notes(Base):
     deleted_at = Column(DateTime(), nullable=True, default=None) # TODO: подумать над автоматическим удалением
 
 
-class Duty(Base):
-    __tablename__ = "Duty"
+class UnvalibalDuties(Base):
+    __tablename__ = "UnvalibalDuties"
     
-    duty_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    duty_id = Column(BigInteger, primary_key=True, autoincrement=True) # TODO: refs
     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
-    date = Column(DateTime(), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
+    duty_date = Column(DateTime(), nullable=False)
     created_at = Column(DateTime(), nullable=False)
+
+# class Duties(Base):
+#     __tablename__ = "Duty"
+    
+#     duty_id = Column(BigInteger, primary_key=True, autoincrement=True)
+#     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
+#     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
+#     duty_date = Column(DateTime(), nullable=False)
+#     created_at = Column(DateTime(), nullable=False)

@@ -76,7 +76,19 @@ CREATE TABLE "Violations" (
         FOREIGN KEY(dorm_id) REFERENCES "Dorms" (dorm_id)
 );
 
-CREATE TABLE "Duty" (
+CREATE TABLE "UnvalibalDuties" (
+        duty_id BIGSERIAL,
+        user_id BIGINT NOT NULL,
+        dorm_id BIGINT NOT NULL,
+        duty_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        PRIMARY KEY (duty_id),
+        UNIQUE (user_id, date),
+        FOREIGN KEY(user_id) REFERENCES "Users" (user_id),
+        FOREIGN KEY(dorm_id) REFERENCES "Dorms" (dorm_id)
+)
+
+CREATE TABLE "Duties" (
         duty_id BIGSERIAL,
         user_id BIGINT NOT NULL,
         date TIMESTAMP WITHOUT TIME ZONE NOT NULL,

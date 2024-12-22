@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, EmailStr
 from sqlalchemy.ext.declarative import declarative_base
 from typing import Optional, List
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, date
 import re
 from db.models import Role, DocumentType, ViolationType
 
@@ -134,3 +134,16 @@ class NoteSchema(BaseModel):
             }
         }
         
+class UnvalibalDutySchema(BaseModel):
+    user_id: int = Field(...)
+    dates: List[date] = Field(...)
+    
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "user_id": 1,
+                "dates": ["2022-01-01", "2022-01-02"]
+            }
+        }
+    
