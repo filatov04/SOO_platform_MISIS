@@ -83,20 +83,20 @@ CREATE TABLE "UnvalibalDuties" (
         duty_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
         created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
         PRIMARY KEY (duty_id),
-        UNIQUE (user_id, date),
+        UNIQUE (user_id, duty_date),
         FOREIGN KEY(user_id) REFERENCES "Users" (user_id),
         FOREIGN KEY(dorm_id) REFERENCES "Dorms" (dorm_id)
-)
-
-CREATE TABLE "Duties" (
-        duty_id BIGSERIAL,
-        user_id BIGINT NOT NULL,
-        date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-        created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-        PRIMARY KEY (duty_id),
-        UNIQUE (user_id, date),
-        FOREIGN KEY(user_id) REFERENCES "Users" (user_id)
 );
+
+-- CREATE TABLE "Duties" (
+--         duty_id BIGSERIAL,
+--         user_id BIGINT NOT NULL,
+--         duty_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+--         created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+--         PRIMARY KEY (duty_id),
+--         FOREIGN KEY(user_id) REFERENCES "Users" (user_id),
+--         UNIQUE (user_id, duty_date)
+-- );
 
 INSERT INTO "Dorms" (name, address) VALUES
 ('Горняк-2', 'просп. 60-летия Октября, 11, Москва'),
