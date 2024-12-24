@@ -13,6 +13,7 @@ from schemas.models import (
     UserSchema,
     UserRegisterSchema,
     ViolationSchema,
+    ViolationWithRooms,
     RoomSchema,
     NoteSchema,
     FloorSchema,
@@ -116,7 +117,7 @@ async def get_rooms_with_violations(floor_id: int = Path(..., example=1)) -> Lis
     return data
 
 @router.get("/violations/{dorm_id}/get", dependencies=[Depends(check_auth)], tags=["violations"])
-async def get_last_violations(dorm_id: int = Path(..., example=1), limit: int = Query(default=5)) -> List[ViolationSchema]:
+async def get_last_violations(dorm_id: int = Path(..., example=1), limit: int = Query(default=5)) -> List[ViolationWithRooms]:
     if limit <= 0:
         raise HTTPException(status_code=400, detail={"message": "Limit must be greater than 0"})
     return db.get_last_violations(dorm_id, limit)

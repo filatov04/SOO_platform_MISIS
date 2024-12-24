@@ -100,6 +100,31 @@ class ViolationSchema(BaseModel):
             }
         }
         
+class ViolationWithRooms(BaseModel):
+    document_type: DocumentType = Field(...)
+    violator_name: str = Field(...)
+    violation_type: ViolationType = Field(...)
+    description: str = Field(...)
+    block_number: int = Field(...)
+    room_number: Optional[int] = Field(None)
+    witness: str = Field(...)
+    created_at: datetime = Field(default_factory=datetime.now)
+    
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "document_type": "act",
+                "violator_name": "Иванов Иван Иванович",
+                "violation_type": "electrical_security",
+                "description": "Smoke",
+                "block_number": 101,
+                "room_number": 1,
+                "witness": "Иванов Сосед Соседович",
+                "created_at": "2022-01-01 00:00:00"
+            }
+        }
+        
 class RoomSchema(BaseModel):
     room_id: int = Field(...)
     floor_id: int = Field(...)

@@ -16,6 +16,7 @@ from shared.settings import app_settings
 from schemas.models import (
     UserSchema,
     ViolationSchema,
+    ViolationWithRooms,
     NoteSchema,
     UserRegisterSchema,
     RoomSchema,
@@ -179,9 +180,20 @@ class DBManager:
         self.session.add(violation)
         self.session.commit()
     
-    def get_last_violations(self, dorm_id: int, limit: int) -> List[ViolationSchema]:
-        data = self.session.query(Violations).filter(and_(Violations.dorm_id == dorm_id, Violations.deleted_at == None)).order_by(Violations.created_at.desc()).limit(limit).all()
-        return [ViolationSchema(**violation.__dict__) for violation in data]
+    def get_last_violations(self, dorm_id: int, limit: int) -> List[ViolationWithRooms]: # TODO: test
+        data = self.session.query(Violations, Rooms).join(Rooms, Violations.room_id == Rooms.room_id).filter(Violations.dorm_id == dorm_id).order_by(Violations.created_at.desc()).limit(limit).all()
+        print(data)
+
+        return [ViolationWithRooms(
+            document_type=violation.document_type,
+            violator_name=violation.violator_name,
+            violation_type=violation.violation_type,
+            description=violation.description,
+            block_number=room.block_number,
+            room_number=room.room_number,
+            witness=violation.witness,
+            created_at=violation.created_at
+                ) for violation, room in data]
     
     def add_note(self, user_id: int, data: NoteSchema):
         note = Notes(
