@@ -26,12 +26,13 @@ from db.manager import DBManager
 from passlib.hash import bcrypt
 from datetime import datetime, timedelta
 import time
+from modules.annealing.annealing import Annealing
 
 
 router = APIRouter(prefix="")
 authpair = AuthPair()
 db = DBManager("logger")
-db._recreate_tables()
+# db._recreate_tables()
 
 async def check_auth(token: HTTPAuthorizationCredentials = Depends(JWTBearer())):
     user_id = authpair.get(token)
@@ -65,8 +66,6 @@ async def logout(token: str = Depends(JWTBearer() )) -> Dict[str, str]:
     return {"message": "Logout"}
 
 # end region auth
-
-#TODO: проверку роли (второстепенное)
 
 # secure region
 @router.get("/user/info/", dependencies=[Depends(check_auth)], tags=["user"])
@@ -131,13 +130,30 @@ async def add_note(data: NoteSchema = Body(...), user_id: int = Depends(check_au
     db.add_note(user_id, data)
     return {"message": "Note added"}
 
-@router.post("/duty/{dorm_id}/add", tags=["duty"])
+@router.post("/duty/{dorm_id}/unvalival/add", tags=["duty"])
 async def add_duty(dorm_id : int = Path(...), data: UnvalibalDutySchema = Body(...)):
     if db.add_duty(dorm_id, data):
         return {"message": "Duty added"}
     return {"message": "Some dates are already taken"}
 
-@router.get("/duty/{dorm_id}/get", tags=["duty"])
+@router.get("/duty/{dorm_id}/unvalibal/get", tags=["duty"])
 async def test_get_duty(dorm_id : int = Path(...)):
-    return db.get_duty(dorm_id)
+    return db.get_duty_unvalibal(dorm_id)
+
+@router.get("/duty/{dorm_id}/generate", tags=["duty"])
+async def get_duty(dorm_id : int = Path(...)):
+    duty = {}
+    res = db.get_duty_unvalibal(dorm_id)
+    for note in res:
+        if note["user_id"] in duty:
+            duty[note["user_id"]].append(note["duty_date"])
+        else:
+            duty[note["user_id"]] = [note["duty_date"]]
+    aneal = Annealing(duty).main()
+    if not aneal:
+        return {"message": "No solution. Try again"}
+    db.add_duty_schedule(aneal, dorm_id)
+    res = db.get_duty_schedule(dorm_id)
+    return res
+    
 # end secure region

@@ -11,7 +11,7 @@ uvicorn_app = create_app()
 
 if __name__ == "__main__":
     DOCKER_MODE = getenv("DOCKER_MODE")
-    if getenv("DOCKER_MODE") == "true":
+    if getenv("DOCKER_MODE") == "1":
         DOCKER_MODE = True
         logger.warning("Docker mode enabled")
     else:

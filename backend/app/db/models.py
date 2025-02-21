@@ -10,6 +10,7 @@ from sqlalchemy import (
     Enum,
     ForeignKey,
     Boolean,
+    UniqueConstraint
 )
 from sqlalchemy.orm import declarative_base, relationship
 import enum
@@ -57,6 +58,7 @@ class Dorms(Base):
     note_dorm_rel = relationship("Notes")
     violation_dorm_rel = relationship("Violations")
     unvalibal_duties_dorm_rel = relationship("UnvalibalDuties")
+    duties_dorm_rel = relationship("Duty")
     
     
 class Floors(Base):
@@ -98,6 +100,7 @@ class Users(Base):
     note_user_rel = relationship("Notes")
     floor_user_rel = relationship("Floors")
     unvalibal_duties_user_rel = relationship("UnvalibalDuties")
+    duties_user_rel = relationship("Duty")
 
 
 class Violations(Base):
@@ -127,21 +130,29 @@ class Notes(Base):
     created_at = Column(DateTime(), nullable=False)
     deleted_at = Column(DateTime(), nullable=True, default=None) # TODO: подумать над автоматическим удалением
 
-
+class Schedules(Base):
+    __tablename__ = "Schedules"
+    schedule_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    year = Column(BigInteger, nullable=False)
+    month = Column(BigInteger, nullable=False)
+    UniqueConstraint(year, month)
+    duty_ref = relationship("Duty")
+    
 class UnvalibalDuties(Base):
     __tablename__ = "UnvalibalDuties"
     
     duty_id = Column(BigInteger, primary_key=True, autoincrement=True) # TODO: refs
     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
-    duty_date = Column(DateTime(), nullable=False)
+    duty_date = Column(DateTime(), nullable=False) # TODO: fix fix fix with schedule
     created_at = Column(DateTime(), nullable=False)
 
-# class Duties(Base):
-#     __tablename__ = "Duty"
+class Duty(Base):
+    __tablename__ = "Duty"
     
-#     duty_id = Column(BigInteger, primary_key=True, autoincrement=True)
-#     user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
-#     dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
-#     duty_date = Column(DateTime(), nullable=False)
-#     created_at = Column(DateTime(), nullable=False)
+    duty_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey("Users.user_id"), nullable=False)
+    dorm_id = Column(BigInteger, ForeignKey("Dorms.dorm_id"), nullable=False)
+    schedule_id = Column(BigInteger, ForeignKey("Schedules.schedule_id"), nullable=False)
+    duty_day = Column(BigInteger, nullable=False)
+    created_at = Column(DateTime(), nullable=False)

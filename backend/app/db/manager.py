@@ -219,7 +219,6 @@ class DBManager:
         check_user_duty = self.session.query(UnvalibalDuties).filter(and_(UnvalibalDuties.user_id == data.user_id, UnvalibalDuties.dorm_id == dorm_id)).first()
         if check_user_duty is not None:
             return False
-        
         for date in data.dates:
             count_duty = self.session.query(UnvalibalDuties).filter(and_(UnvalibalDuties.dorm_id == dorm_id, UnvalibalDuties.duty_date == date)).count()  
             if count_duty > self.duty_limit:
@@ -236,13 +235,59 @@ class DBManager:
         self.session.commit()
         return True
     
-    def get_duty(self, dorm_id: int): # TODO: test
+    def get_duty_unvalibal(self, dorm_id: int): # TODO: test
         data = self.session.query(UnvalibalDuties).filter_by(dorm_id = dorm_id).order_by(UnvalibalDuties.duty_date).all()
         return [
             {
                 "user_id": duty.user_id,
                 "dorm_id": duty.dorm_id,
                 "duty_date": duty.duty_date,
+                "created_at": duty.created_at
+            }
+            for duty in data
+        ]
+        
+    def get_schedule_id(self):
+        res = self.session.query(Schedules).filter(and_(Schedules.year == datetime.now().year, Schedules.month == datetime.now().month)).first()
+        res_id = -1
+        if res is None:
+            schedule = Schedules(
+                year = datetime.now().year,
+                month = datetime.now().month
+            )
+            self.session.add(schedule)
+            self.session.commit()
+            res_id = schedule.schedule_id
+        else:
+            res_id = res.schedule_id
+        
+        return res_id
+        
+    def add_duty_schedule(self, duty, dorm_id):
+        res_id = self.get_schedule_id()
+        for user_id in duty:
+            for day in duty[user_id]:
+                current_duty = Duty(
+                    user_id = user_id,
+                    dorm_id = dorm_id,
+                    schedule_id = res_id,
+                    duty_day = day,
+                    created_at = datetime.now()
+                )
+                self.session.add(current_duty)
+        self.session.commit()
+        return 1
+    
+    def get_duty_schedule(self, dorm_id: int):
+        schedule_id = self.get_schedule_id()
+        data = self.session.query(Duty).filter(and_(Duty.dorm_id == dorm_id, Duty.schedule_id == schedule_id)).all()
+        if data is None:
+            return []
+        return [
+            {
+                "user_id": duty.user_id,
+                "dorm_id": duty.dorm_id,
+                "duty_day": duty.duty_day,
                 "created_at": duty.created_at
             }
             for duty in data
